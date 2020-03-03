@@ -3,11 +3,7 @@
 ! This program finds the range of a charged partcile in a plasma, where the
 ! charged particle is created with threshold energy Ep. 
 !
-! The subroutine rk4(y,t,dt,nit) advances y at time t by nit iterations, each
-! of which has a constant time-step dt. 
-!
 ! nts = number of time steps
-! nit = number of iterations per time step
 !
       USE allocatablevars
       USE bpsvars

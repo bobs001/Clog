@@ -19,14 +19,10 @@ After Initial Set Up
   $ git clone https://github.com/bobs001/Clog.git Clog
 
 - 3/3/2020
-  Updated comment in acoeff.f90
-  $ git add acoeff.f90
-  $ commit commit
-
-- 3/3/2020
-  I want to push this change back to github repo
+  I want to push changes from local Clog back to https://github.com/bobs001/Clog
   $ cd Clog
-  $ git remote add upstream https://github.com/bobs001/Clog.git
-  $ git push [does not workk]
+  $ git remote add upstream https://github.com/bobs001/Clog.git [did not quite work]
+  Edited .git/config by hand.  
+  $ git push
 
 
