@@ -1,7 +1,7 @@
 # Coulomb Logarithm
 # clog 
 
-LA-CC-17-026 *
+LA-CC-17-026
 
 Clog is a library of charged particle stopping powers and related Coulomb logarithm
 processes in a plasma. The stopping power is a particularly useful quantity for
