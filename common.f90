@@ -126,7 +126,7 @@
 
         te  =1./betab(1)
         ti  =1./betab(2)
-        dep =ep*1.E-2
+        dep =ep*1.E-3
         dep2=2*dep
 
         dedx_a_tot  = 0 ! electron + ion

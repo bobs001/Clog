@@ -13,9 +13,13 @@
         REAL    :: dedx_tot,  dedx_i,  dedx_e
         REAL    :: dedxc_tot, dedxc_i, dedxc_e
         REAL    :: dedxq_tot, dedxq_i, dedxq_e
+        REAL    :: dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e
+        REAL    :: dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e
+        REAL    :: dedxc_a_r_i, dedxc_a_r_e
+
         INTEGER :: j, nit
 
-        REAL    :: te, ti, ne, ep, mp, zp, de, epp
+        REAL    :: te, ti, ne, ep, mp, zp, epp
         INTEGER :: nni
 !
         nit=100
@@ -56,25 +60,35 @@
 !
 ! plot the regular and singular contributions
 !
-        OPEN  (1, FILE='plot_dedx.out')
+        OPEN  (1, FILE='plot_acoeff.out')
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
 ! evolution
 !
+        WRITE(6,'(A)') '#'
+        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        WRITE(6,'(A)') '#'
         WRITE(1,'(A)') '#'
         WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
         WRITE(1,'(A)') '#'
-        de=ep/nit
-        epp=0
-        DO j=0,nit
-           epp=j*de
-           IF (epp .EQ. 0) epp=1.E-5
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
+        ! 26   0.92040000E+00   0.2049034664233E+01   0.1444663835005E+00   0.2193501047733E+01
+        epp=0.92040000E3 ! [keV] projectile energy 
+        j = 26
+        IF (epp .EQ. 0) epp=1.E-5
+        CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
-           WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-           WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-        END DO
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+
+        CALL dedx_fr_acoeff_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
+            dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
+            dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
+            dedxc_a_r_i, dedxc_a_r_e)
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
+
+        
         CLOSE (1)
         END PROGRAM dedx
 
@@ -203,3 +217,4 @@
 !        "#  iu", "ep[keV]", "a_tot", "a_e", "a_i", "ac_tot", "ac_e", "ac_i", "aq_tot", "aq_e","aq_i"
 
     END SUBROUTINE write_output
+
