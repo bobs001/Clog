@@ -22,7 +22,7 @@
         REAL    :: te, ti, ne, ep, mp, zp, de, epp
         INTEGER :: nni
 !
-        nit=10
+        nit=100
 !
 ! A: alpha particle projectile
 !
@@ -32,25 +32,25 @@
         ep=3540.    ! Projectile energy  [keV]
         mp=4*MPKEV  ! Projectile mass    [keV]
         zp=2.       ! Projectile charge  [e]
-!
-! B: triton projectile
-!
-        te=0.5      ! Electron temperature       [keV]
-        ti=0.5      ! Ion temperature            [keV]
-        ne=2.E26    ! Electron number density    [cm^-3]
-        ep=10000.   ! Projectile energy  [keV]
-        mp=3*MPKEV  ! Projectile mass    [keV]
-        zp=1.       ! Projectile charge  [e]
+! !
+! ! B: triton projectile
+! !
+!         te=0.5      ! Electron temperature       [keV]
+!         ti=0.5      ! Ion temperature            [keV]
+!         ne=2.E26    ! Electron number density    [cm^-3]
+!         ep=10000.   ! Projectile energy  [keV]
+!         mp=3*MPKEV  ! Projectile mass    [keV]
+!         zp=1.       ! Projectile charge  [e]
 
-!
-! C: triton projectile
-!
-        te=1.       ! Electron temperature       [keV]
-        ti=1.       ! Ion temperature            [keV]
-        ne=2.E26    ! Electron number density    [cm^-3]
-        ep=10000.   ! Projectile energy  [keV]
-        mp=3*MPKEV  ! Projectile mass    [keV]
-        zp=1.       ! Projectile charge  [e]
+! !
+! ! C: triton projectile
+! !
+!         te=1.       ! Electron temperature       [keV]
+!         ti=1.       ! Ion temperature            [keV]
+!         ne=2.E26    ! Electron number density    [cm^-3]
+!         ep=10000.   ! Projectile energy  [keV]
+!         mp=3*MPKEV  ! Projectile mass    [keV]
+!         zp=1.       ! Projectile charge  [e]
 
 !
 !
@@ -60,25 +60,14 @@
 !
 ! plot the regular and singular contributions
 !
-!       OPEN  (1, FILE='dedx_BPS_B_f90.out')
-!       OPEN  (1, FILE='dedx_BPS_A_f90.out')
-        OPEN  (1, FILE='dedx_BPS_C_f90.out')
+        OPEN  (1, FILE='plot_dedx.out')
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
 ! evolution
 !
-        WRITE(1,*) ne
-        WRITE(1,*) te
-        WRITE(1,*) ti
-        WRITE(1,*) nit
-        WRITE(1,*) ep, mp, zp
         WRITE(1,'(A)') '#'
         WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
         WRITE(1,'(A)') '#'
-
-!        WRITE(1,*) "#"
-!        WRITE(1,*) "# E [MeV]  dedx_e  dedx_I  dedx_tot [e+I]"
-!        WRITE(1,*) "#"
         de=ep/nit
         epp=0
         DO j=0,nit
@@ -87,8 +76,8 @@
            CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
-           WRITE (6,'(I6,E17.8,6D22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-           WRITE (1,'(I6,E17.8,6D22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+           WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+           WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
         END DO
         CLOSE (1)
         END PROGRAM dedx
