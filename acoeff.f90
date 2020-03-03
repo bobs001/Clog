@@ -1246,7 +1246,7 @@
       END SUBROUTINE coeff_bps_very_high_E
 
 
-      SUBROUTINE dedx_fr_acoeff_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
+      SUBROUTINE acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
             dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
             dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
             dedxc_a_r_i, dedxc_a_r_e)
@@ -1320,7 +1320,7 @@
           a_e,ac_tot,ac_i,ac_e,aq_tot,aq_i,aq_e,ac_s_i,ac_s_e,&
           ac_r_i,ac_r_e)
 
-!       dedx_tot = (1 - te/ep)*a_tot  - te*(a_tot_p -a_tot_m)/(2*dep)
+!       dedx_tot = (1 - te/ep)*a_tot  - te*(a_tot_p -a_tot_m)/dep2
         dedx_a_i   = (1 - te/ep)*a_i    - ti*(a_i_p   -a_i_m)/dep2
         dedx_a_e   = (1 - te/ep)*a_e    - te*(a_e_p   -a_e_m)/dep2
         dedx_a_tot = dedx_a_e + dedx_a_i
@@ -1341,7 +1341,7 @@
         dedxc_a_r_e=(1 - te/ep)*ac_r_e   - te*(ac_r_e_p  -ac_r_e_m)/dep2
 
 
-      END SUBROUTINE dedx_fr_acoeff_bps
+      END SUBROUTINE acoeff_dedx_bps
 !
 
       SUBROUTINE a_collect(ib, ibmax, ac_s, ac_r, aq, a_tot, a_i, a_e, &

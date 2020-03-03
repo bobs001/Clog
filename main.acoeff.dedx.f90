@@ -59,7 +59,7 @@
         WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
         WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
 
-        CALL dedx_fr_acoeff_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
+        CALL acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
             dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
             dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
             dedxc_a_r_i, dedxc_a_r_e)
