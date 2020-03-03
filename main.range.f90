@@ -42,8 +42,8 @@
         ep=3540.     ! Projectile energy  [keV]
         mp=4*MPKEV   ! Projectile mass    [keV]
         zp=2.        ! Projectile charge  [e]
-        OPEN(1, FILE='range.001.out')
-        OPEN(2, FILE='dedx.001.out')
+        OPEN(1, FILE='dedx.001.out')
+        OPEN(2, FILE='range.001.out')        
 
                      ! 30 keV: range.002.out
 !!        tmax=0.6E-10 ! [s]
@@ -103,11 +103,17 @@
 !
 ! evolution
 !
-        WRITE(2,*) ne
-        WRITE(2,*) te
-        WRITE(2,*) ti
-        WRITE(2,*) nn
-        WRITE(2,*) ep, mp, zp
+        ! WRITE(2,*) ne
+        ! WRITE(2,*) te
+        ! WRITE(2,*) ti
+        ! WRITE(2,*) nn
+        ! WRITE(2,*) ep, mp, zp
+        WRITE(6,'(A)') '#'
+        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        WRITE(6,'(A)') '#'
+        WRITE(1,'(A)') '#'
+        WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        WRITE(1,'(A)') '#'
         de=ep/nn
         epp=0
         DO j=0,nn
@@ -116,10 +122,10 @@
            CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
-           WRITE (6,'(I6,E17.8,6D22.13)') j, epp, dedx_tot, dedx_i, dedx_e
-           WRITE (2,'(I6,E17.8,6D22.13)') j, epp, dedx_tot, dedx_i, dedx_e
+           WRITE (6,'(I6,E17.8,6E22.13)') j, epp, dedx_tot, dedx_i, dedx_e
+           WRITE (1,'(I6,E17.8,6E22.13)') j, epp, dedx_tot, dedx_i, dedx_e
         END DO
-        CLOSE (2)
+        CLOSE (1)
 !
 ! initial conditions
 !
@@ -138,23 +144,24 @@
             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
             dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
 
-        WRITE(1,*) ne
-        WRITE(1,*) te
-        WRITE(1,*) ti
-        WRITE(1,*) tmax, nts, nit
-        WRITE(1,*) ep, mp, zp
+        ! WRITE(1,*) ne
+        ! WRITE(1,*) te
+        ! WRITE(1,*) ti
+        ! WRITE(1,*) tmax, nts, nit
+        ! WRITE(1,*) ep, mp, zp
+
         WRITE (6,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
-        WRITE (1,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
+        WRITE (2,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
         DO j=1,nts
            CALL rk4(y,v,t,dt,nit,nni,zp,mp,dedx_tot,dedx_i,dedx_e)
            tt(j)=t
            xt(j)=y
            vt(j)=v
            ep   =0.5*mp*(vt(j)/CC)**2
-           WRITE (6,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
-           WRITE (1,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
+           WRITE (6,'(I6,E17.8,6E22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
+           WRITE (2,'(I6,E17.8,6E22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
         END DO
-        CLOSE (1)
+        CLOSE (2)
         END PROGRAM range
 
 !
