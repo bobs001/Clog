@@ -18,41 +18,18 @@
         REAL    :: te, ti, ne, ep, mp, zp, de, epp
         INTEGER :: nni
 !
+! number of iterations
         nit=100
 !
-! A: alpha particle projectile
-!
-        te=1.       ! Electron temperature       [keV]
-        ti=1.       ! Ion temperature            [keV]
-        ne=2.E26    ! Electron number density    [cm^-3]
+! alpha particle projectile
         ep=3540.    ! Projectile energy  [keV]
         mp=4*MPKEV  ! Projectile mass    [keV]
         zp=2.       ! Projectile charge  [e]
-! !
-! ! B: triton projectile
-! !
-!         te=0.5      ! Electron temperature       [keV]
-!         ti=0.5      ! Ion temperature            [keV]
-!         ne=2.E26    ! Electron number density    [cm^-3]
-!         ep=10000.   ! Projectile energy  [keV]
-!         mp=3*MPKEV  ! Projectile mass    [keV]
-!         zp=1.       ! Projectile charge  [e]
-
-! !
-! ! C: triton projectile
-! !
-!         te=1.       ! Electron temperature       [keV]
-!         ti=1.       ! Ion temperature            [keV]
-!         ne=2.E26    ! Electron number density    [cm^-3]
-!         ep=10000.   ! Projectile energy  [keV]
-!         mp=3*MPKEV  ! Projectile mass    [keV]
-!         zp=1.       ! Projectile charge  [e]
-
 !
 !
 ! DT plasma with alpha particle projectile
 !
-        CALL define_plasma(te,ti,ne,nni)
+        CALL define_plasma_dt(te,ti,ne,nni)
 !
 ! plot the regular and singular contributions
 !
@@ -79,11 +56,11 @@
         END PROGRAM dedx
 
 !
-! SUBROUTINE define_plasma:
+! SUBROUTINE define_plasma_dt:
 ! Returns the plasma species arrays: betab, mb, nb, zb
 ! Allocates other plasma arrays
 !
-    SUBROUTINE define_plasma(te, ti, ne, nni)
+    SUBROUTINE define_plasma_dt(te, ti, ne, nni)
     USE allocatablevars
     USE physvars
       IMPLICIT NONE
@@ -97,8 +74,11 @@
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: zb     ! [e]
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: gb, etab, mpb, mbpb
 
-      nni=2  ! number of ion species
-
+      te=1.       ! Electron temperature       [keV]
+      ti=1.       ! Ion temperature            [keV]
+      ne=2.E26    ! electron number density    [1/cc]    
+      nni=2       ! number of ion species
+      
       ALLOCATE(betab(1:nni+1),zb(1:nni+1),mb(nni+1),nb(1:nni+1))   ! allocatablevars
       ALLOCATE(gb(1:nni+1),etab(1:nni+1),mpb(nni+1),mbpb(1:nni+1)) ! allocatablevars
 
@@ -116,7 +96,7 @@
       nb=nb*ne                          ! number density array [cm^-3]
       betab(1)=1./te                    ! inverse temp array   [keV^-1]
       betab(2:nni+1)=1./ti              !
-    END SUBROUTINE define_plasma
+    END SUBROUTINE define_plasma_dt
 
 
 
