@@ -72,7 +72,8 @@
 !     a temperature T_e, usually with T_e =/= T_I.  See also USAGE
 !     and note [3] below.
 !
-! [2] L. Brown, D. Preston, and R. Singleton~Jr., 
+! [2] BPS paper
+!     L. Brown, D. Preston, and R. Singleton~Jr., 
 !     "Charged Particle Motion in a Highly Ionized Plasma",
 !     Physics Reports, 410 (2005) 237
 !     [arXiv:physics/0501084]
