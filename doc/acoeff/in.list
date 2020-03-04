@@ -1,4 +1,4 @@
-%%
+%
 \vskip0.4cm 
 \begin{enumerate}
   \baselineskip 10pt plus 1pt minus 1pt
@@ -9,4 +9,4 @@
 \item[2.] item two
 \item[3.] \verb+{three}+
 \end{enumerate}
-%%
+%

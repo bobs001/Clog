@@ -1,9 +1,9 @@
 %
-\begin{theorem}
+\begin{proposition}
 \theoremskip
   ***
 \label{thm:name}
-\end{theorem}
+\end{proposition}
 %
 %\vskip-0.3cm 
 %\PROOF.  
