@@ -1322,7 +1322,6 @@
         dedxc_a_r_i = 0 
         dedxc_a_r_e = 0 
 
-        ! calculate A at vp/Ep
         dep = ep * 1.E-4
         dep2 = 2 * dep
         CALL bps_acoeff_ei_mass(nni,ep,zp,mp,betab,zb,mb,nb,a_tot,a_i, &
@@ -1356,8 +1355,6 @@
         dedxc_a_r_i = (1 - te/ep)*ac_r_i   - te*(ac_r_i_p  -ac_r_i_m)/dep2
         dedxc_a_r_e = (1 - te/ep)*ac_r_e   - te*(ac_r_e_p  -ac_r_e_m)/dep2
 
-        
-        
       END SUBROUTINE acoeff_dedx_bps
 !
 
