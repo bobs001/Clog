@@ -21,6 +21,15 @@
 
         REAL    :: te, ti, ne, ep, mp, zp, epp
         INTEGER :: nni
+
+        ! * 3/3/2020
+        ! Compare dE/dx as calculated by this code and using a numerical
+        ! derivative of A. dedx.f90 vs acoeff.f90
+        ! Ep=3.5MeV has good agreement.
+        ! Ep=0.9MeV has bad agreement
+        ! The lower velocity behavior is wrong
+        !
+      
 !
 ! number of iterations
         nit=100
@@ -49,23 +58,36 @@
         WRITE(1,'(A)') '#'
         WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
         WRITE(1,'(A)') '#'
-        ! 26   0.92040000E+00   0.2049034664233E+01   0.1444663835005E+00   0.2193501047733E+01
-        epp=0.92040000E3 ! [keV] projectile energy 
+        epp=ep ! [keV] projectile energy         
         j = 26
         IF (epp .EQ. 0) epp=1.E-5
         CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
-        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-
+        
         CALL acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
             dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
             dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
             dedxc_a_r_i, dedxc_a_r_e)
-        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
+
+! total
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot        
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
         WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
 
+! classical
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedxc_e, dedxc_i, dedxc_tot
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedxc_a_e, dedxc_a_i, dedxc_a_tot        
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedxc_e, dedxc_i, dedxc_tot
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedxc_a_e, dedxc_a_i, dedxc_a_tot
+
+! quantum
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedxq_e, dedxq_i, dedxq_tot
+        WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedxq_a_e, dedxq_a_i, dedxq_a_tot        
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedxq_e, dedxq_i, dedxq_tot
+        WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedxq_a_e, dedxq_a_i, dedxq_a_tot
+        
         
         CLOSE (1)
         END PROGRAM dedx
