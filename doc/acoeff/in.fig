@@ -1,0 +1,13 @@
+%%
+\vskip-2.5cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{file.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  This is Figure caption.
+%%
+}
+\label{fig:file}
+\end{figure}
+%%
