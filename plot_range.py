@@ -29,9 +29,9 @@ plt.show()
 # WRITE (6,'(I6,E17.8,6D22.13)') j, tt(j), xt(j), vt(j), ep, dedx_tot, dedx_i, dedx_e
 data = np.genfromtxt('range.001.out')
 x = data[:, 2]*10.E4 # mu-m
-dedx = data[:, 5]   # MeV/mu-m
-dedxe = data[:, 7]   # MeV/mu-m
+dedx = data[:, 5]    # MeV/mu-m
 dedxi = data[:, 6]   # MeV/mu-m
+dedxe = data[:, 7]   # MeV/mu-m
 # # Create a loglog plot of data
 plt.plot(x, dedxe)
 plt.plot(x, dedxi)
