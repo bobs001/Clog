@@ -137,7 +137,7 @@
 ! where
 !          e^2 
 ! Be  =  --------- = 13.606E-3   [keV]
-!        8 Pi a0                 Bohr radius: a0=5.29E9 cm
+!        8 Pi a0                 Bohr radius: a0=5.29E-9 cm
 !
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1245,7 +1245,25 @@
         ENDDO
       END SUBROUTINE coeff_bps_very_high_E
 
-
+! **xx** !
+!
+! This is a driver to check the analytic evalulation dE_b/dx
+! against the one obtained by differentiating A_b.
+!
+! dE_b        [            1                d                           ]
+! ----(vp) =  [ 1  -  ------------- Sum_l -------  {\hat vp}^l A_b(vp)  ]
+!  dx         [        beta_b mp vp       d vp^l                        ]
+!
+!
+!             [          2 T_b   ]                T_b     dA_b
+!          =  [ 1  -  ---------- ] * A_b(vp) -  ------- * ----(vp)
+!             [         mp vp^2  ]               mp vp     dvp
+!
+!             [       T_b  ]                    dA_b
+!          =  [ 1  -  ---- ] * A_b(Ep) -  T_b * ----(Ep)
+!             [        Ep  ]                     dEp
+!
+!
       SUBROUTINE acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
             dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
             dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
@@ -1264,7 +1282,7 @@
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
-                                                              ! dE/dx [MeV/micron]
+                                                                ! dE/dx [MeV/micron]
         REAL,                        INTENT(OUT) :: dedx_a_tot  !  electron + ion
         REAL,                        INTENT(OUT) :: dedx_a_i    !  ion contribution
         REAL,                        INTENT(OUT) :: dedx_a_e    !  electron contribution
@@ -1285,12 +1303,10 @@
         REAL :: ac_s_i_m, ac_s_e_m, ac_r_i_m, ac_r_e_m
         REAL :: a_tot,   a_i,   a_e,   ac_tot,   ac_i,   ac_e,   aq_tot,   aq_i,   aq_e
         REAL :: ac_s_i,ac_s_e, ac_r_i,ac_r_e
-        REAL :: epm, epp, dep, dep2, te, ti
+        REAL :: te, ti, dep, dep2, epp, epm
 
         te  =1./betab(1)
         ti  =1./betab(2)
-        dep =ep*1.E-3
-        dep2=2*dep
 
         dedx_a_tot  = 0 ! electron + ion
         dedx_a_i    = 0 ! ion contribution
@@ -1306,41 +1322,42 @@
         dedxc_a_r_i = 0 
         dedxc_a_r_e = 0 
 
-        epp=ep+dep
-        CALL bps_acoeff_ei_mass(nni,epp,zp,mp,betab,zb,mb,nb,a_tot_p,a_i_p, &
-          a_e_p,ac_tot_p,ac_i_p,ac_e_p,aq_tot_p,aq_i_p,aq_e_p,ac_s_i_p,ac_s_e_p,&
-          ac_r_i_p,ac_r_e_p)
-
-        epm=ep-dep
-        CALL bps_acoeff_ei_mass(nni,epm,zp,mp,betab,zb,mb,nb,a_tot_m,a_i_m, &
-          a_e_m,ac_tot_m,ac_i_m,ac_e_m,aq_tot_m,aq_i_m,aq_e_m,ac_s_i_m,ac_s_e_m,&
-          ac_r_i_m,ac_r_e_m)
-
+        ! calculate A at vp/Ep
+        dep = ep * 1.E-4
+        dep2 = 2 * dep
         CALL bps_acoeff_ei_mass(nni,ep,zp,mp,betab,zb,mb,nb,a_tot,a_i, &
           a_e,ac_tot,ac_i,ac_e,aq_tot,aq_i,aq_e,ac_s_i,ac_s_e,&
           ac_r_i,ac_r_e)
 
-!       dedx_tot = (1 - te/ep)*a_tot  - te*(a_tot_p -a_tot_m)/dep2
-        dedx_a_i   = (1 - te/ep)*a_i    - ti*(a_i_p   -a_i_m)/dep2
-        dedx_a_e   = (1 - te/ep)*a_e    - te*(a_e_p   -a_e_m)/dep2
-        dedx_a_tot = dedx_a_e + dedx_a_i
+        epp = ep + dep
+        CALL bps_acoeff_ei_mass(nni,epp,zp,mp,betab,zb,mb,nb,a_tot_p,a_i_p, &
+          a_e_p,ac_tot_p,ac_i_p,ac_e_p,aq_tot_p,aq_i_p,aq_e_p,ac_s_i_p,ac_s_e_p,&
+          ac_r_i_p,ac_r_e_p)
 
-!       dedxc_tot= (1 - te/ep)*ac_tot - te*(ac_tot_p-ac_tot_m)/(2*dep)
-        dedxc_a_i  = (1 - te/ep)*ac_i   - ti*(ac_i_p  -ac_i_m)/dep2
-        dedxc_a_e  = (1 - te/ep)*ac_e   - te*(ac_e_p  -ac_e_m)/dep2
-        dedxc_a_tot= dedxc_a_e + dedxc_a_i
+        epm = ep - dep
+        CALL bps_acoeff_ei_mass(nni,epm,zp,mp,betab,zb,mb,nb,a_tot_m,a_i_m, &
+          a_e_m,ac_tot_m,ac_i_m,ac_e_m,aq_tot_m,aq_i_m,aq_e_m,ac_s_i_m,ac_s_e_m,&
+          ac_r_i_m,ac_r_e_m)
 
-!       dedxq_tot= (1 - te/ep)*aq_tot - te*(aq_tot_p-aq_tot_m)/(2*dep)
+        dedx_a_tot = (1 - te/ep)*a_tot  - te*(a_tot_p - a_tot_m)/dep2
+        dedx_a_i = (1 - ti/ep)*a_i - ti*(a_i_p - a_i_m)/dep2        
+        dedx_a_e = (1 - te/ep)*a_e - te*(a_e_p - a_e_m)/dep2
+
+        dedxq_a_tot= (1 - te/ep)*aq_tot - te*(aq_tot_p-aq_tot_m)/(2*dep)
         dedxq_a_i  = (1 - ti/ep)*aq_i   - ti*(aq_i_p  -aq_i_m)/dep2
         dedxq_a_e  = (1 - te/ep)*aq_e   - te*(aq_e_p  -aq_e_m)/dep2
-        dedxq_a_tot= dedxq_a_e + dedxq_a_i
-!
-        dedxc_a_s_i=(1 - te/ep)*ac_s_i   - te*(ac_s_i_p  -ac_s_i_m)/dep2
-        dedxc_a_s_e=(1 - te/ep)*ac_s_e   - te*(ac_s_e_p  -ac_s_e_m)/dep2
-        dedxc_a_r_i=(1 - te/ep)*ac_r_i   - te*(ac_r_i_p  -ac_r_i_m)/dep2
-        dedxc_a_r_e=(1 - te/ep)*ac_r_e   - te*(ac_r_e_p  -ac_r_e_m)/dep2
 
+        dedxc_a_tot= (1 - te/ep)*ac_tot - te*(ac_tot_p-ac_tot_m)/(2*dep)        
+        dedxc_a_i  = (1 - ti/ep)*ac_i   - ti*(ac_i_p  -ac_i_m)/dep2
+        dedxc_a_e  = (1 - te/ep)*ac_e   - te*(ac_e_p  -ac_e_m)/dep2
+        
+        dedxc_a_s_i = (1 - te/ep)*ac_s_i   - te*(ac_s_i_p  -ac_s_i_m)/dep2
+        dedxc_a_s_e = (1 - te/ep)*ac_s_e   - te*(ac_s_e_p  -ac_s_e_m)/dep2
+        dedxc_a_r_i = (1 - te/ep)*ac_r_i   - te*(ac_r_i_p  -ac_r_i_m)/dep2
+        dedxc_a_r_e = (1 - te/ep)*ac_r_e   - te*(ac_r_e_p  -ac_r_e_m)/dep2
 
+        
+        
       END SUBROUTINE acoeff_dedx_bps
 !
 
