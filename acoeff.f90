@@ -137,7 +137,7 @@
 ! where
 !          e^2 
 ! Be  =  --------- = 13.606E-3   [keV]
-!        8 Pi a0                 Bohr radius: a0=5.29E9 cm
+!        8 Pi a0                 Bohr radius: a0=5.29E-9 cm
 !
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1245,4 +1245,161 @@
         ENDDO
       END SUBROUTINE coeff_bps_very_high_E
 
+! **xx** !
+!
+! This is a driver to check the analytic evalulation dE_b/dx
+! against the one obtained by differentiating A_b.
+!
+! dE_b        [            1                d                           ]
+! ----(vp) =  [ 1  -  ------------- Sum_l -------  {\hat vp}^l A_b(vp)  ]
+!  dx         [        beta_b mp vp       d vp^l                        ]
+!
+!
+!             [          2 T_b   ]                T_b     dA_b
+!          =  [ 1  -  ---------- ] * A_b(vp) -  ------- * ----(vp)
+!             [         mp vp^2  ]               mp vp     dvp
+!
+!             [       T_b  ]                    dA_b
+!          =  [ 1  -  ---- ] * A_b(Ep) -  T_b * ----(Ep)
+!             [        Ep  ]                     dEp
+!
+!
+      SUBROUTINE acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
+            dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
+            dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
+            dedxc_a_r_i, dedxc_a_r_e)
+      USE physvars
+      USE mathvars      
+        IMPLICIT NONE                                      ! Plasma:
+        INTEGER,                     INTENT(IN)  :: nni    !  number of ions
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     !  mass array [keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb     !  density [1/cc]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb     !  charge array
+                                                           !
+                                                           ! Projectile  
+        REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+        REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
+        REAL,                        INTENT(IN)  :: zp     !  projectile charge
+                                                           !
+                                                                ! dE/dx [MeV/micron]
+        REAL,                        INTENT(OUT) :: dedx_a_tot  !  electron + ion
+        REAL,                        INTENT(OUT) :: dedx_a_i    !  ion contribution
+        REAL,                        INTENT(OUT) :: dedx_a_e    !  electron contribution
+        REAL,                        INTENT(OUT) :: dedxc_a_tot !  classical
+        REAL,                        INTENT(OUT) :: dedxc_a_i   !  classical
+        REAL,                        INTENT(OUT) :: dedxc_a_e   !  classical
+        REAL,                        INTENT(OUT) :: dedxq_a_tot !  quantum
+        REAL,                        INTENT(OUT) :: dedxq_a_i   !  quantum
+        REAL,                        INTENT(OUT) :: dedxq_a_e   !  quantum
+        REAL,                        INTENT(OUT) :: dedxc_a_s_i
+        REAL,                        INTENT(OUT) :: dedxc_a_s_e
+        REAL,                        INTENT(OUT) :: dedxc_a_r_i
+        REAL,                        INTENT(OUT) :: dedxc_a_r_e
 
+        REAL :: a_tot_p, a_i_p, a_e_p, ac_tot_p, ac_i_p, ac_e_p, aq_tot_p, aq_i_p, aq_e_p
+        REAL :: ac_s_i_p, ac_s_e_p, ac_r_i_p, ac_r_e_p
+        REAL :: a_tot_m, a_i_m, a_e_m, ac_tot_m, ac_i_m, ac_e_m, aq_tot_m, aq_i_m, aq_e_m
+        REAL :: ac_s_i_m, ac_s_e_m, ac_r_i_m, ac_r_e_m
+        REAL :: a_tot,   a_i,   a_e,   ac_tot,   ac_i,   ac_e,   aq_tot,   aq_i,   aq_e
+        REAL :: ac_s_i,ac_s_e, ac_r_i,ac_r_e
+        REAL :: te, ti, dep, dep2, epp, epm
+
+        te  =1./betab(1)
+        ti  =1./betab(2)
+
+        dedx_a_tot  = 0 ! electron + ion
+        dedx_a_i    = 0 ! ion contribution
+        dedx_a_e    = 0 ! electron contribution
+        dedxc_a_tot = 0 ! classical
+        dedxc_a_i   = 0 ! classical
+        dedxc_a_e   = 0 ! classical
+        dedxq_a_tot = 0 ! quantum
+        dedxq_a_i   = 0 ! quantum
+        dedxq_a_e   = 0 ! quantum
+        dedxc_a_s_i = 0 
+        dedxc_a_s_e = 0 
+        dedxc_a_r_i = 0 
+        dedxc_a_r_e = 0 
+
+        dep = ep * 1.E-4
+        dep2 = 2 * dep
+        CALL bps_acoeff_ei_mass(nni,ep,zp,mp,betab,zb,mb,nb,a_tot,a_i, &
+          a_e,ac_tot,ac_i,ac_e,aq_tot,aq_i,aq_e,ac_s_i,ac_s_e,&
+          ac_r_i,ac_r_e)
+
+        epp = ep + dep
+        CALL bps_acoeff_ei_mass(nni,epp,zp,mp,betab,zb,mb,nb,a_tot_p,a_i_p, &
+          a_e_p,ac_tot_p,ac_i_p,ac_e_p,aq_tot_p,aq_i_p,aq_e_p,ac_s_i_p,ac_s_e_p,&
+          ac_r_i_p,ac_r_e_p)
+
+        epm = ep - dep
+        CALL bps_acoeff_ei_mass(nni,epm,zp,mp,betab,zb,mb,nb,a_tot_m,a_i_m, &
+          a_e_m,ac_tot_m,ac_i_m,ac_e_m,aq_tot_m,aq_i_m,aq_e_m,ac_s_i_m,ac_s_e_m,&
+          ac_r_i_m,ac_r_e_m)
+
+        dedx_a_tot = (1 - te/ep)*a_tot  - te*(a_tot_p - a_tot_m)/dep2
+        dedx_a_i = (1 - ti/ep)*a_i - ti*(a_i_p - a_i_m)/dep2        
+        dedx_a_e = (1 - te/ep)*a_e - te*(a_e_p - a_e_m)/dep2
+
+        dedxq_a_tot= (1 - te/ep)*aq_tot - te*(aq_tot_p-aq_tot_m)/(2*dep)
+        dedxq_a_i  = (1 - ti/ep)*aq_i   - ti*(aq_i_p  -aq_i_m)/dep2
+        dedxq_a_e  = (1 - te/ep)*aq_e   - te*(aq_e_p  -aq_e_m)/dep2
+
+        dedxc_a_tot= (1 - te/ep)*ac_tot - te*(ac_tot_p-ac_tot_m)/(2*dep)        
+        dedxc_a_i  = (1 - ti/ep)*ac_i   - ti*(ac_i_p  -ac_i_m)/dep2
+        dedxc_a_e  = (1 - te/ep)*ac_e   - te*(ac_e_p  -ac_e_m)/dep2
+        
+        dedxc_a_s_i = (1 - te/ep)*ac_s_i   - te*(ac_s_i_p  -ac_s_i_m)/dep2
+        dedxc_a_s_e = (1 - te/ep)*ac_s_e   - te*(ac_s_e_p  -ac_s_e_m)/dep2
+        dedxc_a_r_i = (1 - te/ep)*ac_r_i   - te*(ac_r_i_p  -ac_r_i_m)/dep2
+        dedxc_a_r_e = (1 - te/ep)*ac_r_e   - te*(ac_r_e_p  -ac_r_e_m)/dep2
+
+      END SUBROUTINE acoeff_dedx_bps
+!
+
+      SUBROUTINE a_collect(ib, ibmax, ac_s, ac_r, aq, a_tot, a_i, a_e, &
+        ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e, ac_s_i, ac_s_e, ac_r_i, ac_r_e)
+        IMPLICIT NONE
+        INTEGER, INTENT(IN)    :: ib     ! species index
+        INTEGER, INTENT(IN)    :: ibmax  ! species index maximum = NNB+1
+        REAL,    INTENT(IN)    :: ac_s   ! singular contribution
+        REAL,    INTENT(IN)    :: ac_r   ! regular  contribution
+        REAL,    INTENT(IN)    :: aq     ! quantum  contribution
+                                         !
+        REAL,    INTENT(INOUT) :: a_tot  ! running total over ions
+        REAL,    INTENT(INOUT) :: a_i    ! running total over ions
+        REAL,    INTENT(INOUT) :: a_e    ! electron component
+        REAL,    INTENT(INOUT) :: ac_tot ! running total over ions
+        REAL,    INTENT(INOUT) :: ac_i   ! running total over ions
+        REAL,    INTENT(INOUT) :: ac_e   ! electron component
+        REAL,    INTENT(INOUT) :: aq_tot ! running total over ions
+        REAL,    INTENT(INOUT) :: aq_i   ! running total over ions
+        REAL,    INTENT(INOUT) :: aq_e   ! electron component
+        REAL,    INTENT(INOUT) :: ac_s_i
+        REAL,    INTENT(INOUT) :: ac_s_e
+        REAL,    INTENT(INOUT) :: ac_r_i
+        REAL,    INTENT(INOUT) :: ac_r_e
+        REAL :: ac_sr
+        ac_sr=ac_s + ac_r
+        IF (ib==1) THEN
+           ac_e=ac_sr
+           aq_e=aq
+           a_e =ac_e + aq_e
+
+           ac_s_e=ac_s
+           ac_r_e=ac_r
+        ELSE
+           ac_i=ac_i + ac_sr
+           aq_i=aq_i + aq
+           a_i =a_i  + ac_sr + aq
+
+           ac_s_i=ac_s_i + ac_s
+           ac_r_i=ac_r_i + ac_r
+        ENDIF
+        IF (ib==ibmax) THEN
+           ac_tot = ac_e + ac_i
+           aq_tot = aq_e + aq_i
+           a_tot  = ac_tot  + aq_tot
+        ENDIF
+      END SUBROUTINE a_collect
