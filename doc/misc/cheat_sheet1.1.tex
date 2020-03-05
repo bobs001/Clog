@@ -1,0 +1,584 @@
+\documentclass[preprint,12pt,eqsecnum,nofootinbib,amsmath,amssymb]{revtex4}
+
+% Date file was last changed:
+\newcommand{\datechange}{3/4/2020}
+\newcommand{\datestart}{3/4/2020}
+
+% version
+\newcommand\draftverson{v1.1}
+\newcommand{\fname}{cheat\_sheet1.1.tex}
+\newcommand{\laurnumber}{\draftverson  ~\today ~\currenttime}
+\newcommand{\mydate}{\datechange}
+
+% Person who last changed file:>
+\newcommand{\whochange}{Robert Singleton}
+%
+% Project Name, path, informal author names, title
+\newcommand{\projname}{Clog Doc}
+\newcommand{\dirname}{Clog/doc/dedx}
+\newcommand{\myauthors}{Robert Singleton}
+\newcommand{\myrunningtitle}{\fname}
+\newcommand{\mytitle}{Cheat Sheet}
+
+
+
+% printing margins
+%
+\textwidth=6.5in
+\textheight=9.5in
+
+% packages
+%
+\usepackage{graphicx}  % Include figure files
+\usepackage{dcolumn}  % Align table columns on decimal point
+\usepackage{bm}             % Bold math: $\bm{\alpha}$
+\usepackage{latexsym}  % Several additional symbols
+\usepackage{fancyhdr}  % Fancy header package
+\usepackage{wrapfig}
+\usepackage{comment}
+\usepackage{dsfont}
+\usepackage{mathtools}
+\usepackage{datetime}
+%\usepackage{showkeys}% Displays equation and fig names
+%\usepackage{hyperref}% Hyperlinked references
+
+% local commands
+\newcommand{\overoverline}[1]{ {\overline{\overline{#1}}} }
+\newcommand{\EMPTYSET}{\varnothing}
+\newcommand{\PROOF}{{\tiny PROOF}}
+\newcommand{\ALTPROOF}{{\tiny ALTERNATE PROOF}}
+\newcommand{\PAR}{$\blacktriangleright$}
+\newcommand{\ENDPF}{$\blacksquare$}
+\newcommand{\ENDPROOF}{$\blacksquare$}
+%\newcommand{\ENDPF}{\square}
+%\newcommand{\ENDPROOF}{$\square$}
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\NOT}{\neg}
+\newcommand{\EQ}{\equiv}
+\newcommand{\IFF}{\leftrightarrow}
+\newcommand{\IMP}{\rightarrow}
+\newcommand{\T}{{\rm T}}
+\newcommand{\F}{{\rm F}}
+\newcommand{\LOGEQ}{\sim}
+\newcommand{\smDash}{{\rule[1mm]{0.1cm}{0.1mm}}}
+\newcommand{\dbar}{{d\hskip-0.12cm \rule[2.2mm]{0.15cm}{0.1mm}}}
+\newcommand{\smA}{{\scriptscriptstyle \rm A}}
+\newcommand{\smB}{{\rm\scriptscriptstyle B}}
+\newcommand{\smN}{{\rm\scriptscriptstyle N}}
+\newcommand{\smX}{{\rm\scriptscriptstyle X}}
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\smP}{{\rm\scriptscriptstyle P}}
+\newcommand{\smL}{{\rm\scriptscriptstyle L}}
+\newcommand{\smT}{{\rm\scriptscriptstyle T}}
+\newcommand{\smC}{{\rm\scriptscriptstyle C}}
+\newcommand{\smI}{{\rm\scriptscriptstyle I}}
+\newcommand{\smR}{{\rm\scriptscriptstyle R}}
+\newcommand{\smS}{{\rm\scriptscriptstyle S}}
+\newcommand{\smQ}{{\rm\scriptscriptstyle Q}}
+\newcommand{\smD}{{\rm\scriptscriptstyle D}}
+\newcommand{\smO}{{\rm\scriptscriptstyle 0}}
+\newcommand{\smW}{{\rm\scriptscriptstyle W}}
+\newcommand{\smCT}{{\rm\scriptscriptstyle CT}}
+\newcommand{\smQM}{{\rm\scriptscriptstyle QM}}
+\newcommand{\smRe}{{\rm\scriptscriptstyle Re}}
+\newcommand{\smIm}{{\rm\scriptscriptstyle Im}}
+\newcommand{\smCL}{{\rm\scriptscriptstyle CL}}
+\newcommand{\smBPS}{{\rm\scriptscriptstyle BPS}}
+\newcommand{\smAMU}{{\rm\scriptscriptstyle AMU}}
+\newcommand{\smE}{{\rm\scriptscriptstyle E}}
+\newcommand{\smae}{{\rm\scriptscriptstyle ae}}
+\newcommand{\extend}[2]{ {#1}^\smallfrown{\! #2} }
+\newcommand{\smTC}{{\rm\scriptstyle TC}}
+\newcommand{\calT}{ {\cal T}}
+\newcommand{\calA}{{\cal A}}
+\newcommand{\mathfrakA}{\mathfrak{A}}
+\newcommand{\mathfrakB}{\mathfrak{B}}
+\newcommand{\mathfrakS}{\mathfrak{S}}
+\newcommand{\smGr}{{\rm\scriptscriptstyle gr}}
+\newcommand{\smLT}{{\rm\scriptscriptstyle <}}
+\newcommand{\smGT}{{\rm\scriptscriptstyle >}}
+\newcommand{\smY}{{\rm\scriptscriptstyle Y}}
+
+% % baselineskip modes
+\newcommand{\bodyskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\bibskip}{\baselineskip16pt plus 1pt minus 1pt}
+\newcommand{\tableofcontentsskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\footnoteskip}{\baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\abstractskip}{\baselineskip 13pt plus 1pt minus 1pt}
+\newcommand{\titleskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\affiliationskip}{\baselineskip 15pt plus 1pt minus 1pt}
+\newcommand{\captionskip}{\footnotesize \baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\enumerateskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\theoremskip}{\baselineskip 13pt plus 1pt minus 1pt}
+
+% theorem
+%
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{definition}{Definition}
+
+\pagestyle{fancy}
+\lhead{\laurnumber}
+%\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+%%
+%% begin: draw box
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  This macro draws a box around around text, taken 
+%%  from ``TeX by Example'', by Arvind Borde p76.
+%%
+%%   To use: 
+%%
+%%   \vskip0.3cm
+%%   \frame{.1}{2}{16.2cm}{\noindent
+%%   \begin{eqnarray}
+%%     a = b
+%%   \end{eqnarray}
+%%   }
+%%   \vskip0.2cm
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\def\frame#1#2#3#4{\vbox{\hrule height #1pt    % TOP RULE
+  \hbox{\vrule width #1pt\kern #2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt                                               % TOP SPACE
+  \vbox{\hsize #3\noindent #4}                            % BOXED MATERIAL
+  \kern #2pt}                                                        % BOTTOM SPACE
+  \kern #2pt\vrule width #1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth #1pt}                            % BOTTOM RULE
+}
+%%
+\def\myframe#1{\vbox{\hrule height 0.1pt    % TOP RULE
+  \hbox{\vrule width 0.1pt\kern 2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern 2pt                                               % TOP SPACE
+  \vbox{\hsize 16.5cm\noindent #1}                            % BOXED MATERIAL
+  \kern 2pt}                                                        % BOTTOM SPACE
+  \kern 2pt\vrule width 0.1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth 0.1pt}                            % BOTTOM RULE
+}
+%%
+%% draws two boxes around text (use sparingly)
+%%
+\def\fitframe #1#2#3{\vbox{\hrule height#1pt  % TOP RULE
+  \hbox{\vrule width#1pt\kern #2pt             % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt\hbox{#3}\kern #2pt}         % TOP,MATERIAL,BOT
+  \kern #2pt\vrule width#1pt}                  % RULE/SPACE ON RIGHT
+  \hrule height0pt depth#1pt}                  % BOTTOM RULE
+}
+%%
+%% draws a box with shadow around text
+%%
+\def\shframe #1#2#3#4{\vbox{\hrule height 0pt % NO TOP SHADOW
+ \hbox{\vrule width #1pt\kern 0pt             % LEFT SHADOW
+ \vbox{\kern-#1pt\frame{.3}{#2}{#3}{#4}       % START SHADOW
+ \kern-.3pt}                                  % MOVE UP RULE
+ \kern-#2pt\vrule width 0pt}                  % STOP SHADOW
+ \hrule height #1pt}                          % BOTTOM SHADOW
+}
+%%
+%%
+%% end: draw box
+%%
+%%  To install as a package on a local host.
+%%   a. Append the header ``\usepackage{myboxes}'' to the above macro. Name 
+%%   the macreo file myboxes.sty.  Move myboxes.sty into $HOME/texmf/tex/mypackages/. 
+%%   You might need to type texhash.
+%%   b. T use the package write \usepackage{myboxes} in the preamble.
+
+%
+\begin{document}
+
+%% notes info page
+%\hfill{\laurnumber}
+%\vskip0.3cm
+\centerline{{ \Large\bf \projname: \fname}}
+\vskip0.25cm 
+\centerline{\bf \mytitle}
+\vskip0.25cm
+\centerline{\myauthors}
+\vskip0.75cm 
+\baselineskip 14pt plus 1pt minus 1pt
+\begin{flushright}
+Research Notes   \\[3pt]
+{\it Project}:          \\
+\projname                      \\
+  {\it Path of TeX Source}:          \\
+\dirname/\fname                      \\[3pt]
+{\it Last Modified By}:            \\
+\whochange                         \\
+\datechange                        \\[3pt]
+{\it Date Started:}                \\
+\datestart                         \\[3pt]
+{\it Date:}                \\
+\draftverson~ \today ~\currenttime \\
+\end{flushright}
+
+\baselineskip 20pt plus 1pt minus 1pt
+
+%% mini abstract
+%\abstractskip
+%\noindent
+%These are notes on Logic from Ref.~\cite{ref_chang}.  
+%\bodyskip
+
+%% title page
+\vskip2.0cm
+%\pagebreak
+\preprint{\laurnumber}
+
+% publication title page
+\title{\titleskip
+  \mytitle
+}
+
+\author{Robert L Singleton Jr}
+
+\affiliation{\affiliationskip
+   School of Mathematics\\
+   University of Leeds\\
+   LS2 9JT
+}
+
+%\vskip 0.2cm 
+%\affiliation{\affiliationskip
+%     %$^1$
+%     Los Alamos National Laboratory\\
+%     Los Alamos, New Mexico 87545, USA
+%}
+
+\date{\datechange}
+
+\begin{abstract}
+\abstractskip
+\vskip0.3cm 
+\noindent
+  Physics documentation for the BPS temperature equilibration in the code Clog.
+\end{abstract}
+
+%%
+\maketitle
+%%
+
+% to change page settings
+%\thispagestyle{empty}
+%\pagestyle{empty}
+%\setcounter{page}{0}
+
+\pagebreak
+\tableofcontentsskip
+\tableofcontents
+%\thispagestyle{empty}
+
+%\pagebreak
+\newpage
+\bodyskip
+%\setcounter{page}{1}
+
+\pagebreak
+\clearpage
+
+\newpage
+
+
+\section{Formulae}
+
+%%
+\begin{eqnarray}
+  F(v) 
+  &=& 
+  -\int_{-\infty}^\infty \! du \, 
+  \frac{\rho_\text{tot}(u)}{v - u + i\eta} 
+  ~~~\text{with}~~
+  \rho_\text{tot}(u)=\sum_b\rho_b(u)
+\label{Fdef}
+\\[5pt]
+  \rho_b(v) 
+  &=& 
+  \kappa_b^2\,\sqrt{\frac{\beta_b m_b}{2\pi}}\, v\,
+  \exp\!\left\{-\frac{1}{2}\,\beta_b m_b\, v^2\right\} \ ,
+\label{rhototdef}
+\end{eqnarray}
+%%
+and its relation to the dielectric function is $k^2 \, \epsilon( {\bf
+  k} , {\bf k}\cdot {\bf v}_p ) = k^2 + F(\hat{\bf k} \cdot {\bf
+  v}_p)$.  
+%%
+  The Dawson integral is defined by 
+  \begin{eqnarray}
+  {\rm daw}(x) = \int_0^x dy\, 
+  e^{y^2 - x^2} = \frac{\sqrt{\pi}}{2}\, e^{-x^2}
+  {\rm erfi}(x) \ ,
+  \end{eqnarray}
+%% 
+%%
+\begin{eqnarray}
+  F_\smRe(v)
+  &=& 
+  \sum_b \kappa_b^2 
+  \left[1 - 2 \sqrt{\frac{\beta_b m_b}{2}} ~v~
+  {\rm daw}\left(\sqrt{\frac{\beta_b m_b}{2}}\,v 
+  \right) \right]
+\label{Fru}
+\\[5pt]
+  F_\smIm(v)
+  &=&
+  \sqrt{\pi} \sum_b \kappa_b^2 
+  \sqrt{\frac{\beta_b m_b}{2}}~~
+  v\, \exp\left[-\frac{\beta_b m_b}
+  {2}\, v^2\right] = \pi  \rho_{\rm tot}(v)  \ .
+\label{Fiu}
+\end{eqnarray}
+%% 
+$F^*(v)=F(-v)$
+%%
+\begin{eqnarray}
+  H(v) 
+  &\equiv&
+  -i\left[
+  F(v) \ln\!\left\{ \frac{F(v)}{\kappa_e^2}\right\} -
+  F^*(v)\ln\!\left\{\frac{F^*(v)}{\kappa_e^2} \right\}\right]
+\label{Ha}
+\\[5pt]
+  &=& 
+  \phantom{-}
+  2\left[
+  F_\smRe\, {\rm arg}\{F\}
+  +
+  F_{\smIm} \ln\!\left\{\frac{\vert F \vert}{\kappa_e^2}\right\}
+   \right] \ .
+\label{Hb}
+\end{eqnarray}
+%%
+We can write the dielectric function as a sum over plasma components,
+%%
+\begin{eqnarray}
+  F(v)={\sum}_bF_b(v) \ ,
+\end{eqnarray}
+%%
+where we express the contribution from plasma species $b$ as
+%%
+\begin{eqnarray}
+  F_b(v) 
+  &=& 
+\label{Fbdef}
+  -\int_{-\infty}^\infty du\, \frac{\rho_b(v)}{v - u + i\eta}
+\\[5pt]
+  \rho_b(v) 
+  &=& 
+  \kappa_b^2\,\sqrt{\frac{\beta_b m_b}{2\pi}}\, v\,
+  \exp\!\left\{-\frac{1}{2}\,\beta_b m_b\, v^2\right\} \ .
+\label{barrhob}
+\end{eqnarray}
+%%
+The functions $F_b(v)$ have units of wave-number-squared 
+[$1/L^2$] and their argument $v$ has units of velocity.
+We can express the functions $F_b(v)$ in terms of a single
+dimensionless function $\mathbb F(x)$ as follows:
+%%
+\begin{eqnarray}
+  F_b(v) 
+  &=& 
+  \kappa_b^2 \,\mathbb{F}\left(
+  \sqrt{\frac{\beta_b m_b}{2}}\, v ~ \right)
+\label{FbFbb}
+\end{eqnarray}
+%%
+with
+%%
+\begin{eqnarray}
+  \mathbb{F}(x) 
+  &=& 
+  -\int_{-\infty}^\infty dy\, \frac{\bar\rho(y)}{x - y + i \eta}
+\label{Fbbdef}
+\\[5pt]
+  \bar\rho(y) 
+  &=& 
+  \frac{y}{\sqrt{\pi}}\, e^{-y^2} \ .
+\label{rhobardef}
+\end{eqnarray}
+%%
+Relation (\ref{FbFbb}) holds because $\rho_b(u) = \kappa_b^2\,\bar
+\rho(y)$ for $u=(2/\beta_b m_b)^{1/2}\, y$. Note the reflection
+property
+%%
+\begin{eqnarray}
+  \mathbb{F}(-x) = \mathbb{F}^*(x) \  ,
+\label{Freflect}
+\end{eqnarray}
+%%
+which means that the real part is even in $x$ and the imaginary
+part is odd,
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(-x) &=& \phantom{-}\mathbb{F}_\smRe(x)
+\\[5pt]
+  \mathbb{F}_\smIm(-x) &=& -\mathbb{F}_\smIm(x) \ .
+\end{eqnarray}
+%%
+As with expressions (\ref{Fru}) and (\ref{Fiu}), the real and
+imaginary parts can be written
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x)
+  &=& 
+  1 - 2 x\,  {\rm daw}\left(x  \right) 
+\label{FbarRe}
+\\[5pt]
+  \mathbb{F}_\smIm(x)
+  &=&
+  \pi\,  \bar\rho(x)  
+  =
+  \sqrt{\pi}\, x\, e^{-x^2}\ .
+\label{FbarIm}
+\end{eqnarray}
+%% 
+Since the Dawson function ${\rm daw}(x)$ is odd we see that
+$\mathbb{F}_\smRe(x)$ is even. The real (blue) and the imaginary (red)
+parts of $\mathbb{F}(x)$ are graphed in Fig.~** 
+For a proof of (\ref{FbarRe}) and (\ref{FbarIm}), see
+physics/research/Tei/BPS-classical/notes/cei\_reg.tex
+
+
+
+
+%%
+\begin{eqnarray}
+  \mathbb{F}(x) 
+  &=& 
+  \int_{-\infty}^\infty dy\, \frac{\bar\rho(y)}{y - x - i \eta} \ ,
+\end{eqnarray}
+%%
+
+
+\subsection{Asymptotic forms of $F$}
+
+
+From expressions (\ref{FbFbb}), (\ref{FbarRe}) and (\ref{FbarIm}), 
+the real and imaginary parts of $F_b(v)$ can be expressed as
+%%
+\begin{eqnarray}
+  F^\smRe_b(v)
+  &=& 
+  \kappa_b^2 
+  \left[1 - 2 \sqrt{\frac{\beta_b m_b}{2}} ~v~
+  {\rm daw}\left\{\sqrt{\frac{\beta_b m_b}{2}}\,v 
+  \right\} \right]
+\label{FbRe}
+\\[5pt]
+  F^\smIm_b(v)
+  &=&
+  \kappa_b^2 \,
+  \sqrt{\frac{\beta_b m_b\,\pi}{2}}~~
+  v\, \exp\left\{-\frac{\beta_b m_b}
+  {2}\, v^2\right\} \ .
+\label{FbIm}
+\end{eqnarray}
+%% 
+
+The limits of small and large arguments of the Dawson function
+are
+%%
+\begin{eqnarray}
+  {\rm daw}(x) 
+  &=& 
+  x +\frac{2 x^3}{3} + \frac{4 x^5}{15} + {\cal O}(x^7) 
+\label{dawA}
+\\[5pt]
+  {\rm daw}(x)
+  &=&
+  \frac{1}{2x} +\frac{1}{4 x^3} + \frac{3}{8x^5} + {\cal O}(x^{-7}) \ .
+\label{dawB}
+\end{eqnarray}
+%%
+
+
+\vfill
+\pagebreak
+\section{Numerical Checks}
+
+
+For a single component plasma note that (\ref{Fiu}) reduces to 
+%%
+\begin{eqnarray}
+  F_\smRe(v)
+  &=& 
+  \kappa^2 
+  \left[1 - 2 \sqrt{\frac{\beta m}{2}} ~v~
+  {\rm daw}\left(\sqrt{\frac{\beta m}{2}}\,v 
+  \right) \right]
+\\[5pt]
+  F_\smIm(v)
+  &=&
+  \sqrt{\pi} \kappa^2 
+  \sqrt{\frac{\beta m}{2}}~~
+  v\, \exp\left[-\frac{\beta m}
+  {2}\, v^2\right] \ ;
+\end{eqnarray}
+%% 
+and therefore $F(0)=\kappa^2$, with $\kappa^2= e^2 n/T$. For large
+values of the argument, the Dawson function is\,\footnote{
+\footnoteskip 
+%%
+  For completeness, small values of the argument give ${\rm daw}(x)= x
+  + 2 x^3/3 + 4 x^5/15$.
+%%
+}
+
+
+%%
+\pagebreak
+\section{Extra}
+
+\subsection{Numerical Forms}
+
+The following numerical forms have been used in the code:
+%%
+\begin{eqnarray}
+  \kappa_b \cdot {\rm cm}
+  &=&
+  4.25390 \times 10^{-5} \,\vert Z_b \vert 
+  \left(\frac{n_b \cdot {\rm cm^3}}{T_b/{\rm keV}} \right)^{1/2}
+\\[5pt]
+  \omega_b \cdot {\rm s}
+  &=&
+  1.32155 \times 10^3 \, \big\vert Z_b \big\vert 
+  \Big(n_b \cdot{\rm cm}^3 \Big)^{1/2}
+  \Big(\frac{m_\smAMU}{m_b} \Big)^{1/2}
+\\[5pt]
+  \omega_e \cdot {\rm s} 
+  &=&   
+  5.62016 \times 10^4 \left(n_e/{\rm cm}^3 \right)^{1/2}
+\end{eqnarray}
+where 
+%%
+\begin{eqnarray}
+  m_\smAMU c^2 &=& 931.19 \times 10^3\,{\rm keV} \ .
+\end{eqnarray}
+
+%\newpage
+%\begin{thebibliography}{99}
+%\bibskip
+%
+%
+%\bibitem{ref1}
+%  Ref. 1 here.
+%\end{thebibliography}
+
+\end{document}
+  
+
+
