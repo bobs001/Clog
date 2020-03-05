@@ -1,0 +1,1448 @@
+\documentclass[preprint,12pt,eqsecnum,nofootinbib,amsmath,amssymb]{revtex4}
+
+% Date file was last changed:
+\newcommand{\datechange}{3/5/2020}
+\newcommand{\datestart}{3/5/2020}
+
+% version
+\newcommand\draftverson{v1.0}
+\newcommand{\fname}{ccoeff1.0.tex}
+\newcommand{\laurnumber}{\draftverson  ~\today ~\currenttime}
+\newcommand{\mydate}{\datechange}
+
+% Person who last changed file:>
+\newcommand{\whochange}{Robert Singleton}
+%
+% Project Name, path, informal author names, title
+\newcommand{\projname}{Clog Doc}
+\newcommand{\dirname}{Clog/doc/acoeff}
+\newcommand{\myauthors}{Robert Singleton}
+\newcommand{\myrunningtitle}{\fname}
+\newcommand{\mytitle}{C-Coefficient in Clog}
+%
+% printing margins
+%
+
+\textwidth=6.5in
+\textheight=9.5in
+
+% packages
+%
+\usepackage{graphicx}  % Include figure files
+\usepackage{dcolumn}  % Align table columns on decimal point
+\usepackage{bm}             % Bold math: $\bm{\alpha}$
+\usepackage{latexsym}  % Several additional symbols
+\usepackage{fancyhdr}  % Fancy header package
+\usepackage{wrapfig}
+\usepackage{comment}
+\usepackage{dsfont}
+\usepackage{mathtools}
+\usepackage{datetime}
+%\usepackage{showkeys}% Displays equation and fig names
+%\usepackage{hyperref}% Hyperlinked references
+
+% local commands
+\newcommand{\overoverline}[1]{ {\overline{\overline{#1}}} }
+\newcommand{\EMPTYSET}{\varnothing}
+\newcommand{\PROOF}{{\tiny PROOF}}
+\newcommand{\ALTPROOF}{{\tiny ALTERNATE PROOF}}
+\newcommand{\PAR}{$\blacktriangleright$}
+\newcommand{\ENDPF}{$\blacksquare$}
+\newcommand{\ENDPROOF}{$\blacksquare$}
+%\newcommand{\ENDPF}{\square}
+%\newcommand{\ENDPROOF}{$\square$}
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\NOT}{\neg}
+\newcommand{\EQ}{\equiv}
+\newcommand{\IFF}{\leftrightarrow}
+\newcommand{\IMP}{\rightarrow}
+\newcommand{\T}{{\rm T}}
+\newcommand{\F}{{\rm F}}
+\newcommand{\LOGEQ}{\sim}
+\newcommand{\smDash}{{\rule[1mm]{0.1cm}{0.1mm}}}
+\newcommand{\dbar}{{d\hskip-0.12cm \rule[2.2mm]{0.15cm}{0.1mm}}}
+\newcommand{\smA}{{\scriptscriptstyle \rm A}}
+\newcommand{\smB}{{\rm\scriptscriptstyle B}}
+\newcommand{\smN}{{\rm\scriptscriptstyle N}}
+\newcommand{\smX}{{\rm\scriptscriptstyle X}}
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\smP}{{\rm\scriptscriptstyle P}}
+\newcommand{\smL}{{\rm\scriptscriptstyle L}}
+\newcommand{\smT}{{\rm\scriptscriptstyle T}}
+\newcommand{\smC}{{\rm\scriptscriptstyle C}}
+\newcommand{\smI}{{\rm\scriptscriptstyle I}}
+\newcommand{\smR}{{\rm\scriptscriptstyle R}}
+\newcommand{\smS}{{\rm\scriptscriptstyle S}}
+\newcommand{\smQ}{{\rm\scriptscriptstyle Q}}
+\newcommand{\smD}{{\rm\scriptscriptstyle D}}
+\newcommand{\smO}{{\rm\scriptscriptstyle 0}}
+\newcommand{\smW}{{\rm\scriptscriptstyle W}}
+\newcommand{\smCT}{{\rm\scriptscriptstyle CT}}
+\newcommand{\smQM}{{\rm\scriptscriptstyle QM}}
+\newcommand{\smRe}{{\rm\scriptscriptstyle Re}}
+\newcommand{\smIm}{{\rm\scriptscriptstyle Im}}
+\newcommand{\smE}{{\rm\scriptscriptstyle E}}
+\newcommand{\smae}{{\rm\scriptscriptstyle ae}}
+\newcommand{\extend}[2]{ {#1}^\smallfrown{\! #2} }
+\newcommand{\smTC}{{\rm\scriptstyle TC}}
+\newcommand{\calT}{ {\cal T}}
+\newcommand{\calA}{{\cal A}}
+\newcommand{\mathfrakA}{\mathfrak{A}}
+\newcommand{\mathfrakB}{\mathfrak{B}}
+\newcommand{\mathfrakS}{\mathfrak{S}}
+\newcommand{\smGr}{{\rm\scriptscriptstyle gr}}
+\newcommand{\smLT}{{\rm\scriptscriptstyle <}}
+\newcommand{\smGT}{{\rm\scriptscriptstyle >}}
+\newcommand{\smY}{{\rm\scriptscriptstyle Y}}
+
+% % baselineskip modes
+\newcommand{\bodyskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\bibskip}{\baselineskip16pt plus 1pt minus 1pt}
+\newcommand{\tableofcontentsskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\footnoteskip}{\baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\abstractskip}{\baselineskip 13pt plus 1pt minus 1pt}
+\newcommand{\titleskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\affiliationskip}{\baselineskip 15pt plus 1pt minus 1pt}
+\newcommand{\captionskip}{\footnotesize \baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\enumerateskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\theoremskip}{\baselineskip 13pt plus 1pt minus 1pt}
+
+% theorem
+%
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{definition}{Definition}
+
+\pagestyle{fancy}
+\lhead{\laurnumber}
+%\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+%%
+%% begin: draw box
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  This macro draws a box around around text, taken 
+%%  from ``TeX by Example'', by Arvind Borde p76.
+%%
+%%   To use: 
+%%
+%%   \vskip0.3cm
+%%   \frame{.1}{2}{16.2cm}{\noindent
+%%   \begin{eqnarray}
+%%     a = b
+%%   \end{eqnarray}
+%%   }
+%%   \vskip0.2cm
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\def\frame#1#2#3#4{\vbox{\hrule height #1pt    % TOP RULE
+  \hbox{\vrule width #1pt\kern #2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt                                               % TOP SPACE
+  \vbox{\hsize #3\noindent #4}                            % BOXED MATERIAL
+  \kern #2pt}                                                        % BOTTOM SPACE
+  \kern #2pt\vrule width #1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth #1pt}                            % BOTTOM RULE
+}
+%%
+\def\myframe#1{\vbox{\hrule height 0.1pt    % TOP RULE
+  \hbox{\vrule width 0.1pt\kern 2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern 2pt                                               % TOP SPACE
+  \vbox{\hsize 16.5cm\noindent #1}                            % BOXED MATERIAL
+  \kern 2pt}                                                        % BOTTOM SPACE
+  \kern 2pt\vrule width 0.1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth 0.1pt}                            % BOTTOM RULE
+}
+%%
+%% draws two boxes around text (use sparingly)
+%%
+\def\fitframe #1#2#3{\vbox{\hrule height#1pt  % TOP RULE
+  \hbox{\vrule width#1pt\kern #2pt             % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt\hbox{#3}\kern #2pt}         % TOP,MATERIAL,BOT
+  \kern #2pt\vrule width#1pt}                  % RULE/SPACE ON RIGHT
+  \hrule height0pt depth#1pt}                  % BOTTOM RULE
+}
+%%
+%% draws a box with shadow around text
+%%
+\def\shframe #1#2#3#4{\vbox{\hrule height 0pt % NO TOP SHADOW
+ \hbox{\vrule width #1pt\kern 0pt             % LEFT SHADOW
+ \vbox{\kern-#1pt\frame{.3}{#2}{#3}{#4}       % START SHADOW
+ \kern-.3pt}                                  % MOVE UP RULE
+ \kern-#2pt\vrule width 0pt}                  % STOP SHADOW
+ \hrule height #1pt}                          % BOTTOM SHADOW
+}
+%%
+%%
+%% end: draw box
+%%
+%%  To install as a package on a local host.
+%%   a. Append the header ``\usepackage{myboxes}'' to the above macro. Name 
+%%   the macreo file myboxes.sty.  Move myboxes.sty into $HOME/texmf/tex/mypackages/. 
+%%   You might need to type texhash.
+%%   b. T use the package write \usepackage{myboxes} in the preamble.
+
+%
+\begin{document}
+
+%% notes info page
+%\hfill{\laurnumber}
+%\vskip0.3cm
+\centerline{{ \Large\bf \projname: \fname}}
+\vskip0.25cm 
+\centerline{\bf \mytitle}
+\vskip0.25cm
+\centerline{\myauthors}
+\vskip0.75cm 
+\baselineskip 14pt plus 1pt minus 1pt
+\begin{flushright}
+Research Notes   \\[3pt]
+{\it Project}:          \\
+\projname                      \\
+  {\it Path of TeX Source}:          \\
+\dirname/\fname                      \\[3pt]
+{\it Last Modified By}:            \\
+\whochange                         \\
+\datechange                        \\[3pt]
+{\it Date Started:}                \\
+\datestart                         \\[3pt]
+{\it Date:}                \\
+\draftverson~ \today ~\currenttime \\
+\end{flushright}
+
+\baselineskip 20pt plus 1pt minus 1pt
+
+%% mini abstract
+%\abstractskip
+%\noindent
+%These are notes on Logic from Ref.~\cite{ref_chang}.  
+%\bodyskip
+
+%% title page
+\vskip2.0cm
+%\pagebreak
+\preprint{\laurnumber}
+
+% publication title page
+\title{\titleskip
+  \mytitle
+}
+
+\author{Robert L Singleton Jr}
+
+\affiliation{\affiliationskip
+   School of Mathematics\\
+   University of Leeds\\
+   LS2 9JT
+}
+
+%\vskip 0.2cm 
+%\affiliation{\affiliationskip
+%     %$^1$
+%     Los Alamos National Laboratory\\
+%     Los Alamos, New Mexico 87545, USA
+%}
+
+\date{\datechange}
+
+\begin{abstract}
+\abstractskip
+\vskip0.3cm 
+\noindent
+  Physics documentation for the BPS stopping power in the code Clog.
+\end{abstract}
+
+%%
+\maketitle
+%%
+
+% to change page settings
+%\thispagestyle{empty}
+%\pagestyle{empty}
+%\setcounter{page}{0}
+
+\pagebreak
+\tableofcontentsskip
+\tableofcontents
+%\thispagestyle{empty}
+
+%\pagebreak
+\newpage
+\bodyskip
+%\setcounter{page}{1}
+
+\pagebreak
+\clearpage
+
+\section{General Analytic Expressions for the BPS A-Coefficients}
+
+Suppose we have a plasma with various species labeled by an index $b$
+at distinct temperatures $T_b$, number densities $n_b$, and species
+masses $m_b$.\footnote{By convention $b=1$ will be the electron
+component.}  Temperature will be measured in energy units, and we
+denote the inverse temperature by $\beta_b =1/T_b$. Electrostatic
+units will be rationalized cgs. The projectile will have mass $m_a$,
+charge $e_a$ and energy $E_a = \frac{1}{2}\, m_a v_a^2$.  The BPS
+${\cal C^{\ell\ell}}$-coefficients take the form
+
+
+**
+%%
+\begin{eqnarray}
+  {\cal A}_{ab} 
+  &=&  
+  \Big({\cal A}^\smLT_{ab,\smR}  + {\cal A}^\smC_{ab,\smS} \Big) +
+  {\cal A}^{\Delta Q}_{ab} 
+\label{all}
+\end{eqnarray}
+%%
+with
+%%
+\begin{eqnarray}
+  {\cal A}^\smLT_{ab,\smR}
+  &=&
+  \frac{e_a^2}{4 \pi}\, \frac{i}{2 \pi}
+  \int_{-1}^1 \! d\cos\theta\, \cos\theta\,
+  \frac{\rho_b(v_a\cos\theta)}
+  {\rho_{\rm total}(v_a\cos\theta)}\,F(v_a \cos\theta) 
+  \ln\!\left\{\frac{F(v_a\cos\theta)}{K^2}\right\} \,, 
+\label{nun}
+\\[10pt]
+  {\cal A}^\smC_{ab,\smS}
+  &=& 
+  \frac{e_a^2\,\kappa^2_b}{4\pi} \,   
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\!\!
+  v_a\int_0^1 du \, u^{1/2} \,\exp\left\{ - \frac{1}{2} \,
+  \beta_b m_b v^2_a \, u \right\}
+\nonumber\\
+  && \qquad
+  \left[ -\ln \left(\beta_b  \frac{e_a e_b}{4\pi} \,
+  K \, \frac{m_b}{m_{ab}} \, \frac{u}{1-u} \right) 
+  - 2 \gamma + 2 \right] 
+\label{wonderclassic}
+\\[10pt]
+  {\cal A}^{\Delta Q}_{ab}
+  &=&
+  -\frac{e_a^2\, \kappa_b^2}{4 \pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\,
+  \int_0^\infty dv_{ab}
+  \bigg\{ {\rm Re} \, \psi \left( 1 + i \eta_{ab}
+  \right) - \ln \eta_{ab}  \bigg\}
+\nonumber\\
+  &&
+  \frac{1}{\beta_b m_b v_a v_{ab}} \, 
+  \Bigg[ \exp\left\{ - \frac{1}{2}\, \beta_b
+  m_b \left( v_a - v_{ab} \right)^2\right\} 
+   \left( 1 - \frac{1}{\beta_b m_b v_a v_{ab} } \right) 
+\nonumber\\
+  && \qquad\qquad\quad
+  + \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_a + v_{ab} 
+  \right)^2\right\} 
+   \left( 1 + \frac{1}{\beta_b m_b v_a v_{ab} } \right) 
+\Bigg]	\,,
+\label{regb}
+\end{eqnarray}
+%% 
+and
+%%
+\begin{eqnarray}
+\eta_{ab}= \frac{e_a e_b}{4\pi\hbar v_{ab}} \ .
+\end{eqnarray}
+%%
+The Debye wavenumber $K$ is arbitrary and will typically be chosen as
+$K=\kappa_e$. The function $F(v)$ takes the form
+%%
+\begin{eqnarray}
+  F(v) 
+  &=& 
+  -\int_{-\infty}^\infty \! du \, 
+  \frac{\rho_\text{tot}(u)}{v - u + i\eta} 
+  ~~~\text{with}~~
+  \rho_\text{tot}(u)=\sum_b\rho_b(u)
+\label{Fdef}
+\\[5pt]
+  \rho_b(v) 
+  &=& 
+  \kappa_b^2\,\sqrt{\frac{\beta_b m_b}{2\pi}}\, v\,
+  \exp\!\left\{-\frac{1}{2}\,\beta_b m_b\, v^2\right\} \ ,
+\label{rhototdef}
+\end{eqnarray}
+%%
+and its relation to the dielectric function is 
+%%
+\begin{eqnarray}
+  k^2 \, \epsilon({\bf k} , {\bf k}\cdot {\bf v} ) = k^2 + 
+  F(\hat{\bf k} \cdot {\bf v}) \ .
+\end{eqnarray}
+%%
+The first term ${\cal A}_{b ,\smR}^\smLT$ arises from long-distance
+collective effects from the dielectric function, and it involves {\em
+all} plasma species (even species $c$ different from $a$ and $b$).
+This is the term I call non-separable, meaning that it cannot be
+written as a sum of individual plasma components involving only a
+single species. The second term ${\cal A}_{b ,\smS}^\smC$ arises from
+short-distance two-body classical scattering, and the third term
+${\cal A}_{b}^\smQM$ is the two-body quantum scattering correction to
+all orders in the quantum parameters $\bar\eta_{ab}$. Three body and
+higher effects are contained in our systematic error term, the
+next-to-next-to-leading order term proportional to $g^3$. In a
+strongly coupled plasma these higher order effects dominate, but in a
+weakly coupled plasma they are negligible.
+
+\pagebreak
+\section{The Main Driver}
+
+I will return the ${\cal A}$-coefficients in three forms:
+%%
+\begin{enumerate}
+  \baselineskip 10pt plus 1pt minus 1pt
+  \setlength{\itemsep}{3pt} % single spacing
+  \setlength{\parskip}{1pt} %
+  \setlength{\parsep}{0pt}  %
+
+\item[i.] \verb+bps_acoeff_ab_mass+: For a given pair of indices $p$
+and $b$ (the projectile $p$ will often be denoted by species index
+$a$), this routine returns the individual component ${\cal A}_{ab}(E)$
+for a given energy $E$. The quantum parameter $\eta$ can be arbitrary. 
+This routine is used to construct the entries in the next two subroutines.
+
+\item[ii.] \verb+bps_acoeff_ab_matrix+: Returns the complete
+matrix of coefficients ${\cal A}_{ab}(E)$. 
+
+
+\item[iii.] \verb+bps_acoeff_ei_mass+: This routine returns the sum
+over the ions ${\cal A}_{p\smI}={\sum}_i {\cal A}_{pi}$ for a given
+projectile $p$. It also returns the coulomb logarithm.
+
+\end{enumerate}
+%%
+
+\subsection{The Driver Routine:
+\lowercase{bps}\_\lowercase{acoeff}\_\lowercase{ab}\_\lowercase{mass}}
+
+
+
+This subroutine returns the matrix of values ${\cal A}_{ab}(E)$ for a
+given energy $E$. The driving routine that calls and assembles the
+singular, regular, and quantum pieces.  
+\vskip0.4cm
+\noindent
+acoeff.f90:bps\_acoeff\_ab\_mass
+{
+\baselineskip 10pt
+\begin{verbatim}
+      SUBROUTINE bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
+      USE physvars
+      USE mathvars    
+        IMPLICIT NONE                                             ! Plasma:
+        INTEGER,                            INTENT(IN)  :: nni    !  number of ions
+        REAL,                               INTENT(IN)  :: ep     !  energy input [keV]
+        REAL,                               INTENT(IN)  :: mp     !  mass [keV]
+        REAL,                               INTENT(IN)  :: zp     !  charge
+        INTEGER,                            INTENT(IN)  :: ia     !  
+        INTEGER,                            INTENT(IN)  :: ib     !  
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: betab  !  temp array [1/keV]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
+                                                                  !
+                                                                  ! A-coeffs [MeV/micron]
+        REAL,                               INTENT(OUT) :: a_ab
+        REAL,                               INTENT(OUT) :: a_ab_sing
+        REAL,                               INTENT(OUT) :: a_ab_reg
+        REAL,                               INTENT(OUT) :: a_ab_qm
+
+        REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, kb2, ab
+        REAL                         :: vp, zp2, k, k2, kd, kd2, a, b, eta
+        REAL                         :: ac_r, ac_s, aq, c1, c2
+
+        REAL, PARAMETER              :: EPS_SMALL_E=2.E-4
+        REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
+        REAL, PARAMETER              :: EPS_SMALL_E_REG=2.E-4
+!
+! initialize components of A-coefficients
+!
+        kb2=8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kd2 = SUM(kb2)                ! [1/cm^2]
+        kd  = SQRT(kd2)               ! [1/cm]
+        k2  = kb2(1)                  ! [1/cm^2]
+        k   = SQRT(k2)                ! [1/cm]   k = k_e
+!
+! Loop over charged plasma species
+!
+        mpb = mp*mb/(mp+mb)            ! [keV]
+        mbpb= mb/mpb                   ! [dimensionless]
+        vp =CC*SQRT(2*ep/mp)           ! [cm/s]
+        zp2=zp**2                      ! [dimensionless]
+                                       ! ab=(1/2) betab(ib)*mbc2(ib)*vp2/CC2
+        ab  =0.5*betab*mb*vp*vp/CC2    ! [dimensionless] 
+        IF (zb(ib) .NE. 0.) THEN
+        a  =ab(ib)
+        b  =-Log(2*betab(ib)*BEKEV*ABS(zp*zb(ib))*k*A0CM*mbpb(ib) )-2*GAMMA+2
+        eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
+        c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
+        c1=c1*1.E-7                    ! [MeV/micron]  
+        c2=SQRT(a/PI)                  ! [dimensionless] 
+                                       ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
+!
+! A_{ab}-classical-singular 
+!
+        CALL a_sing_mass(a,b,ac_s) 
+        a_ab_sing=c1*c2*ac_s
+!
+! A_{ab}-classical-regular 
+!
+        CALL a_reg_mass(ib,nni,vp,k2,kb2,betab,mb,ac_r)
+        a_ab_reg=c1*ac_r
+!
+! A_{ab}-quantum
+!
+        CALL a_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
+        a_ab_qm=c1*c2*aq
+!
+! A_{ab}-total
+!
+        a_ab=a_ab_sing + a_ab_reg + a_ab_qm
+        ENDIF
+      END SUBROUTINE bps_acoeff_ab_mass
+\end{verbatim}
+}
+
+
+\vskip0.4cm 
+\noindent
+acoeff.f90:bps\_acoeff\_ab\_matrix
+{
+\baselineskip 10pt
+\begin{verbatim}
+        SUBROUTINE bps_acoeff_ab_matrix(nni, ep, betab, zb, mb, nb, &
+            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
+      USE physvars
+      USE mathvars    
+        IMPLICIT NONE                                             ! Plasma:
+        INTEGER,                            INTENT(IN)  :: nni    !  number of ions
+        REAL,                               INTENT(IN)  :: ep     !  energy input [keV]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: betab  !  temp array [1/keV]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
+        REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
+                                                                  !
+                                                                  ! A-coeffs [MeV/micron]
+        REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: a_ab
+        REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: a_ab_sing
+        REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: a_ab_reg
+        REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: a_ab_qm
+        REAL    :: aab, aab_sing, aab_reg, aab_qm, mp, zp
+        INTEGER :: ia, ib
+
+! Loop over charged plasma species
+!
+       DO ia=1,nni+1
+          mp=mb(ia)
+          zp=zb(ia)
+          DO ib=1,nni+1
+            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            aab, aab_sing, aab_reg, aab_qm)
+            a_ab(ia,ib)=aab
+            a_ab_sing(ia,ib)=aab_sing
+            a_ab_reg(ia,ib) =aab_reg
+            a_ab_qm(ia,ib)  =aab_qm   
+          ENDDO
+      ENDDO
+      END SUBROUTINE bps_acoeff_ab_matrix
+\end{verbatim}
+%%
+
+\vskip0.4cm 
+\noindent
+acoeff.f90:bps\_acoeff\_ei\_mass
+{
+\baselineskip 10pt
+\begin{verbatim}
+        SUBROUTINE bps_acoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb, &
+            a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e,&
+            ac_s_i, ac_s_e, ac_r_i, ac_r_e)
+      USE physvars
+      USE mathvars    
+      USE controlvars  
+        IMPLICIT NONE                                      ! Plasma:
+        INTEGER,                     INTENT(IN)  :: nni    !  number of ions
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     !  mass array [keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb     !  density [1/cc]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb     !  charge array
+                                                           !
+                                                           ! Projectile  
+        REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+        REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
+        REAL,                        INTENT(IN)  :: zp     !  projectile charge
+                                                           !
+                                                           ! A-coeffs [MeV/micron]
+        REAL,                        INTENT(OUT) :: a_tot  !  electron + ion
+        REAL,                        INTENT(OUT) :: a_i    !  ion contribution
+        REAL,                        INTENT(OUT) :: a_e    !  electron contribution
+        REAL,                        INTENT(OUT) :: ac_tot !  classical
+        REAL,                        INTENT(OUT) :: ac_i   !  classical
+        REAL,                        INTENT(OUT) :: ac_e   !  classical
+        REAL,                        INTENT(OUT) :: aq_tot !  quantum
+        REAL,                        INTENT(OUT) :: aq_i   !  quantum
+        REAL,                        INTENT(OUT) :: aq_e   !  quantum
+        REAL,                        INTENT(OUT) :: ac_s_i
+        REAL,                        INTENT(OUT) :: ac_s_e 
+        REAL,                        INTENT(OUT) :: ac_r_i
+        REAL,                        INTENT(OUT) :: ac_r_e
+
+        REAL     :: adum, ac_s, ac_r, aq
+        INTEGER  :: ia, ib, nnb
+
+!
+! initialize components of A-coefficients
+!
+        a_tot =0  ! electron + ion
+        a_i   =0  ! ion contribution
+        a_e   =0  ! electron contribution
+        ac_tot=0  ! classical total
+        ac_e  =0  ! classical electron
+        ac_i  =0  ! classical ion
+        aq_tot=0  ! quantum total
+        aq_e  =0  ! quantum electron
+        aq_i  =0  ! quantum ion
+        ac_s_i=0 
+        ac_s_e=0 
+        ac_r_i=0
+        ac_r_e=0
+
+        NNB = nni+1                 ! number of ions + electrons
+        ia=1
+        DO ib=1,nni+1
+        IF (zb(ib) .NE. 0.) THEN
+            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            adum, ac_s, ac_r, aq)
+            CALL x_collect(ib, NNB, ac_s, ac_r, aq,       &
+            a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot,  &
+            aq_i, aq_e, ac_s_i, ac_s_e, ac_r_i, ac_r_e)
+        ENDIF
+        ENDDO
+      END SUBROUTINE bps_acoeff_ei_mass
+\end{verbatim}
+%%
+
+
+\subsection{The Regular Contribution: a\_reg\_mass}
+
+
+The long-distance regular contribution can be expressed as
+%%
+\begin{eqnarray}
+  {\cal A}^\smLT_{ab,\smR} 
+  &=&
+  \frac{e_a^2}{4\pi}
+  \frac{i}{2\pi} \int_{-1}^1 du\,u\,
+  \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\,
+  F(v_a u) \ln \left\{ \frac{F(v_a u)}{K^2} \right\}
+\\[5pt]
+  &=&
+  \frac{e_a^2}{4\pi}
+  \frac{i}{2\pi} \int_0^1 du\,u\,
+  \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\!
+  \left[
+  F(v_a u) \ln \left\{ \frac{F(v_a u)}{K^2} \right\}
+  -
+  F^*(v_a u) \ln \left\{ \frac{F^*(v_a u)}{K^2} \right\}
+  \right]
+\\[5pt]
+  &=&
+  -\frac{e_a^2}{4\pi}
+  \frac{1}{2\pi} \int_0^1 du\,u\,
+  \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\, H(v_a u) \ ,
+\end{eqnarray}
+%%
+where we have defined
+%%
+\begin{eqnarray}
+  H(v) 
+  &\equiv&
+  -i\left[
+  F(v) \ln\!\left\{ \frac{F(v)}{K^2}\right\} -
+  F^*(v)\ln\!\left\{\frac{F^*(v)}{K^2} \right\}\right]
+  =
+  2\left[
+  F_\smRe\, {\rm arg}\{F\}
+  +
+  F_{\smIm} \ln\!\left\{\frac{\vert F \vert}{K^2}\right\}
+   \right] \ .
+\nonumber\\
+\label{Hbagain}
+\end{eqnarray}
+%%
+We shall factor out a dimensionfull wavenumber $K$ and define
+dimensionless quantities $\mathbb{F}(v)$ and $\mathbb{H}(v)$
+through
+%%
+\begin{eqnarray}
+  F(v) &=& K^2\,  \mathbb{F}(v) 
+  ~~~\text{and}~~~
+  H(v) = K^2\,  \mathbb{H}(v) \ .
+\end{eqnarray}
+%%
+Defining the parameters
+%%
+\begin{eqnarray}
+  a_c
+  &\equiv&
+  \left(\frac{\beta_c m_c}{2} \right)^{1/2}
+\\[5pt]
+  \bar\kappa_c^2 
+  &\equiv &
+  \frac{\kappa_c^2}{K^2} 
+\end{eqnarray}
+%%
+gives the real and imaginary parts of $\mathbb{F}$, 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(\{a_c v\},\{\bar\kappa_c\}) &=& 
+  {\sum}_c \bar\kappa_c^2 \Big(1 - 2 a_c\, v\,{\rm daw}\{a_c\, v\}\Big)
+\label{defFreA}
+\\[5pt]
+  \mathbb{F}_\smIm(\{a_c v\},\{\bar\kappa_c\}) &=& 
+  \sqrt{\pi}\,{\sum}_c \bar\kappa_c^2\,a_c v\, e^{-a_c^2\, v^2} \ .
+\label{defFimA}
+\end{eqnarray}
+%%
+The ratio of weighting factors can be written in terms of a function
+$\mathbb{R}_{ab}$ defined by
+
+%%
+\begin{eqnarray}
+  \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)} \cdot H(v_a u)
+  &=&
+  K^2\,\frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)} \cdot
+  \mathbb{H}(v_a u)
+\\[5pt]
+  &=&
+  K^2 \frac{
+  \kappa_b^2 \left(\beta_b m_b/2\pi\right)^{1/2} \,v_a u\,
+  e^{-\frac{1}{2}\,\beta_b m_b v_a^2\, u^2}}
+  {{\sum}_c\kappa_c^2 \left(\beta_c m_c/2\pi\right)^{1/2} 
+  \, v_a u\,  e^{-\frac{1}{2}\,\beta_c m_c v_a^2\, u^2}}
+  \cdot \mathbb{H}(v_a u)
+\\[5pt]
+  &=&
+  \kappa_b^2 \cdot 
+  \underbrace{~
+  \left[{\sum}_c \, \frac{\kappa_c^2}{K^2} 
+  \left(\frac{\beta_c m_c}{\beta_b m_b}\right)^{1/2} 
+  e^{\frac{1}{2}\,(\beta_b m_b-\beta_c m_c) v_a^2\, u^2}
+  \right]^{-1}}_{\mathbb{R}_{ab}(v_a u)} \cdot \,
+  \mathbb{H}(v_a u) 
+\\[5pt]
+  &=&
+  \kappa_b^2 \, \mathbb{R}_{ab}(v_a u) \, \mathbb{H}(v_a u) \ .
+\end{eqnarray}
+%%
+We can now express the regular piece as
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{ab,\smR}
+  &=& 
+  \underbrace{
+  \left[
+  \frac{e_a^2\, \kappa_b^2}{4\pi}\,
+  \right] 
+  }_{c_{ab,1}}
+  \cdot \,
+  {\sf A}_{ab\,\smR}(v_a,\{a_c\},\{\bar\kappa_c\})
+\\
+  {\sf A}_{ab\,\smR}(v_a,\{a_c\},\{\bar\kappa_c\})
+  &=&
+  -\int_0^1 du\, u\,
+  \underbrace{
+  \mathbb{R}_{ab}(\{a_c v_a u\})\,
+  \mathbb{H}(\{a_c\,v_a u\},\{\bar\kappa_c\})  
+  }_{\rm dab\_reg}
+  \ .
+\end{eqnarray}
+%%
+
+\vskip0.4cm
+\noindent
+acoeff.f90: dab\_reg
+{
+\baselineskip 10pt
+\begin{verbatim}
+      FUNCTION dab_reg(u, vp, ib, nni, k2, kb2, betab, mb)
+      USE mathvars
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u      ! [dimensionless]
+        REAL,                        INTENT(IN)  :: vp     ! Projectile velocity [cm/s]
+        INTEGER,                     INTENT(IN)  :: ib     ! Species number
+        INTEGER,                     INTENT(IN)  :: nni    ! Number of ion species
+        REAL,                        INTENT(IN)  :: k2     ! Wave-number squared [1/cm^2]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: kb2    ! Debye wavenumber squared [1/cm^2]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  ! Temperature array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     ! Mass array [keV]
+        REAL                                     :: dab_reg! [dimensionless]
+        REAL,    DIMENSION(1:nni+1) :: alfb, ab
+        REAL                        :: fr, fi, fabs, farg, h, uvp
+        REAL                        :: kcb, r_ib, bm_ic, bm_ib, a_ic, a_ib, ex, au
+        INTEGER                     :: ic
+        ab=SQRT(0.5*betab*mb)*vp/CC
+        alfb=kb2/k2
+        uvp=u*vp
+        CALL frfi(u,nni,alfb,ab,fr,fi,fabs,farg)
+        h=2*(fr*farg + fi*LOG(fabs))*u
+!
+! construct spectral weight ratio Rb=rho_b/rho_tot
+!
+        r_ib=0
+        bm_ib=betab(ib)*mb(ib)
+        a_ib =ab(ib)*ab(ib)
+        DO ic=1,nni+1
+           kcb=kb2(ic)/k2
+           bm_ic=betab(ic)*mb(ic)
+           a_ic =ab(ic)*ab(ic)
+           IF (ic == ib) THEN
+              ex=1.
+           ELSE
+              au=(a_ic-a_ib)*u
+              ex=EXP(-au)
+           ENDIF
+           r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
+        ENDDO      
+        r_ib=1./r_ib
+        dab_reg=-r_ib*h/TWOPI
+      END FUNCTION dab_reg
+\end{verbatim}
+}
+
+\noindent
+The numerical integration is performed by Gaussian quadrature:
+\vskip0.4cm
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      SUBROUTINE a_reg_mass(ib, nni, vp, k2, kb2, betab, mb, ac_r)
+        IMPLICIT NONE
+        INTEGER,                     INTENT(IN)  :: ib
+        INTEGER,                     INTENT(IN)  :: nni 
+        REAL,                        INTENT(IN)  :: vp
+        REAL,                        INTENT(IN)  :: k2
+        REAL,                        INTENT(IN)  :: kb2
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb
+        REAL,                        INTENT(OUT) :: ac_r
+        INTEGER, PARAMETER :: NR=10 ! integration regions: must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        REAL               :: u0, u1, du, u, um, dab_reg
+        INTEGER            :: iu
+        ac_r=0
+        u0=0.
+        u1=1.
+        du=(u1-u0)/NR
+        u=u0-du
+        DO iu=1,NR,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           ac_r=ac_r+W2*dab_reg(u,vp,ib,nni,k2,kb2,betab,mb)
+           um=u-du*UPM
+           ac_r=ac_r+W13*dab_reg(um,vp,ib,nni,k2,kb2,betab,mb)
+           um=u+du*UPM
+           ac_r=ac_r+W13*dab_reg(um,vp,ib,nni,k2,kb2,betab,mb)
+        ENDDO
+        ac_r=ac_r*du
+      END SUBROUTINE a_reg_mass
+\end{verbatim}
+}
+
+
+
+\subsection{The Singular Contribution: a\_sing}
+
+The singular contribution,
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smS} 
+  &=& 
+  \left[
+  \frac{e_p^2\, \kappa_b^2}{4\pi}
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p
+  \right]
+  \int_0^1 du\, u^{1/2} e^{-\frac{1}{2}\, \beta_b m_b v_p^2 \,u}
+  \left[-\ln\!\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\,\frac{u}{1-u} \right\} 
+  -2\gamma + 2
+  \right] ,
+\nonumber\\
+\end{eqnarray}
+%%
+is quite easy to code. The integral can be broke into the pieces
+%%
+\begin{eqnarray}
+  \int_0^1 du\, u^{1/2} e^{-\frac{1}{2}\, \beta_b m_b v_p^2 \,u}
+  \Bigg[\ln\!\left\{\frac{u}{1-u} \right\} 
+  -\ln\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\right\} 
+  -2\gamma + 2 \Bigg] \ ,
+\end{eqnarray}
+%%
+which motivates the definition
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smS} 
+  &=& 
+  c_{b, 1}\, c_{b, 2} 
+  \cdot 
+  {\sf A}_\smS(a_{pb},b_{pb})
+\\
+  {\sf A}_\smS(a,b)
+  &=&
+  \int_0^1 du\, u^{1/2} e^{-a \,u}
+  \left[-\ln\!\left\{\frac{u}{1-u} \right\} + b \right]
+\\
+  a_{pb} &=& \frac{1}{2}\, \beta_b m_b v_p^2
+  \hskip1cm 
+  \text{and}
+  \hskip1cm 
+  b_{pb} =
+  -\ln\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\right\} -2\gamma + 2 
+\\
+  c_{b, 1} &=& \frac{e_p^2\, \kappa_b^2}{4\pi}
+  ~~~~
+  c_{b, 2} =
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! v_p  \ .
+\end{eqnarray}
+%%
+The term involving $b$ can be integrated exactly, but we will use
+Gaussian quadrature for both pieces. 
+
+\vskip0.5cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+    FUNCTION dab_sing(u, a, b)
+      IMPLICIT NONE  ! a=(1/2)*beta*mpc2*vp^2/C^2
+      REAL,        INTENT(IN)  :: u ! [dimensionless]
+      REAL,        INTENT(IN)  :: a ! [dimensionless] 
+      REAL,        INTENT(IN)  :: b ! [dimensionless]
+      REAL                     :: dab_sing ! [dimensionless]
+      dab_sing=SQRT(u)*EXP(-a*u)*(-LOG(u/(1-u)) + b)
+    END FUNCTION dab_sing
+\end{verbatim}
+}
+
+\noindent
+The numerical integration is performed by Gaussian quadrature:
+\vskip0.4cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      SUBROUTINE a_sing(a, b, ac_s)
+        REAL,    INTENT(IN)  :: a
+        REAL,    INTENT(IN)  :: b
+        REAL,    INTENT(OUT) :: ac_s
+        REAL                 :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NS=1000            ! integration regions singular: must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+           ac_s=0
+           u0=0
+           u1=1
+           du=(u1-u0)/NS
+           u=u0-du
+           DO iu=1,NS,2 ! Gaussian quadrature
+              u=u+2.E0*du
+              ac_s=ac_s+W2*dab_sing(u,a,b)
+              um=u-du*UPM
+              ac_s=ac_s+W13*dab_sing(um,a,b)
+              um=u+du*UPM
+              ac_s=ac_s+W13*dab_sing(um,a,b)
+           ENDDO
+           ac_s=ac_s*du
+      END SUBROUTINE a_sing
+\end{verbatim}
+}
+
+
+\subsection{The Quantum Correction: a\_quantum}
+
+For the quantum term we make the change of variables
+$v_{pb}= v_p\,u$ so that
+%%
+\begin{eqnarray}
+  {\cal A}^\smQM_b
+  &\!=\!&  
+  -\frac{e_p^2\, \kappa_b^2}{4\pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \int_0^\infty du\, 
+  \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\bar\eta_{pb}}{u}
+  \right\}
+  - \ln\!\left\{\frac{\bar\eta_{pb}}{u} \right\} \Big] 
+  \frac{1}{\beta_b m_b v_p^2\,u}
+\nonumber
+\\ &&
+  \Bigg[ e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u-1)^2} 
+  \left(1 - \frac{1}{\beta_b m_b v_p^2\, u}\right) +
+  e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u+1)^2}  
+  \left(1 + \frac{1}{\beta_b m_b v_p^2\, u}\right)
+  \Bigg] \ .
+\end{eqnarray}
+%%
+The quantum function we need to code is therefore
+%%
+\begin{eqnarray}
+  {\cal A}^\smQM_b
+  &\!=\!&  
+  \underbrace{
+  \left[\frac{e_p^2\, \kappa_b^2}{4\pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \right] 
+  }_{c_{b, 1} \cdot c_{b, 2}}
+  \cdot \,
+  {\sf A}_1^\smQM(a_{pb}, \tilde\eta_{pb}) \ ,
+\label{qmA}
+\end{eqnarray}
+%%
+where the arguments of the function are defined by 
+%%
+\begin{eqnarray}
+  a_{pb} 
+  &=& 
+  \frac{1}{2}\,\beta_b m_b\, v_p^2
+\\
+  \tilde\eta_{pb}
+  &=& 
+  \frac{e_p e_b}{4 \pi \hbar v_p}
+  =
+  \vert Z_p Z_b\vert\,\frac{e^2}{8 \pi a_0}\,\frac{2 a_0}{\hbar}\,
+  \frac{1}{v_p}
+  =
+  \vert Z_p Z_b\vert\ \cdot 13.606\,{\rm eV}\,\cdot
+  \frac{2 \cdot 5.29 \times 10^{-9}\,{\rm cm}}{6.5821 \times
+  10^{-16}\,{\rm eV\,s}}\,
+  \frac{1}{v_p}
+\nonumber
+\\
+  &=&
+  2.1870 \times 10^8 \, \frac{\vert Z_p Z_b\vert}{v_p
+  \cdot ({\rm cm/s})^{-1}} \ ,
+\end{eqnarray}
+%%
+and the function itself takes the form
+%%
+\begin{eqnarray}
+  {\sf A}_1^\smQM(a,\eta)
+  &\!=\!&  
+  -\int_0^\infty \! du\, 
+  \left[{\rm Re}\,\psi\! \left\{1 + i\, \frac{\eta}{u} \right\} - 
+  \ln\left\{ \frac{\eta}{u}  \right\} \right]
+\nonumber
+\\ && 
+  \frac{1}{2 a\,u}\left[\left(e^{-a(u-1)^2} + e^{-a(u+1)^2} \right) 
+  - \frac{e^{-a(u-1)^2} - e^{-a(u+1)^2} } {2 a\, u}\right] \ .
+\label{qmAB}
+\end{eqnarray}
+
+
+\vskip1cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      FUNCTION daq(u, a, eta)
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL                                     :: daq  ! [dimensionless]
+        REAL, PARAMETER :: AMAX=25.
+        REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh
+        eu=eta/u 
+        psilog=repsi(eu) - LOG(eu)
+        au =2*a*u
+        au2=a*u*u
+        IF (a <= AMAX) THEN      
+          ch =EXP(-au2)*COSH(au)
+          sh =EXP(-au2)*SINH(au)
+        ELSE
+          ap = au-au2-a
+          am =-au-au2-a
+          ch =0.5*(EXP(ap)+EXP(am))
+          sh =0.5*(EXP(ap)-EXP(am))
+        ENDIF
+        daq=-psilog*2*(ch - sh/au)/au
+      END FUNCTION daq
+
+
+      SUBROUTINE a_quantum(ib, a, eta, aq)
+        IMPLICIT NONE
+        INTEGER, INTENT(IN)  :: ib    ! species index
+        REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
+        REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
+        REAL,    INTENT(OUT) :: aq 
+        REAL               :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        REAL    :: daq
+        INTEGER :: iu
+        aq=0
+        u0=0.
+        aq=0
+        IF (ib == 1) THEN
+           u0=0
+           u1=4./SQRT(a)
+        ELSE
+           u0=1-10./SQRT(a)
+           u0=MAX(0.,u0)  
+           u1=1+10./SQRT(a)
+        ENDIF
+        du=(u1-u0)/NQ
+        u=u0-du
+        DO iu=1,NQ,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           aq=aq+W2*daq(u,a,eta)
+           um=u-du*UPM
+           aq=aq+W13*daq(um,a,eta)
+           um=u+du*UPM
+           aq=aq+W13*daq(um,a,eta)
+        ENDDO
+        aq=aq*du
+      END SUBROUTINE a_quantum
+\end{verbatim}
+}
+
+
+
+
+
+
+\pagebreak
+\appendix
+
+
+
+\section{Calculating the Real and Imaginary Parts of F}
+\label{app:FrFi}
+
+We can write the dielectric function (\ref{Fdef}) as a sum over plasma
+components,
+%%
+\begin{eqnarray}
+  F(v)={\sum}_b F_b(v) \ ,
+\end{eqnarray}
+%%
+where we express the contribution from plasma species $b$ as
+%%
+\begin{eqnarray}
+  F_b(v) 
+  &=& 
+\label{Fbdef}
+  -\int_{-\infty}^\infty du\, \frac{\rho_b(v)}{v - u + i\eta}
+\\[5pt]
+  \rho_b(v) 
+  &=& 
+  \kappa_b^2\,\sqrt{\frac{\beta_b m_b}{2\pi}}\, v\,
+  \exp\!\left\{-\frac{1}{2}\,\beta_b m_b\, v^2\right\} \ .
+\label{barrhob}
+\end{eqnarray} 
+%%
+We will often decompose $F$ into its contribution from
+electrons and ions and write
+%%
+\begin{eqnarray}
+ F(v)=F_e(v) + F_\smI(v) \ .
+\end{eqnarray}
+%%
+Note the reflection property
+%%
+\begin{eqnarray}
+  F_b(-v) 
+  &=& 
+  F_b^*(v) \ ,
+\label{Fbreflect}
+\end{eqnarray}
+%%
+which means that the real part of $F_b(v)$ is even in $v$ and the
+imaginary part is odd. For numerical work it is best to use the
+explicit real and imaginary parts of $F$, which can be written
+%%
+\begin{eqnarray}
+  F_\smRe(v)
+  &=& 
+  \sum_b \kappa_b^2 
+  \left[1 - 2 \sqrt{\frac{\beta_b m_b}{2}} ~v~
+  {\rm daw}\left\{\sqrt{\frac{\beta_b m_b}{2}}\,v 
+  \right\} \right]
+\label{Fru}
+\\[5pt]
+  F_\smIm(v)
+  &=&
+  \sqrt{\pi} \sum_b \kappa_b^2 
+  \sqrt{\frac{\beta_b m_b}{2}}~~
+  v\, \exp\left\{-\frac{\beta_b m_b}
+  {2}\, v^2\right\} = \pi  \rho_{\rm tot}(v)  \ ,
+\label{Fiu}
+\end{eqnarray}
+%% 
+where the Dawson integral is defined by 
+%%
+  \begin{eqnarray}
+  {\rm daw}(x) = \int_0^x dy\, 
+  e^{y^2 - x^2} = \frac{\sqrt{\pi}}{2}\, e^{-x^2}
+  {\rm erfi}(x) \ .
+  \end{eqnarray}
+%% 
+The limits of small and large arguments of the Dawson function
+are
+%%
+\begin{eqnarray}
+  {\rm daw}(x) 
+  &=& 
+  x +\frac{2 x^3}{3} + \frac{4 x^5}{15} + {\cal O}(x^7) 
+\label{dawA}
+\\[5pt]
+  {\rm daw}(x)
+  &=&
+  \frac{1}{2x} +\frac{1}{4 x^3} + \frac{3}{8x^5} + {\cal O}(x^{-7}) \ .
+\label{dawB}
+\end{eqnarray}
+%%
+
+The functions $F_b(v)$ have units of wave-number-squared 
+[$1/L^2$] and their argument $v$ has units of velocity.
+We can express the functions $F_b(v)$ in terms of a single
+dimensionless function $\mathbb F(x)$ as follows:
+%%
+\begin{eqnarray}
+  F_b(v) 
+  &=& 
+  \kappa_b^2 \,\mathbb{F}\left(
+  \sqrt{\frac{\beta_b m_b}{2}}\, v ~ \right)
+\label{FbFbb}
+\end{eqnarray}
+%%
+with
+%%
+\begin{eqnarray}
+  \mathbb{F}(x) 
+  &=& 
+  \int_{-\infty}^\infty dy\, \frac{\bar\rho(y)}{y - x - i \eta} 
+\\[5pt]
+  \bar\rho(y)&=& \frac{1}{\sqrt{\pi}}\,y\,e^{-y^2}  \ .
+\end{eqnarray}
+%%
+Relation (\ref{FbFbb}) holds because $\rho_b(u) = \kappa_b^2\,\bar
+\rho(y)$ for $u=(2/\beta_b m_b)^{1/2}\, y$.  The reflection property
+(\ref{Fbreflect}) becomes
+%%
+\begin{eqnarray}
+  \mathbb{F}(-x) = \mathbb{F}^*(x) \  ,
+\label{Freflect}
+\end{eqnarray}
+%%
+which means that the real part is even in $x$ and the imaginary
+part is odd,
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(-x) &=& \phantom{-}\mathbb{F}_\smRe(x)
+\\[5pt]
+  \mathbb{F}_\smIm(-x) &=& -\mathbb{F}_\smIm(x) \ .
+\end{eqnarray}
+%%
+As with expressions (\ref{Fru}) and (\ref{Fiu}), the real and
+imaginary parts can be written
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x)
+  &=& 
+  1 - 2 x\,  {\rm daw}\left(x  \right) 
+\label{FbarRe}
+\\[5pt]
+  \mathbb{F}_\smIm(x)
+  &=&
+  \pi\,  \bar\rho(x)  
+  =
+  \sqrt{\pi}\, x\, e^{-x^2}\ .
+\label{FbarIm}
+\end{eqnarray}
+%% 
+
+
+
+Let us now establish the forms (\ref{Fru}) and (\ref{Fiu}) for the real
+and imaginary parts of $F(v)$.  
+Staring with
+%%
+\begin{eqnarray}
+  \frac{1}{y - x - i \eta} 
+  =
+  {\sf P}\frac{1}{y-x} + i \pi\,\delta(y-x) \ ,
+\end{eqnarray}
+%%
+the imaginary part becomes 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smIm(x) 
+  &=& 
+  \int_{-\infty}^\infty dy\, 
+  {\rm Im}\,\frac{\bar\rho(y)}{y - x - i \eta} 
+  =
+  \int_{-\infty}^\infty dy\, \bar\rho(y) \,
+  \pi \delta(y-x)
+  =
+  \pi \bar\rho(x) \ .
+\end{eqnarray}
+%%
+The real part of the function must be evaluated by a principal part
+integral,
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x) 
+  &=& 
+  {\sf P}\int_{-\infty}^\infty dy\, \frac{\bar\rho(y)}{y - x}  \ .
+\end{eqnarray}
+%%
+Let us add and subtract unity in the form
+%%
+\begin{eqnarray}
+  \int_{-\infty}^\infty \frac{dy}{y}\, \bar\rho(y) = 1 \ ,
+\end{eqnarray}
+%%
+so that
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x) 
+  &=& 
+  1 +
+  {\sf P}\int_{-\infty}^\infty dy\, 
+  \left[\frac{\bar\rho(y)}{y - x} - \frac{\bar\rho(y)}{y}\right] 
+\\[5pt]
+  &=& 
+  1 +
+  {\sf P}\int_{-\infty}^\infty dy\, \frac{x}{y(y - x)}\, \bar\rho(y)
+\\[5pt]
+  &=& 
+  1 +
+  \frac{x}{\sqrt{\pi}}\,
+  {\sf P}\int_{-\infty}^\infty dy\, \frac{e^{-y^2}}{y - x} \ .
+\end{eqnarray}
+%%
+Making the change of variables $y^\prime=y-x$ (and dropping the prime)
+we can write 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x) 
+  &=& 
+  1 +
+  \frac{x}{\sqrt{\pi}}\,
+  {\sf P}\int_{-\infty}^\infty \frac{dy}{y}\, e^{-(y+x)^2} 
+\\[5pt]
+  &=&
+  1 +
+  \frac{x\,e^{-x^2}}{\sqrt{\pi}}\,
+  {\sf P}\int_{-\infty}^\infty \frac{dy}{y}\, e^{-y^2 - 2 x y} 
+\\[5pt]
+  &=&
+  1 +
+  \frac{x\,e^{-x^2}}{\sqrt{\pi}}\lim_{\epsilon\to0^+}\left[
+  \int_{-\infty}^{-\epsilon} \frac{dy}{y}\, e^{-y^2 - 2 x y} 
+  +
+  \int_\epsilon^\infty \frac{dy}{y}\, e^{-y^2 - 2 x y} 
+  \right] \ .
+\end{eqnarray}
+%%
+In the last expression we have used the definition of the principal
+part integration.  Making a change of variables $y^\prime=-y$ in the
+first integral in square brackets gives (and again dropping the prime)
+%%
+\begin{eqnarray}
+  \int_{-\infty}^{-\epsilon} \frac{dy}{y}\, e^{-y^2 - 2 x y} 
+  =
+  -\int_\epsilon^\infty \frac{dy}{y}\, e^{-y^2 + 2 x y} \ ,
+\end{eqnarray}
+%%
+and this allows us to write 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x) 
+  &=&
+  1 -
+  \frac{x\,e^{-x^2}}{\sqrt{\pi}}\lim_{\epsilon\to0^+}
+  \int_\epsilon^\infty \frac{dy}{y}\, e^{-y^2}\Big[
+  e^{2 x y}  - e^{- 2 x y} 
+  \Big] \ .
+\end{eqnarray}
+%%
+The term in square braces is just $2\sinh(2xy)$, which renders
+the factor $1/y$ harmless when the limit $\epsilon \to 0^+$ is
+taken, 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(x) 
+  &=&
+  1 -
+  \frac{2x\,e^{-x^2}}{\sqrt{\pi}}  \int_0^\infty dy\, 
+  e^{-y^2}\,   \frac{\sinh 2 x y }{y} 
+  =
+  1 - 2 x\, {\rm daw}(x) \ .
+\end{eqnarray}
+%%
+The latter form hold because this is just another integral
+representation of the Dawson function,
+%%
+\begin{eqnarray}
+  {\rm daw}(x)
+  &=&
+  \frac{e^{-x^2}}{\sqrt{\pi}}  \int_0^\infty dy\, 
+  e^{-y^2}\,   \frac{\sinh 2 x y }{y} \ .
+\end{eqnarray}
+%%
+Compare this with
+%%
+\begin{eqnarray}
+  {\rm daw}(x)
+  &=&
+  e^{-x^2} \! \int_0^x dy\,   e^{y^2} \ .
+\end{eqnarray}
+%%
+
+%\pagebreak
+%\appendix
+%\section{Coding the A-coefficients}
+
+
+
+%\bibitem{ref1}
+%  R.J. Goldston and P.H. Rutherford, 
+%  {\em Introduction to Plasma Physics},
+%  IOP Publishing Ltd., Bristol UK, 2000.
+%\end{thebibliography}
+
+\end{document}
+  
+
+

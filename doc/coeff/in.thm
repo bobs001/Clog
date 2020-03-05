@@ -1,0 +1,10 @@
+%
+\begin{theorem}
+\theoremskip
+  ***
+\label{thm:name}
+\end{theorem}
+%
+%\vskip-0.3cm 
+%\PROOF.  
+

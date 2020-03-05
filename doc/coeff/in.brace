@@ -1,0 +1,13 @@
+%
+\begin{eqnarray}
+  \kappa(x)
+  =
+  \left\{
+  \begin{array}{ll}
+   \kappa_1 & ; x < d
+   \\
+   \kappa_2 & ; x > d
+  \end{array}
+  \right.
+ \end{eqnarray}
+%
