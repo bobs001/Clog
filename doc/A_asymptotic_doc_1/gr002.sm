@@ -8,6 +8,7 @@ acoeff
 
     set y0=0.
     set y1=0.06
+    set y1=0.15
 
     location 5000 29000 5000 22000
     expand 1.3 lweight 2 ltype 0 ctype black ptype 4 3
@@ -35,18 +36,20 @@ acoeff
 #
     set dx=0.04
     set dy=-0.0003
-    set x1=1.00 set y1=0.05
-    set x2=1.50 set y2=0.05
+    set x1=1.00 
+    set x2=1.50 
+    set y1=0.1
+    set y2=0.1
     relocate $(x1) $(y1)  ltype 0 ctype red draw $(x2) $(y2)
     relocate $(x2+dx) $(y2+dy)  ctype black label "A_{tot} "
 
-    set y1=0.044
-    set y2=0.044
+    set y1=0.088
+    set y2=0.088
     relocate $(x1) $(y1)  ltype 0 ctype blue draw $(x2) $(y2)
     relocate $(x2+dx) $(y2+dy)  ctype black label "A_e"
 
-    set y1=0.038
-    set y2=0.038
+    set y1=0.076
+    set y2=0.076
     relocate $(x1) $(y1)  ltype 0 ctype green draw $(x2) $(y2)
     relocate $(x2+dx) $(y2+dy)  ctype black label "A_I"
 

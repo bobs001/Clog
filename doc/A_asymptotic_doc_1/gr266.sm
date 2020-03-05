@@ -31,7 +31,7 @@ acoeff
 
     set Lmin=22
     set Lmax=4022
-    data gr203.highE.dat
+    data gr003.highE.dat
     lines $(Lmin) $(Lmax)  read{Exp 2  Aehigh 4}
     set nn = 1000.
     set Exp = Exp/nn
