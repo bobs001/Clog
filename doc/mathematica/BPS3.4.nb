@@ -1,0 +1,1959 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 6.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     58904,       1950]
+NotebookOptionsPosition[     52338,       1755]
+NotebookOutlinePosition[     52784,       1773]
+CellTagsIndexPosition[     52741,       1770]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"<<", "StoppingPower3.4.m"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Get", "::", "\<\"noopen\"\>"}], 
+  RowBox[{
+  ":", " "}], "\<\"\\!\\(\\*StyleBox[\\\"\\\\\\\"Cannot open \\\\\\\"\\\", \\\
+\"MT\\\"]\\)\[NoBreak]\\!\\(\\*StyleBox[\\!\\(\\\"StoppingPower3.4.m\\\"\\), \
+\\\"MT\\\"]\\)\[NoBreak]\\!\\(\\*StyleBox[\\\"\\\\\\\".\\\\\\\"\\\", \\\"MT\\\
+\"]\\) \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/noopen\\\", ButtonNote -> \
+\\\"Get::noopen\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.395769310638788*^9, 3.479146946529917*^9}],
+
+Cell[BoxData["$Failed"], "Output",
+ CellChangeTimes->{3.395769310775507*^9, 3.479146946541642*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "Section",
+ FontSize->24],
+
+Cell[CellGroupData[{
+
+Cell["define parameters ", "Subsection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nrho", "=", "6500"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"g", "/", 
+     RowBox[{"cm", "^", "3"}]}], " ", ";", " ", 
+    RowBox[{
+     RowBox[{"A", "*", "Ng"}], " ", "=", " ", 
+     RowBox[{"1", " ", "g"}]}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nrho", "*", 
+   RowBox[{"(", 
+    RowBox[{"2", "/", "5.01"}], ")"}], "*", 
+   RowBox[{"(", 
+    RowBox[{"6.02", "*", 
+     RowBox[{"10", "^", "23"}]}], ")"}]}], "            ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"electron", " ", "number", " ", "density", " ", "in", " ", 
+    RowBox[{"1", "/", 
+     RowBox[{"cm", "^", "3"}]}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData["6500"], "Output"],
+
+Cell[BoxData["1.5620758483033932`*^27"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"id", "=", "\"\<\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Ti", "=", " ", "0.5"}], "    ", 
+   RowBox[{"(*", " ", "keV", " ", "*)"}], ";"}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Te", "=", "Ti"}], "    ", 
+  RowBox[{"(*", " ", "keV", " ", "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ne", "=", "1.25"}], "        ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"cm", "^", 
+    RowBox[{"-", "3"}]}], " ", "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"nn", "=", "25"}], "      ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"ne", "*", 
+     RowBox[{"10", "^", "nn"}], " ", 
+     RowBox[{"cm", "^", 
+      RowBox[{"-", "3"}]}]}], " ", "*)"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Zp", "=", "1"}], "                       ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "Charge", " ", "of", " ", "probe", " ", "in", " ", "units", " ", "of"}], 
+    "|", "e", "|"}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"mp", "=", "mpev"}], "          ", 
+   RowBox[{"(*", 
+    RowBox[{"mass", " ", "of", " ", "projectile", " ", "in", " ", "eV"}], 
+    "*)"}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Zb", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"-", "1"}], ",", "1", ",", "1"}], "}"}]}], 
+  "                                                              ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "charge", " ", "of", " ", "plasma", " ", "species", " ", "in", " ", 
+     "units", " ", "of"}], "|", "e", "|"}], "*)"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"mb", "=", 
+   RowBox[{"{", 
+    RowBox[{"meev", ",", 
+     RowBox[{"2", "*", "mpev"}], ",", 
+     RowBox[{"3", "*", "mpev"}]}], "}"}]}], "                              ", 
+  
+  RowBox[{"(*", 
+   RowBox[{"mass", " ", "of", " ", "plasma", " ", "in", " ", "ev"}], "*)"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nb", "=", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"10", "^", "nn"}], ",", 
+      RowBox[{"0.5", "*", 
+       RowBox[{"10", "^", "nn"}]}], ",", 
+      RowBox[{"0.5", "*", 
+       RowBox[{"10", "^", "nn"}]}]}], "}"}], "*", "ne"}]}], "    ", 
+  RowBox[{"(*", 
+   RowBox[{"density", "/", 
+    RowBox[{"cm", "^", "3"}]}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"T", "=", 
+    RowBox[{"{", 
+     RowBox[{"Te", ",", "Ti", ",", "Ti"}], "}"}]}], ";"}], 
+  "                                                         ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"temperature", " ", "array"}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Beta]", "=", 
+   RowBox[{
+    RowBox[{"1", "/", 
+     RowBox[{"(", 
+      RowBox[{"T", "*", 
+       RowBox[{"10", "^", "3"}]}], ")"}]}], "//", "N"}]}], "    ", 
+  RowBox[{"(*", 
+   RowBox[{"inverse", " ", "temp", " ", "in", " ", 
+    RowBox[{"eV", "^", 
+     RowBox[{"-", "1"}]}]}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"r", "=", "3"}], "                                      ", 
+  RowBox[{"(*", 
+   RowBox[{"vth", "=", 
+    RowBox[{"c", "*", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"r", "/", 
+       RowBox[{"(", 
+        RowBox[{"\[Beta]", "*", "mi"}], ")"}]}], "]"}], " ", "is", " ", 
+     "thermal", " ", 
+     RowBox[{"velocity", ":", 
+      RowBox[{"units", " ", "in", " ", 
+       RowBox[{"cm", "/", "s"}]}]}]}]}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"i", "=", "1"}], "                                      ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"thermal", " ", "velocity", " ", "of", " ", "i"}], "-", 
+    RowBox[{"th", " ", "plasma", " ", "species"}]}], "*)"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"mtr", "=", 
+   RowBox[{"10", "^", 
+    RowBox[{"(", 
+     RowBox[{"-", "6"}], ")"}]}]}], "                  ", 
+  RowBox[{"(*", 
+   RowBox[{"distance", " ", "unit", " ", "in", " ", "meters"}], "*)"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ev", "=", 
+   RowBox[{"10", "^", "6"}]}], "                           ", 
+  RowBox[{"(*", 
+   RowBox[{"energy", " ", "unit", " ", "in", " ", "eV"}], "*)"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"convfact", "=", 
+   RowBox[{"cmtoa0", "*", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"mtr", "*", "100"}], ")"}], "/", "ev"}]}]}], "   ", 
+  RowBox[{"(*", 
+   RowBox[{"atomic", " ", "units", " ", "to", " ", 
+    RowBox[{"MeV", "/", "\[Mu]m"}]}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nb", "=", 
+   RowBox[{"nb", "/", 
+    RowBox[{"cmtoa0", "^", "3"}]}]}], "         ", 
+  RowBox[{"(*", 
+   RowBox[{"number", " ", "of", " ", "plasma", " ", 
+    RowBox[{"species", ":", 
+     RowBox[{"units", " ", "of", " ", 
+      RowBox[{"a0", "^", 
+       RowBox[{"-", "3"}]}]}]}]}], "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Plus", "@@", 
+   RowBox[{"(", 
+    RowBox[{"Zb", "*", "nb"}], ")"}]}], "              ", 
+  RowBox[{"(*", 
+   RowBox[{"total", " ", 
+    RowBox[{"charge", ":", 
+     RowBox[{"should", " ", "vanish"}]}]}], "*)"}]}], "\n"}], "Input",
+ FontSize->16],
+
+Cell[BoxData["0.`"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"param", "[", 
+   RowBox[{
+   "\[Beta]", ",", "Zp", ",", "mp", ",", "mb", ",", "Zb", ",", "nb", ",", "r",
+     ",", "i", ",", "1"}], "]"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"set", " ", "parameters", " ", "for", " ", "BPS"}], " ", 
+   "*)"}]}]], "Input",
+ FontSize->16],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"gD=\"\>", "\[InvisibleSpace]", "0.08677349505849456`"}],
+  SequenceForm["gD=", 0.08677349505849456],
+  Editable->False]], "Print"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"gpb=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "0.06135812678311888`", ",", "0.04338674752924728`", ",", 
+     "0.04338674752924728`"}], "}"}]}],
+  SequenceForm[
+  "gpb=", {0.06135812678311888, 0.04338674752924728, 0.04338674752924728}],
+  Editable->False]], "Print"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"etb*Sqrt[mb0]=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "0.13484637197776733`", ",", "8.171629326052988`", ",", 
+     "10.008161107996504`"}], "}"}]}],
+  SequenceForm[
+  "etb*Sqrt[mb0]=", {0.13484637197776733`, 8.171629326052988, 
+   10.008161107996504`}],
+  Editable->False]], "Print"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"paramLP", "[", 
+   RowBox[{
+   "\[Beta]", ",", "Zp", ",", "mp", ",", "mb", ",", "Zb", ",", "nb", ",", "r",
+     ",", "i", ",", "1", ",", "1"}], "]"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"set", " ", "parameters", " ", "for", " ", "LP"}], " ", 
+   "*)"}]}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"vth", "=", 
+  "StoppingPower`PrivateBPS`vth"}], "\[IndentingNewLine]", 
+ RowBox[{"vthc", "=", "StoppingPower`PrivateBPS`vthc"}], "\n"}], "Input"],
+
+Cell[BoxData["1.6243038532479959`*^9"], "Output"],
+
+Cell[BoxData["0.054179581495930475`"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["mp"], "Input"],
+
+Cell[BoxData["9.38271998`*^8"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Clear", "[", "VP", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"mpMev", "=", 
+   RowBox[{"mp", "/", 
+    RowBox[{"10", "^", "6"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"VP", "[", "E_", "]"}], " ", ":=", " ", 
+  RowBox[{
+   RowBox[{"Sqrt", "[", 
+    RowBox[{"2", "*", 
+     RowBox[{"E", "/", "mpMev"}]}], "]"}], "/", 
+   "vthc"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EMev", "[", "vp_", "]"}], " ", ":=", " ", 
+   RowBox[{"0.5", "*", "mpMev", "*", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"vp", "*", "vthc"}], ")"}], "^", "2"}]}]}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"E0", "=", "3.54"}], "\[IndentingNewLine]", 
+ RowBox[{"vp0", "=", 
+  RowBox[{"VP", "[", "E0", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"EMev", "[", "vp0", "]"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData["3.54`"], "Output"],
+
+Cell[BoxData["1.6033066914895835`"], "Output"],
+
+Cell[BoxData["3.54`"], "Output"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["LP", "Subsection"],
+
+Cell[CellGroupData[{
+
+Cell["data", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"emin", "=", "0.001"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"emax", "=", "3.54"}], ";"}], " ", 
+  RowBox[{"(*", " ", "MeV", " ", "*)"}]}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", "emin"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "0.03"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "600"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"dataLPa", "=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"EE", ",", 
+      RowBox[{"dedxiLP", "[", 
+       RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], 
+   "]"}]}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"E2", "+", "dE"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "0.25"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "600"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataLPb", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"EE", ",", 
+       RowBox[{"dedxiLP", "[", 
+        RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"E2", "+", "dE"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "600"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataLPc", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"EE", ",", 
+       RowBox[{"dedxiLP", "[", 
+        RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataLPEI", "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{"dataLPa", ",", "dataLPb", ",", "dataLPc"}], "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataLPE", "=", "\[IndentingNewLine]", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"dataLPEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+       RowBox[{"dataLPEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2", ",", "1"}], "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"Length", "[", "dataLPEI", "]"}]}], "}"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nnb", "=", 
+   RowBox[{"Length", "[", "nb", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataLPI", "=", "\[IndentingNewLine]", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"dataLPEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+       RowBox[{"Sum", "[", 
+        RowBox[{
+         RowBox[{"dataLPEI", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "2", ",", "j"}], "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"j", ",", "2", ",", "nnb"}], "}"}]}], "]"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"Length", "[", "dataLPEI", "]"}]}], "}"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dataLP", "=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"dataLPEI", "[", 
+       RowBox[{"[", 
+        RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+      RowBox[{
+       RowBox[{"dataLPE", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}], "+", 
+       RowBox[{"dataLPI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}]}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "1", ",", 
+      RowBox[{"Length", "[", "dataLPEI", "]"}]}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"xm", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"xM", "=", "3.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ym", "=", 
+   RowBox[{"-", "0.2"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"yM", "=", "6"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gr3LP", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataLP", ",", 
+    RowBox[{"PlotRange", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"gr4E", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataLPE", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.02`", ",", "0.02`"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}], "\n", 
+ RowBox[{"gr4I", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataLPI", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.02`", ",", "0.02`"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{"gr3LP", ",", "gr4E", ",", "gr4I", ",", 
+    RowBox[{"PlotRange", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]], "Input"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["E vs x  and range R", "Subsubsection"],
+
+Cell[BoxData[
+ RowBox[{"Clear", "[", 
+  RowBox[{"dxELP", ",", "ExLP", ",", " ", "xELP"}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dEdxELP", "=", 
+   RowBox[{"Interpolation", "[", "dataLP", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"dEdxELP", "[", "e", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"e", ",", "emin", ",", "emax"}], "}"}]}], "]"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E0", "=", "emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dxELP", "[", "E_", "]"}], " ", ":=", 
+  RowBox[{"1", "/", 
+   RowBox[{"dEdxELP", "[", "E", "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"xELP", "[", "E_", "]"}], "   ", ":=", " ", 
+  RowBox[{"NIntegrate", "[", 
+   RowBox[{
+    RowBox[{"1", "/", 
+     RowBox[{"dEdxELP", "[", "Ep", "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"Ep", ",", "E", ",", "E0"}], "}"}], ",", 
+    RowBox[{"PrecisionGoal", "\[Rule]", "Automatic"}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"FindRoot", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"dEdxELP", "[", "EE", "]"}], "\[Equal]", "0"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", 
+        RowBox[{"0.0", ".01"}]}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"EzeroLPa", "=", 
+    RowBox[{"EE", " ", "/.", " ", "%"}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"FindRoot", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"dEdxELP", "[", "EE", "]"}], "\[Equal]", "0"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", " ", "EzeroLPa"}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"EzeroLP", "=", 
+    RowBox[{"EE", " ", "/.", " ", "%"}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dEdxELP", "[", "EzeroLP", "]"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"ethe", "=", 
+  RowBox[{"1.04", "*", 
+   RowBox[{"Te", "/", "1000"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxELP", "[", "ethe", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"xELP", "[", "ethe", "]"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"ethi", "=", 
+  RowBox[{"1.04", "*", 
+   RowBox[{"Ti", "/", "1000"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxELP", "[", "ethi", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"xELP", "[", "ethi", "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"eth", "=", 
+  RowBox[{"Max", "[", 
+   RowBox[{"{", 
+    RowBox[{"ethe", ",", "ethi"}], "}"}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NN", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"EzeroLP", "+", "eps"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E1", "=", "eth"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E0", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataExLP", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"xELP", "[", "E", "]"}], ",", "E"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"E", ",", "E1", ",", "emax", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"xy1", "=", 
+  RowBox[{"dataExLP", "[", 
+   RowBox[{"[", "2", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"xy2", "=", 
+  RowBox[{"dataExLP", "[", 
+   RowBox[{"[", "1", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"dxy", "=", 
+  RowBox[{"xy2", "-", "xy1"}]}], "\[IndentingNewLine]", 
+ RowBox[{"m", "=", 
+  RowBox[{
+   RowBox[{"dxy", "[", 
+    RowBox[{"[", "2", "]"}], "]"}], "/", 
+   RowBox[{"dxy", "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"b", "=", 
+  RowBox[{
+   RowBox[{"xy1", "[", 
+    RowBox[{"[", "2", "]"}], "]"}], "-", 
+   RowBox[{"m", "*", 
+    RowBox[{"xy1", "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"xRLP", "=", 
+  RowBox[{
+   RowBox[{"-", "b"}], "/", "m"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dataExLP", "=", 
+  RowBox[{"Prepend", "[", 
+   RowBox[{"dataExLP", ",", 
+    RowBox[{"{", 
+     RowBox[{"xRLP", ",", "0"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ExLP", "=", 
+   RowBox[{"Interpolation", "[", "dataExLP", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grExLP", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataExLP", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005`", ",", "0.01`"}], "}"}], "]"}]}]}], "]"}]}]], "Input"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["dE/dx vs E: dEdxELP", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dEdxEeLP", " ", "=", 
+   RowBox[{"Interpolation", "[", "dataLPE", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxEiLP", " ", "=", 
+   RowBox[{"Interpolation", "[", "dataLPI", "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxELP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxELP", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "10000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"grdEdxEeLP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxEeLP", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"grdEdxEiLP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxEiLP", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxEeiLP", "=", 
+  RowBox[{"Show", "[", 
+   RowBox[{"grdEdxEeLP", ",", "grdEdxEiLP"}], "]"}]}]], "Input"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["dE/dx vs x: dEdxx LP", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dEdxxLP", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxELP", "[", 
+   RowBox[{"ExLP", "[", "x", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxxeLP", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxEeLP", "[", 
+   RowBox[{"ExLP", "[", "x", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxxiLP", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxEiLP", "[", 
+   RowBox[{"ExLP", "[", "x", "]"}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"x0", "=", 
+  RowBox[{
+   RowBox[{"FindRoot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"dEdxxLP", "[", 
+       RowBox[{"xRLP", "-", "x0"}], "]"}], "\[Equal]", "0"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x0", ",", "0.01"}], "}"}]}], "]"}], "[", 
+   RowBox[{"[", 
+    RowBox[{"1", ",", "2"}], "]"}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"dEdxxLP", "[", "xRLP", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxxLP", "[", 
+  RowBox[{"xRLP", "-", " ", "x0"}], "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxLP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxxLP", "[", "x", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", 
+      RowBox[{"xRLP", "-", "x0"}]}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "All"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "1"}], ",", "6"}], "}"}]}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{"xRLP", "\[IndentingNewLine]", 
+ RowBox[{"xRLPmax", "=", 
+  RowBox[{"xRLP", "-", "x0"}]}]}], "Input"],
+
+Cell[BoxData["xRLPmax"], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x0", "=", "2.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxLP", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "x0"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxLP", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "x0", ",", "xRLPmax"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "100"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"%", " ", "+", " ", "%%"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"100", "*", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"%", "-", "E0"}], ")"}], "/", "E0"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"100", "*", 
+  RowBox[{"eth", "/", "E0"}]}]], "Input"],
+
+Cell["\<\
+
+partitioned among plasma components\
+\>", "Text"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxeLP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxxeLP", "[", "x", "]"}], " ", ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", "xRLPmax"}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "All"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Ee", "=", 
+  RowBox[{"NIntegrate", "[", 
+   RowBox[{
+    RowBox[{"dEdxxeLP", "[", "x", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", "xRLPmax"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxiLP", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxxiLP", "[", "x", "]"}], " ", ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", "xRLPmax"}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxeiLP", "=", 
+  RowBox[{"Show", "[", 
+   RowBox[{"grdEdxxeLP", ",", "grdEdxxiLP"}], "]"}]}]], "Input"],
+
+Cell[BoxData["xRLPmax"], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x1", "=", "2.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxiLP", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "x1"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxiLP", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "x1", ",", "xRLPmax"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Ei", "=", 
+  RowBox[{"%", " ", "+", " ", "%%"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"Ee", ",", "Ei", ",", 
+   RowBox[{"Ee", "+", "Ei"}], ",", "E0"}], "}"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"100", "*", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"E0", "-", "Ee", "-", "Ei"}], ")"}], "/", "E0"}]}]], "Input"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["BPS", "Subsection"],
+
+Cell[CellGroupData[{
+
+Cell["data", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"emin", "=", "0.001"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"emax", "=", "3.54"}], ";"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", "emin"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "0.03"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "600"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataBPSa", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"EE", ",", 
+       RowBox[{"dedxi", "[", 
+        RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"E2", "+", "dE"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "0.25"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "100"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataBPSb", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"EE", ",", 
+       RowBox[{"dedxi", "[", 
+        RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"E2", "+", "dE"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E2", "=", "emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "100"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E2", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataBPSc", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"EE", ",", 
+       RowBox[{"dedxi", "[", 
+        RowBox[{"VP", "[", "EE", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"EE", ",", "E1", ",", "E2", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataBPSEI", "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{"dataBPSa", ",", "dataBPSb", ",", "dataBPSc"}], "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataBPSE", "=", "\[IndentingNewLine]", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"dataBPSEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+       RowBox[{"dataBPSEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2", ",", "1"}], "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"Length", "[", "dataBPSEI", "]"}]}], "}"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nnb", "=", 
+   RowBox[{"Length", "[", "nb", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataBPSI", "=", "\[IndentingNewLine]", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"dataBPSEI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+       RowBox[{"Sum", "[", 
+        RowBox[{
+         RowBox[{"dataBPSEI", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "2", ",", "j"}], "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"j", ",", "2", ",", "nnb"}], "}"}]}], "]"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"Length", "[", "dataBPSEI", "]"}]}], "}"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dataBPS", "=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"dataBPSEI", "[", 
+       RowBox[{"[", 
+        RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+      RowBox[{
+       RowBox[{"dataBPSE", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}], "+", 
+       RowBox[{"dataBPSI", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}]}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "1", ",", 
+      RowBox[{"Length", "[", "dataBPSEI", "]"}]}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"xm", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"xM", "=", "3.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ym", "=", 
+   RowBox[{"-", "0.2"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"yM", "=", "6"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gr3BPS", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataBPS", ",", 
+    RowBox[{"PlotRange", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"gr4E", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataBPSE", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.02`", ",", "0.02`"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}], "\n", 
+ RowBox[{"gr4I", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataBPSI", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.02`", ",", "0.02`"}], "}"}], "]"}]}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{"gr3BPS", ",", "gr4E", ",", "gr4I", ",", 
+    RowBox[{"PlotRange", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"xm", ",", "xM"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ym", ",", "yM"}], "}"}]}], "}"}]}]}], "]"}]}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["E vs x  and range R", "Subsubsection"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dEdxEBPS", "=", 
+   RowBox[{"Interpolation", "[", "dataBPS", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"dEdxEBPS", "[", "e", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"e", ",", "emin", ",", "emax"}], "}"}]}], "]"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"E0", "=", "emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dxEBPS", "[", "E_", "]"}], " ", ":=", 
+  RowBox[{"1", "/", 
+   RowBox[{"dEdxEBPS", "[", "E", "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"xEBPS", "[", "E_", "]"}], "   ", ":=", " ", 
+  RowBox[{"NIntegrate", "[", 
+   RowBox[{
+    RowBox[{"1", "/", 
+     RowBox[{"dEdxEBPS", "[", "Ep", "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"Ep", ",", "E", ",", "E0"}], "}"}], ",", 
+    RowBox[{"PrecisionGoal", "\[Rule]", "Automatic"}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"FindRoot", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"dEdxEBPS", "[", "EE", "]"}], "\[Equal]", "0"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", 
+        RowBox[{"0.0", ".01"}]}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"EzeroBPSa", "=", 
+    RowBox[{"EE", " ", "/.", " ", "%"}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"FindRoot", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"dEdxEBPS", "[", "EE", "]"}], "\[Equal]", "0"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", " ", "EzeroBPSa"}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"EzeroBPS", "=", 
+    RowBox[{"EE", " ", "/.", " ", "%"}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dEdxEBPS", "[", "EzeroBPS", "]"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"ethe", "=", 
+  RowBox[{"2", "*", 
+   RowBox[{"Te", "/", "1000"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxEBPS", "[", "ethe", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"xEBPS", "[", "ethe", "]"}]}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"ethi", "=", 
+  RowBox[{"2", "*", 
+   RowBox[{"Ti", "/", "1000"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxEBPS", "[", "ethi", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"xEBPS", "[", "ethi", "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"eth", "=", 
+  RowBox[{"Max", "[", 
+   RowBox[{"{", 
+    RowBox[{"ethe", ",", "ethi"}], "}"}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NN", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E1", "=", 
+   RowBox[{"EzeroBPS", "+", "eps"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"E1", "=", "eth"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"E0", "-", "E1"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataExBPS", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"xEBPS", "[", "E", "]"}], ",", "E"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"E", ",", "E1", ",", "emax", ",", "dE"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"xy1", "=", 
+  RowBox[{"dataExBPS", "[", 
+   RowBox[{"[", "2", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"xy2", "=", 
+  RowBox[{"dataExBPS", "[", 
+   RowBox[{"[", "1", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"dxy", "=", 
+  RowBox[{"xy2", "-", "xy1"}]}], "\[IndentingNewLine]", 
+ RowBox[{"m", "=", 
+  RowBox[{
+   RowBox[{"dxy", "[", 
+    RowBox[{"[", "2", "]"}], "]"}], "/", 
+   RowBox[{"dxy", "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"b", "=", 
+  RowBox[{
+   RowBox[{"xy1", "[", 
+    RowBox[{"[", "2", "]"}], "]"}], "-", 
+   RowBox[{"m", "*", 
+    RowBox[{"xy1", "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"xRBPS", "=", 
+  RowBox[{
+   RowBox[{"-", "b"}], "/", "m"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"dataExBPS", "=", 
+  RowBox[{"Prepend", "[", 
+   RowBox[{"dataExBPS", ",", 
+    RowBox[{"{", 
+     RowBox[{"xRBPS", ",", "0"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ExBPS", "=", 
+    RowBox[{"Interpolation", "[", "dataExBPS", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"ExBPS", "[", "xRBPS", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grExBPS", "=", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"dataExBPS", ",", 
+    RowBox[{"Joined", "\[Rule]", "True"}]}], "]"}]}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["dE/dx vs E: dEdxEBPS", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dEdxEeBPS", " ", "=", 
+   RowBox[{"Interpolation", "[", "dataBPSE", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxEiBPS", " ", "=", 
+   RowBox[{"Interpolation", "[", "dataBPSI", "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxEBPS", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxEBPS", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "10000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"grdEdxEeBPS", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxEeBPS", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"grdEdxEiBPS", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxEiBPS", "[", "e", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"e", ",", "emin", ",", "emax"}], "}"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxEeiBPS", "=", 
+  RowBox[{"Show", "[", 
+   RowBox[{"grdEdxEeBPS", ",", "grdEdxEiBPS"}], "]"}]}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["dE/dx vs x: dEdxx BPS", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dEdxxBPS", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxEBPS", "[", 
+   RowBox[{"ExBPS", "[", "x", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxxeBPS", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxEeBPS", "[", 
+   RowBox[{"ExBPS", "[", "x", "]"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dEdxxiBPS", "[", "x_", "]"}], " ", ":=", " ", 
+  RowBox[{"dEdxEiBPS", "[", 
+   RowBox[{"ExBPS", "[", "x", "]"}], "]"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"x0", "=", 
+  RowBox[{
+   RowBox[{"FindRoot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"dEdxxBPS", "[", 
+       RowBox[{"xRBPS", "-", "x0"}], "]"}], "\[Equal]", "0"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x0", ",", "0.01"}], "}"}]}], "]"}], "[", 
+   RowBox[{"[", 
+    RowBox[{"1", ",", "2"}], "]"}], "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"dEdxxBPS", "[", "xRBPS", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"dEdxxBPS", "[", 
+  RowBox[{"xRBPS", "-", " ", "x0"}], "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxBPS", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxxBPS", "[", "x", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", 
+      RowBox[{"xRBPS", "-", "x0"}]}], "}"}], ",", 
+    RowBox[{"PlotStyle", "\[Rule]", 
+     RowBox[{"Dashing", "[", 
+      RowBox[{"{", 
+       RowBox[{"0.005", ",", "0.01"}], "}"}], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "4"}], "}"}]}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[{"xRBPS", "\[IndentingNewLine]", 
+ RowBox[{"xRBPSmax", "=", 
+  RowBox[{"xRBPS", "-", "x0"}]}]}], "Input"],
+
+Cell[BoxData["xRBPSmax"], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x0", "=", "3.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxBPS", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "x0"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxBPS", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "x0", ",", "xRBPSmax"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"%", " ", "+", " ", "%%"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"100", "*", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"%", "-", "E0"}], ")"}], "/", "E0"}]}]], "Input"],
+
+Cell["\<\
+
+partitioned among plasma components\
+\>", "Text"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxeBPS", "=", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"dEdxxeBPS", "[", "x", "]"}], " ", ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", "xRBPSmax"}], "}"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+    RowBox[{"PlotPoints", "\[Rule]", "All"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Ee", "=", 
+  RowBox[{"NIntegrate", "[", 
+   RowBox[{
+    RowBox[{"dEdxxeBPS", "[", "x", "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "0", ",", "xRBPSmax"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"grdEdxxiBPS", "=", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"dEdxxiBPS", "[", "x", "]"}], " ", ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "0", ",", "xRBPSmax"}], "}"}], ",", 
+     RowBox[{"PlotPoints", "\[Rule]", "1000"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxxeiBPS", "=", 
+  RowBox[{"Show", "[", 
+   RowBox[{"grdEdxxeBPS", ",", "grdEdxxiBPS"}], "]"}]}]], "Input"],
+
+Cell[BoxData["xRBPSmax"], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x1", "=", "3.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxiBPS", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "x1"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"NIntegrate", "[", 
+  RowBox[{
+   RowBox[{"dEdxxiBPS", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "x1", ",", "xRBPSmax"}], "}"}], ",", 
+   RowBox[{"MaxRecursion", "\[Rule]", "10"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Ei", "=", 
+  RowBox[{"%", " ", "+", " ", "%%"}]}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"Ee", ",", "Ei", ",", 
+   RowBox[{"Ee", "+", "Ei"}], ",", "E0"}], "}"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"100", "*", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"E0", "-", "Ee", "-", "Ei"}], ")"}], "/", "E0"}]}]], "Input"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["LP cf BPS: Figs", "Subsection"],
+
+Cell[BoxData[
+ RowBox[{"grdEdxELPBPS", "=", 
+  RowBox[{"Show", "[", 
+   RowBox[{"grdEdxELP", ",", "grdEdxEBPS", ",", 
+    RowBox[{"PlotRange", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{"ym", ",", "yM"}], "}"}]}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"grdEdxEeiLPBPS", "=", 
+   RowBox[{"Show", "[", 
+    RowBox[{
+    "grdEdxEeLP", ",", "grdEdxEiLP", ",", "\[IndentingNewLine]", 
+     "grdEdxEeBPS", ",", "grdEdxEiBPS", ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"ym", ",", "yM"}], "}"}]}]}], "]"}]}]}]], "Input"],
+
+Cell[BoxData["id"], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NN", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Emin", "=", "emin"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Emax", "=", "0.2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"Emax", "-", "Emin"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"data1", "=", "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"EE", ",", 
+        RowBox[{"dEdxELP", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEeLP", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEiLP", "[", "EE", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"dEdxEBPS", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEeBPS", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEiBPS", "[", "EE", "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", "Emin", ",", "Emax", ",", "dE"}], "}"}]}], "]"}]}], 
+   ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NN", "=", "100"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Emin", "=", "Emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Emax", "=", "emax"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dE", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"Emax", "-", "Emin"}], ")"}], "/", "NN"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"data2", "=", "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"EE", ",", 
+        RowBox[{"dEdxELP", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEeLP", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEiLP", "[", "EE", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"dEdxEBPS", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEeBPS", "[", "EE", "]"}], ",", 
+        RowBox[{"dEdxEiBPS", "[", "EE", "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"EE", ",", "Emin", ",", "Emax", ",", "dE"}], "}"}]}], "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{"data1", ",", "data2"}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<LPvsBPS.dEdxE.aDT300127.dat\>\"", ",", "data", ",", "\"\<Table\>\"", 
+    ",", 
+    RowBox[{"ConversionOptions", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<FormatType\>\"", "\[Rule]", " ", "FortranForm"}], 
+      "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{"grExLP", ",", "grExBPS"}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "grdEdxxeLP", ",", "grdEdxxiLP", ",", "grdEdxxeBPS", ",", 
+   "\[IndentingNewLine]", "grdEdxxiBPS", ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"ym", ",", "yM"}], "}"}]}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"NN", "=", "500"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"xmin", "=", "0"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"xmax", "=", "xRLPmax"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"dx", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"xmax", "-", "xmin"}], ")"}], "/", "NN"}]}], ";"}], "\n", 
+   RowBox[{"data", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", ",", 
+        RowBox[{"dEdxxLP", "[", "x", "]"}], ",", 
+        RowBox[{"dEdxxeLP", "[", "x", "]"}], ",", 
+        RowBox[{"dEdxxiLP", "[", "x", "]"}], ",", 
+        RowBox[{"ExLP", "[", "x", "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "xmin", ",", "xmax", ",", "dx"}], "}"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Export", "[", 
+     RowBox[{
+     "\"\<LPvsBPS.dEdxxExLP.aDT300127.dat\>\"", ",", "data", ",", 
+      "\"\<Table\>\"", ",", 
+      RowBox[{"ConversionOptions", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{"\"\<FormatType\>\"", "\[Rule]", " ", "FortranForm"}], 
+        "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NN", "=", "500"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"xmin", "=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"xmax", "=", "xRBPSmax"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"dx", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"xmax", "-", "xmin"}], ")"}], "/", "NN"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"dEdxxBPS", "[", "x", "]"}], ",", 
+       RowBox[{"dEdxxeBPS", "[", "x", "]"}], ",", 
+       RowBox[{"dEdxxiBPS", "[", "x", "]"}], ",", 
+       RowBox[{"ExBPS", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "xmin", ",", "xmax", ",", "dx"}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<LPvsBPS.dEdxxExBPS.aDT300127.dat\>\"", ",", "data", ",", 
+    "\"\<Table\>\"", ",", 
+    RowBox[{"ConversionOptions", "\[Rule]", " ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<FormatType\>\"", "\[Rule]", " ", "FortranForm"}], 
+      "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]"}], "Input"]
+}, Closed]]
+}, Open  ]]
+},
+WindowSize->{901, 596},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+DockedCells->(FrontEndExecute[{
+   FrontEnd`NotebookApply[
+    FrontEnd`InputNotebook[], #, Placeholder]}]& ),
+FrontEndVersion->"7.0 for Linux x86 (32-bit) (February 25, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 62, 1, 36, "Input"],
+Cell[632, 25, 603, 11, 24, "Message"],
+Cell[1238, 38, 98, 1, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1373, 44, 34, 1, 78, "Section"],
+Cell[CellGroupData[{
+Cell[1432, 49, 40, 0, 38, "Subsection"],
+Cell[CellGroupData[{
+Cell[1497, 53, 705, 21, 118, "Input"],
+Cell[2205, 76, 31, 0, 36, "Output"],
+Cell[2239, 78, 50, 0, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2326, 83, 5169, 153, 685, "Input"],
+Cell[7498, 238, 30, 0, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7565, 243, 308, 9, 36, "Input"],
+Cell[CellGroupData[{
+Cell[7898, 256, 179, 4, 29, "Print"],
+Cell[8080, 262, 336, 9, 29, "Print"],
+Cell[8419, 273, 356, 10, 29, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[8802, 287, 304, 8, 36, "Input"],
+Cell[CellGroupData[{
+Cell[9131, 299, 170, 3, 91, "Input"],
+Cell[9304, 304, 49, 0, 36, "Output"],
+Cell[9356, 306, 48, 0, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9441, 311, 28, 0, 36, "Input"],
+Cell[9472, 313, 41, 0, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9550, 318, 890, 24, 280, "Input"],
+Cell[10443, 344, 32, 0, 36, "Output"],
+Cell[10478, 346, 46, 0, 36, "Output"],
+Cell[10527, 348, 32, 0, 36, "Output"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[10608, 354, 24, 0, 30, "Subsection"],
+Cell[CellGroupData[{
+Cell[10657, 358, 29, 0, 34, "Subsubsection"],
+Cell[10689, 360, 211, 6, 64, "Input"],
+Cell[10903, 368, 682, 22, 145, "Input"],
+Cell[11588, 392, 730, 24, 145, "Input"],
+Cell[12321, 418, 730, 24, 145, "Input"],
+Cell[13054, 444, 180, 5, 64, "Input"],
+Cell[13237, 451, 574, 16, 118, "Input"],
+Cell[13814, 469, 830, 24, 145, "Input"],
+Cell[14647, 495, 585, 18, 64, "Input"],
+Cell[15235, 515, 633, 19, 145, "Input"],
+Cell[15871, 536, 1036, 30, 118, "Input"],
+Cell[16910, 568, 362, 10, 64, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[17309, 583, 44, 0, 28, "Subsubsection"],
+Cell[17356, 585, 106, 2, 36, "Input"],
+Cell[17465, 589, 119, 3, 36, "Input"],
+Cell[17587, 594, 180, 5, 36, "Input"],
+Cell[17770, 601, 563, 15, 118, "Input"],
+Cell[18336, 618, 397, 13, 64, "Input"],
+Cell[18736, 633, 380, 12, 64, "Input"],
+Cell[19119, 647, 66, 1, 36, "Input"],
+Cell[19188, 650, 233, 5, 91, "Input"],
+Cell[19424, 657, 233, 5, 91, "Input"],
+Cell[19660, 664, 136, 4, 36, "Input"],
+Cell[19799, 670, 721, 23, 172, "Input"],
+Cell[20523, 695, 793, 24, 172, "Input"],
+Cell[21319, 721, 175, 5, 36, "Input"],
+Cell[21497, 728, 118, 3, 36, "Input"],
+Cell[21618, 733, 309, 8, 64, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[21964, 746, 44, 0, 28, "Subsubsection"],
+Cell[22011, 748, 284, 8, 91, "Input"],
+Cell[22298, 758, 468, 12, 64, "Input"],
+Cell[22769, 772, 941, 24, 118, "Input"],
+Cell[23713, 798, 132, 3, 36, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[23882, 806, 45, 0, 28, "Subsubsection"],
+Cell[23930, 808, 491, 12, 91, "Input"],
+Cell[24424, 822, 348, 11, 36, "Input"],
+Cell[24775, 835, 158, 3, 64, "Input"],
+Cell[24936, 840, 646, 18, 91, "Input"],
+Cell[25585, 860, 115, 2, 64, "Input"],
+Cell[25703, 864, 33, 0, 36, "Input"],
+Cell[25739, 866, 611, 16, 118, "Input"],
+Cell[26353, 884, 125, 4, 36, "Input"],
+Cell[26481, 890, 77, 2, 36, "Input"],
+Cell[26561, 894, 60, 3, 61, "Text"],
+Cell[26624, 899, 475, 12, 64, "Input"],
+Cell[27102, 913, 215, 6, 36, "Input"],
+Cell[27320, 921, 474, 12, 64, "Input"],
+Cell[27797, 935, 132, 3, 36, "Input"],
+Cell[27932, 940, 33, 0, 36, "Input"],
+Cell[27968, 942, 639, 18, 118, "Input"],
+Cell[28610, 962, 121, 3, 36, "Input"],
+Cell[28734, 967, 137, 4, 36, "Input"]
+}, Closed]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28920, 977, 25, 0, 38, "Subsection"],
+Cell[CellGroupData[{
+Cell[28970, 981, 29, 0, 34, "Subsubsection"],
+Cell[29002, 983, 150, 4, 64, "Input"],
+Cell[29155, 989, 706, 23, 145, "Input"],
+Cell[29864, 1014, 729, 24, 145, "Input"],
+Cell[30596, 1040, 729, 24, 145, "Input"],
+Cell[31328, 1066, 184, 5, 64, "Input"],
+Cell[31515, 1073, 578, 16, 118, "Input"],
+Cell[32096, 1091, 834, 24, 145, "Input"],
+Cell[32933, 1117, 590, 18, 64, "Input"],
+Cell[33526, 1137, 635, 19, 145, "Input"],
+Cell[34164, 1158, 1038, 30, 114, "Input"],
+Cell[35205, 1190, 363, 10, 64, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[35605, 1205, 44, 0, 34, "Subsubsection"],
+Cell[35652, 1207, 121, 3, 36, "Input"],
+Cell[35776, 1212, 181, 5, 36, "Input"],
+Cell[35960, 1219, 567, 15, 91, "Input"],
+Cell[36530, 1236, 399, 13, 64, "Input"],
+Cell[36932, 1251, 383, 12, 64, "Input"],
+Cell[37318, 1265, 68, 1, 36, "Input"],
+Cell[37389, 1268, 232, 5, 91, "Input"],
+Cell[37624, 1275, 232, 5, 91, "Input"],
+Cell[37859, 1282, 136, 4, 36, "Input"],
+Cell[37998, 1288, 724, 23, 172, "Input"],
+Cell[38725, 1313, 796, 24, 172, "Input"],
+Cell[39524, 1339, 178, 5, 36, "Input"],
+Cell[39705, 1346, 161, 5, 64, "Input"],
+Cell[39869, 1353, 62, 1, 36, "Input"],
+Cell[39934, 1356, 161, 4, 36, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[40132, 1365, 45, 0, 34, "Subsubsection"],
+Cell[40180, 1367, 288, 8, 91, "Input"],
+Cell[40471, 1377, 322, 8, 36, "Input"],
+Cell[40796, 1387, 649, 16, 64, "Input"],
+Cell[41448, 1405, 135, 3, 36, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[41620, 1413, 46, 0, 34, "Subsubsection"],
+Cell[41669, 1415, 500, 12, 91, "Input"],
+Cell[42172, 1429, 350, 11, 36, "Input"],
+Cell[42525, 1442, 162, 3, 64, "Input"],
+Cell[42690, 1447, 574, 16, 64, "Input"],
+Cell[43267, 1465, 118, 2, 64, "Input"],
+Cell[43388, 1469, 34, 0, 36, "Input"],
+Cell[43425, 1471, 616, 17, 118, "Input"],
+Cell[44044, 1490, 125, 4, 36, "Input"],
+Cell[44172, 1496, 60, 3, 61, "Text"],
+Cell[44235, 1501, 330, 8, 36, "Input"],
+Cell[44568, 1511, 217, 6, 36, "Input"],
+Cell[44788, 1519, 375, 10, 64, "Input"],
+Cell[45166, 1531, 135, 3, 36, "Input"],
+Cell[45304, 1536, 34, 0, 36, "Input"],
+Cell[45341, 1538, 642, 18, 118, "Input"],
+Cell[45986, 1558, 121, 3, 36, "Input"],
+Cell[46110, 1563, 137, 4, 36, "Input"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[46296, 1573, 37, 0, 30, "Subsection"],
+Cell[46336, 1575, 236, 6, 36, "Input"],
+Cell[46575, 1583, 354, 9, 91, "Input"],
+Cell[46932, 1594, 28, 0, 36, "Input"],
+Cell[46963, 1596, 2604, 71, 604, "Input"],
+Cell[49570, 1669, 91, 2, 36, "Input"],
+Cell[49664, 1673, 269, 7, 64, "Input"],
+Cell[49936, 1682, 1237, 34, 334, "Input"],
+Cell[51176, 1718, 1134, 33, 280, "Input"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
