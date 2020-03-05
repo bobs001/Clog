@@ -568,8 +568,8 @@
       END SUBROUTINE a_quantum_mass
 
 !=============== dE/dx from A-coefficient =================================
-
-! **xx** !
+!
+!! **xx** !
 !
 ! This is a driver to check the analytic evalulation dE_b/dx
 ! against the one obtained by differentiating A_b.
@@ -681,53 +681,6 @@
 
       END SUBROUTINE acoeff_dedx_bps
 !
-
-      SUBROUTINE a_collect(ib, ibmax, ac_s, ac_r, aq, a_tot, a_i, a_e, &
-        ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e, ac_s_i, ac_s_e, ac_r_i, ac_r_e)
-        IMPLICIT NONE
-        INTEGER, INTENT(IN)    :: ib     ! species index
-        INTEGER, INTENT(IN)    :: ibmax  ! species index maximum = NNB+1
-        REAL,    INTENT(IN)    :: ac_s   ! singular contribution
-        REAL,    INTENT(IN)    :: ac_r   ! regular  contribution
-        REAL,    INTENT(IN)    :: aq     ! quantum  contribution
-                                         !
-        REAL,    INTENT(INOUT) :: a_tot  ! running total over ions
-        REAL,    INTENT(INOUT) :: a_i    ! running total over ions
-        REAL,    INTENT(INOUT) :: a_e    ! electron component
-        REAL,    INTENT(INOUT) :: ac_tot ! running total over ions
-        REAL,    INTENT(INOUT) :: ac_i   ! running total over ions
-        REAL,    INTENT(INOUT) :: ac_e   ! electron component
-        REAL,    INTENT(INOUT) :: aq_tot ! running total over ions
-        REAL,    INTENT(INOUT) :: aq_i   ! running total over ions
-        REAL,    INTENT(INOUT) :: aq_e   ! electron component
-        REAL,    INTENT(INOUT) :: ac_s_i
-        REAL,    INTENT(INOUT) :: ac_s_e
-        REAL,    INTENT(INOUT) :: ac_r_i
-        REAL,    INTENT(INOUT) :: ac_r_e
-        REAL :: ac_sr
-        ac_sr=ac_s + ac_r
-        IF (ib==1) THEN
-           ac_e=ac_sr
-           aq_e=aq
-           a_e =ac_e + aq_e
-
-           ac_s_e=ac_s
-           ac_r_e=ac_r
-        ELSE
-           ac_i=ac_i + ac_sr
-           aq_i=aq_i + aq
-           a_i =a_i  + ac_sr + aq
-
-           ac_s_i=ac_s_i + ac_s
-           ac_r_i=ac_r_i + ac_r
-        ENDIF
-        IF (ib==ibmax) THEN
-           ac_tot = ac_e + ac_i
-           aq_tot = aq_e + aq_i
-           a_tot  = ac_tot  + aq_tot
-        ENDIF
-      END SUBROUTINE a_collect
-
 !
 !=============== low- and high-energy asymptotic limits ====================
 !
