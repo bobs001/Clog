@@ -21,11 +21,10 @@
 ! the A-coefficients. 
 !
 ! USAGE:
-! Since electrons are thousands of times lighter than ions, one of the most
-! physically accessible regime is the in which the electrons have a temperature 
-! T_e and the ions have a (possibly different) common temperature T_I. This 
-! is why the output is organized into electron contributions and total ion 
-! contributions (sum over all ions).
+! Since electrons are thousands of times lighter than ions, separate
+! electron and ion temperatures may develop, Te and Ti. The output is
+! organized into electron contributions and total ion contributions
+!(sum over all ions). The plasma must be weakly coupled.
 !
 ! INPUT: nni, ep, zp, mp, ia, ib, betab, zb, mb, nb
 !
@@ -116,7 +115,7 @@
 !     coupled plasma. More exactly, A=sum_b A_b holds true only up to 
 !     leading and next-to-leading order in the plasma coupling g. This is 
 !     the order to which Ref. [2] calculates all quantities, and therefore 
-!     BPS works to a consistent order in g.
+!     BPS works to a consistent order g^2*in g + g^2.
 !
 !
 ! vp = projectile speed [cm/s]
