@@ -38,8 +38,9 @@
 !
 ! plot the regular and singular contributions
 !
-        OPEN  (1, FILE='acoeff.dedx_1.out')
-        OPEN  (2, FILE='acoeff.dedx_2.out')
+        OPEN  (1, FILE='acoeff.dedx_1.out')  ! dE/dx from dedx_bps
+        OPEN  (2, FILE='acoeff.dedx_2.out')  ! dE/dx from acoeff_dedx_bps
+        OPEN  (3, FILE='acoeff.dedx_3.out')  ! errors
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
 ! evolution
@@ -53,6 +54,9 @@
         WRITE(2,'(A)') '#'
         WRITE(2,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
         WRITE(2,'(A)') '#'
+        WRITE(3,'(A)') '#'
+        WRITE(3,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        WRITE(3,'(A)') '#'
         de=ep/nit
         epp=0
         DO j=0,nit
@@ -68,16 +72,21 @@
                 dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
                 dedxc_a_r_i, dedxc_a_r_e)
 
+!           WRITE(6,*) j, epp/1000., (dedx_tot-dedx_a_tot)/dedx_tot, (dedxc_tot-dedxc_a_tot)/dedxc_tot, &
+!                (dedxq_tot-dedxq_a_tot)/dedxq_tot
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
            WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot, &
                 dedxc_e, dedxc_i, dedxc_tot, dedxq_e, dedxq_i, dedxq_tot
            WRITE (2,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot, &
                 dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
+           WRITE (3,'(I6,E17.8,9E22.13)') j, epp/1000., (dedx_tot-dedx_a_tot)/dedx_tot, &
+                (dedxc_tot-dedxc_a_tot)/dedxc_tot, (dedxq_tot-dedxq_a_tot)/dedxq_tot
         ENDDO
         
         CLOSE (1)
         CLOSE (2)
+        Close (3)
         END PROGRAM dedx
 
     SUBROUTINE define_plasma_dt(te, ti, ne, nni)
