@@ -1,0 +1,73 @@
+# macro read main.sm
+# plot [or eps]
+# 
+# 
+acoeff
+
+    set x0=0.
+    set x1=0.2
+    set y1= 0.00005
+    set y0=-0.0002
+
+    location 5000 29000 5000 22000
+    expand 1.3 lweight 2 ltype 0 ctype black ptype 4 3
+    limits $(x0) $(x1) $(y0) $(y1)
+    box 1 2 0 0
+    relocate $(x0-0.001) $(y1+0.00001) ctype black label \
+    "gr052.sm: T_e=10 keV  T_i=100  keV  n_e=10^{25} cm^{-3}"
+# axes
+    ctype black
+    xlabel E_p (MeV)
+    ylabel A_{q,I}   (MeV/\mu m)
+#
+#
+    set Lmin=22
+    set Lmax=3022
+    data gr002.dat
+    lines $(Lmin) $(Lmax)  read{Ep 2  Aqe 10  Aqi 11}
+    set nn = 1000.
+    set Ep = Ep/nn
+    ltype 0 ctype green   connect Ep Aqi
+
+
+    set Lmin=22
+    set Lmax=3022
+    data gr002.smallE.dat
+    lines $(Lmin) $(Lmax)  read{Exp 2  Aqesmall 10  Aqismall 11}
+    set nn = 1000.
+    set Exp = Exp/nn
+    ltype 0 ctype red   connect Exp Aqismall
+
+#
+# y=0 axis
+#
+    relocate $(x0) 0.0  ltype 0 ctype black draw $(x1) 0.0
+
+# legend
+#
+    set dx=0.0
+    set dy=0.0
+
+    set x1=0.025 set y1=-0.00012
+    set x2=0.075 set y2=-0.00012
+    relocate $(x1) $(y1)  ltype 0 ctype green draw $(x2) $(y2)
+    relocate $(x2+dx) $(y2+dy)  ctype black label "A_{q,I} "
+
+    set y1=-0.00015
+    set y2=-0.00015
+    relocate $(x1) $(y1)  ltype 0 ctype red draw $(x2) $(y2)
+    relocate $(x2+dx) $(y2+dy)  ctype black label "A_{q,I}^{asymptotic} "
+
+
+plot
+   erase
+   acoeff
+
+eps
+   erase
+   device postencap gr052.eps
+   acoeff
+   hardcopy
+   device x11
+   erase
+   plot

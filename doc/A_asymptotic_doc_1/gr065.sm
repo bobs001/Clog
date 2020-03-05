@@ -1,0 +1,68 @@
+# macro read main.sm
+# plot [or eps]
+# 
+# 
+acoeff
+
+    set x0=0.
+    set x1=500.
+    set y0=0.
+    set y1=0.4
+
+    location 5000 29000 5000 22000
+    expand 1.3 lweight 2 ltype 0 ctype black ptype 4 3
+    limits $(x0) $(x1) $(y0) $(y1)
+    box 1 2 0 0
+    relocate $(x0-0.001) $(y1+0.01) ctype black label \
+    "gr065.sm: T_e=10 keV  T_i=100  keV  n_e=10^{25} cm^{-3}"
+# axes
+    ctype black
+    xlabel E_p (MeV)
+    ylabel A_e   (MeV/\mu m)
+#
+#
+    set Lmin=22
+    set Lmax=3022
+    data gr002.dat
+    lines $(Lmin) $(Lmax)  read{Ep 2  Ae 4}
+    set nn = 1000.
+    set Ep = Ep/nn
+    ltype 0 ctype blue   connect Ep Ae
+
+
+    set Lmin=22
+    set Lmax=3022
+    data gr102.highE.dat
+    lines $(Lmin) $(Lmax)  read{Exp 2  Aesmall 4}
+    set nn = 1000.
+    set Exp = Exp/nn
+    ltype 0 ctype red   connect Exp Aesmall
+
+
+# legend
+#
+    set dx=0.02
+    set dy=-0.0001
+
+    set x1=200. set y1=0.3
+    set x2=300. set y2=0.3
+    relocate $(x1) $(y1)  ltype 0 ctype blue draw $(x2) $(y2)
+    relocate $(x2+dx) $(y2+dy)  ctype black label "A_e "
+    set y1=0.25
+    set y2=0.25
+    relocate $(x1) $(y1)  ltype 0 ctype red draw $(x2) $(y2)
+    relocate $(x2+dx) $(y2+dy)  ctype black label "A_e^{asymptotic} "
+
+
+plot
+   erase
+   acoeff
+
+eps
+   erase
+   device postencap gr065.eps
+   acoeff
+   hardcopy
+   device x11
+   erase
+   plot
