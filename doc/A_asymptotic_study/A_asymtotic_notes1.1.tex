@@ -1,3 +1,2260 @@
+\documentclass[preprint,12pt,eqsecnum,nofootinbib,amsmath,amssymb]{revtex4}
+
+% Date file was last changed:
+\newcommand{\datechange}{3/5/2020}
+\newcommand{\datestart}{3/5/2020}
+
+% version
+\newcommand\draftverson{v1.1}
+\newcommand{\fname}{A\_asymtotic\_notes1.1.tex}
+\newcommand{\laurnumber}{\draftverson  ~\today ~\currenttime}
+\newcommand{\mydate}{\datechange}
+
+% Person who last changed file:>
+\newcommand{\whochange}{Robert Singleton}
+%
+% Project Name, path, informal author names, title
+\newcommand{\projname}{Clog Doc}
+\newcommand{\dirname}{Clog/doc/dedx}
+\newcommand{\myauthors}{Robert Singleton}
+\newcommand{\myrunningtitle}{\fname}
+\newcommand{\mytitle}{A-Coefficient Study}
+
+% printing margins
+%
+\textwidth=6.5in
+\textheight=9.5in
+
+% packages
+%
+\usepackage{graphicx}  % Include figure files
+\usepackage{dcolumn}  % Align table columns on decimal point
+\usepackage{bm}             % Bold math: $\bm{\alpha}$
+\usepackage{latexsym}  % Several additional symbols
+\usepackage{fancyhdr}  % Fancy header package
+\usepackage{wrapfig}
+\usepackage{comment}
+\usepackage{dsfont}
+\usepackage{mathtools}
+\usepackage{datetime}
+%\usepackage{showkeys}% Displays equation and fig names
+%\usepackage{hyperref}% Hyperlinked references
+
+% local commands
+\newcommand{\overoverline}[1]{ {\overline{\overline{#1}}} }
+\newcommand{\EMPTYSET}{\varnothing}
+\newcommand{\PROOF}{{\tiny PROOF}}
+\newcommand{\ALTPROOF}{{\tiny ALTERNATE PROOF}}
+\newcommand{\PAR}{$\blacktriangleright$}
+\newcommand{\ENDPF}{$\blacksquare$}
+\newcommand{\ENDPROOF}{$\blacksquare$}
+%\newcommand{\ENDPF}{\square}
+%\newcommand{\ENDPROOF}{$\square$}
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\NOT}{\neg}
+\newcommand{\EQ}{\equiv}
+\newcommand{\IFF}{\leftrightarrow}
+\newcommand{\IMP}{\rightarrow}
+\newcommand{\T}{{\rm T}}
+\newcommand{\F}{{\rm F}}
+\newcommand{\LOGEQ}{\sim}
+\newcommand{\smDash}{{\rule[1mm]{0.1cm}{0.1mm}}}
+\newcommand{\dbar}{{d\hskip-0.12cm \rule[2.2mm]{0.15cm}{0.1mm}}}
+\newcommand{\smA}{{\scriptscriptstyle \rm A}}
+\newcommand{\smB}{{\rm\scriptscriptstyle B}}
+\newcommand{\smN}{{\rm\scriptscriptstyle N}}
+\newcommand{\smX}{{\rm\scriptscriptstyle X}}
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\smP}{{\rm\scriptscriptstyle P}}
+\newcommand{\smL}{{\rm\scriptscriptstyle L}}
+\newcommand{\smT}{{\rm\scriptscriptstyle T}}
+\newcommand{\smC}{{\rm\scriptscriptstyle C}}
+\newcommand{\smI}{{\rm\scriptscriptstyle I}}
+\newcommand{\smR}{{\rm\scriptscriptstyle R}}
+\newcommand{\smS}{{\rm\scriptscriptstyle S}}
+\newcommand{\smQ}{{\rm\scriptscriptstyle Q}}
+\newcommand{\smD}{{\rm\scriptscriptstyle D}}
+\newcommand{\smO}{{\rm\scriptscriptstyle 0}}
+\newcommand{\smW}{{\rm\scriptscriptstyle W}}
+\newcommand{\smCT}{{\rm\scriptscriptstyle CT}}
+\newcommand{\smQM}{{\rm\scriptscriptstyle QM}}
+\newcommand{\smRe}{{\rm\scriptscriptstyle Re}}
+\newcommand{\smIm}{{\rm\scriptscriptstyle Im}}
+\newcommand{\smCL}{{\rm\scriptscriptstyle CL}}
+\newcommand{\smBPS}{{\rm\scriptscriptstyle BPS}}
+\newcommand{\smE}{{\rm\scriptscriptstyle E}}
+\newcommand{\smae}{{\rm\scriptscriptstyle ae}}
+\newcommand{\extend}[2]{ {#1}^\smallfrown{\! #2} }
+\newcommand{\smTC}{{\rm\scriptstyle TC}}
+\newcommand{\calT}{ {\cal T}}
+\newcommand{\calA}{{\cal A}}
+\newcommand{\mathfrakA}{\mathfrak{A}}
+\newcommand{\mathfrakB}{\mathfrak{B}}
+\newcommand{\mathfrakS}{\mathfrak{S}}
+\newcommand{\smGr}{{\rm\scriptscriptstyle gr}}
+\newcommand{\smLT}{{\rm\scriptscriptstyle <}}
+\newcommand{\smGT}{{\rm\scriptscriptstyle >}}
+\newcommand{\smY}{{\rm\scriptscriptstyle Y}}
+
+% % baselineskip modes
+\newcommand{\bodyskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\bibskip}{\baselineskip16pt plus 1pt minus 1pt}
+\newcommand{\tableofcontentsskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\footnoteskip}{\baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\abstractskip}{\baselineskip 13pt plus 1pt minus 1pt}
+\newcommand{\titleskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\affiliationskip}{\baselineskip 15pt plus 1pt minus 1pt}
+\newcommand{\captionskip}{\footnotesize \baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\enumerateskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\theoremskip}{\baselineskip 13pt plus 1pt minus 1pt}
+
+% theorem
+%
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{definition}{Definition}
+
+\pagestyle{fancy}
+\lhead{\laurnumber}
+%\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+%%
+%% begin: draw box
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  This macro draws a box around around text, taken 
+%%  from ``TeX by Example'', by Arvind Borde p76.
+%%
+%%   To use: 
+%%
+%%   \vskip0.3cm
+%%   \frame{.1}{2}{16.2cm}{\noindent
+%%   \begin{eqnarray}
+%%     a = b
+%%   \end{eqnarray}
+%%   }
+%%   \vskip0.2cm
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\def\frame#1#2#3#4{\vbox{\hrule height #1pt    % TOP RULE
+  \hbox{\vrule width #1pt\kern #2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt                                               % TOP SPACE
+  \vbox{\hsize #3\noindent #4}                            % BOXED MATERIAL
+  \kern #2pt}                                                        % BOTTOM SPACE
+  \kern #2pt\vrule width #1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth #1pt}                            % BOTTOM RULE
+}
+%%
+\def\myframe#1{\vbox{\hrule height 0.1pt    % TOP RULE
+  \hbox{\vrule width 0.1pt\kern 2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern 2pt                                               % TOP SPACE
+  \vbox{\hsize 16.5cm\noindent #1}                            % BOXED MATERIAL
+  \kern 2pt}                                                        % BOTTOM SPACE
+  \kern 2pt\vrule width 0.1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth 0.1pt}                            % BOTTOM RULE
+}
+%%
+%% draws two boxes around text (use sparingly)
+%%
+\def\fitframe #1#2#3{\vbox{\hrule height#1pt  % TOP RULE
+  \hbox{\vrule width#1pt\kern #2pt             % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt\hbox{#3}\kern #2pt}         % TOP,MATERIAL,BOT
+  \kern #2pt\vrule width#1pt}                  % RULE/SPACE ON RIGHT
+  \hrule height0pt depth#1pt}                  % BOTTOM RULE
+}
+%%
+%% draws a box with shadow around text
+%%
+\def\shframe #1#2#3#4{\vbox{\hrule height 0pt % NO TOP SHADOW
+ \hbox{\vrule width #1pt\kern 0pt             % LEFT SHADOW
+ \vbox{\kern-#1pt\frame{.3}{#2}{#3}{#4}       % START SHADOW
+ \kern-.3pt}                                  % MOVE UP RULE
+ \kern-#2pt\vrule width 0pt}                  % STOP SHADOW
+ \hrule height #1pt}                          % BOTTOM SHADOW
+}
+%%
+%%
+%% end: draw box
+%%
+%%  To install as a package on a local host.
+%%   a. Append the header ``\usepackage{myboxes}'' to the above macro. Name 
+%%   the macreo file myboxes.sty.  Move myboxes.sty into $HOME/texmf/tex/mypackages/. 
+%%   You might need to type texhash.
+%%   b. T use the package write \usepackage{myboxes} in the preamble.
+
+%
+\begin{document}
+
+%% notes info page
+%\hfill{\laurnumber}
+%\vskip0.3cm
+\centerline{{ \Large\bf \projname: \fname}}
+\vskip0.25cm 
+\centerline{\bf \mytitle}
+\vskip0.25cm
+\centerline{\myauthors}
+\vskip0.75cm 
+\baselineskip 14pt plus 1pt minus 1pt
+\begin{flushright}
+Research Notes   \\[3pt]
+{\it Project}:          \\
+\projname                      \\
+  {\it Path of TeX Source}:          \\
+\dirname/\fname                      \\[3pt]
+{\it Last Modified By}:            \\
+\whochange                         \\
+\datechange                        \\[3pt]
+{\it Date Started:}                \\
+\datestart                         \\[3pt]
+{\it Date:}                \\
+\draftverson~ \today ~\currenttime \\
+\end{flushright}
+
+\baselineskip 20pt plus 1pt minus 1pt
+
+%% mini abstract
+%\abstractskip
+%\noindent
+%These are notes on Logic from Ref.~\cite{ref_chang}.  
+%\bodyskip
+
+%% title page
+\vskip2.0cm
+%\pagebreak
+\preprint{\laurnumber}
+
+% publication title page
+\title{\titleskip
+  \mytitle
+}
+
+\author{Robert L Singleton Jr}
+
+\affiliation{\affiliationskip
+   School of Mathematics\\
+   University of Leeds\\
+   LS2 9JT
+}
+
+\date{\datechange}
+
+\begin{abstract}
+\abstractskip
+\vskip0.3cm 
+\noindent
+This is a study of the asymptotic behavior of the ${\cal
+  A}$-coefficients from \verb+Clog/acoeff.f90+.
+Each figure is constructed by a Fortran driver \verb+grXXX.f90+ and a
+corresponding plotting routine \verb+grXXX.sm+. The plasma under
+consideration is equimolar DT with electron number density $n_e$,
+electron temperature $T_e$, and ion temperature $T_\smI$. The code
+used to generate the data has now been fully checked.
+
+\end{abstract}
+
+%%
+\maketitle
+%%
+
+% to change page settings
+%\thispagestyle{empty}
+%\pagestyle{empty}
+%\setcounter{page}{0}
+
+\pagebreak
+\tableofcontentsskip
+\tableofcontents
+%\thispagestyle{empty}
+
+%\pagebreak
+\newpage
+\bodyskip
+%\setcounter{page}{1}
+
+\pagebreak
+\clearpage
+
+\newpage
+\section{A-Coefficients as a Function of Energy}
+
+The {\cal A}-coefficients take the form
+%%
+\begin{eqnarray}
+  {\cal A}_b 
+  &=&  
+  {\cal A}^\smC_b + {\cal A}^{\Delta Q}_b 
+  ~~~\text{where}~~
+  {\cal A}^\smC_b 
+  =
+  {\cal A}^\smC_{b,\smS} +  {\cal A}^\smLT_{b,\smR} \ ,
+\label{all}
+\end{eqnarray}
+%%
+with
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smS}
+  &=& 
+  \frac{e_p^2\,\kappa^2_b}{4\pi} \,   
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\!\!
+  v_p\int_0^1 du \, u^{1/2} \,\exp\left\{ - \frac{1}{2} \,
+  \beta_b m_b v^2_p \, u \right\}
+\nonumber\\
+  && \qquad
+  \left[ -\ln \left(\beta_b  \frac{e_p e_b}{4\pi} \,
+  K \, \frac{m_b}{m_{pb}} \, \frac{u}{1-u} \right) 
+  - 2 \gamma + 2 \right] 
+\label{wonderclassic}
+\\[10pt]
+  {\cal A}^\smLT_{b,\smR}
+  &=&
+  \frac{e_p^2}{4 \pi}\, \frac{i}{2 \pi}
+  \int_{-1}^1 \! d\cos\theta\, \cos\theta\,
+  \frac{\rho_b(v_p\cos\theta)}
+  {\rho_{\rm total}(v_p\cos\theta)}\,F(v_p \cos\theta) 
+  \ln\!\left\{\frac{F(v_p\cos\theta)}{K^2}\right\} \,, 
+\label{nun}
+\\[10pt]
+  {\cal A}^{\Delta Q}_b
+  &=&
+  -\frac{e_p^2\, \kappa_b^2}{4 \pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\,
+  \frac{1}{2}\int_0^\infty dv_{pb}
+  \bigg\{ 2\, {\rm Re} \, \psi \left( 1 + i \eta_{pb}
+  \right) - \ln \eta^2_{pb}  \bigg\}
+\nonumber\\
+  &&
+  \frac{1}{\beta_b m_b v_p v_{pb}} \, 
+  \Bigg[ \exp\left\{ - \frac{1}{2}\, \beta_b
+  m_b \left( v_p - v_{pb} \right)^2\right\} 
+   \left( 1 - \frac{1}{\beta_b m_b v_p v_{pb} } \right) 
+\nonumber\\
+  && \qquad\qquad\quad
+  + \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_p + v_{pb} 
+  \right)^2\right\} 
+   \left( 1 + \frac{1}{\beta_b m_b v_p v_{pb} } \right) 
+\Bigg]	\,,
+\label{regb}
+\end{eqnarray}
+%% 
+and $\eta_{ab}=e_a e_b/4\pi\hbar v_{ab}$.
+Figures~\ref{fig:gr001}--\ref{fig:gr003} show the ${\cal A
+}$-coefficients for (i) $T_e = T_\smI=10\,{\rm keV}$, (ii) $T_e =
+10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$, and (iii) $T_e=100\,{\rm
+  keV}$ and $T_\smI=10\,{\rm keV}$ respectively, all with an electron
+number density $n_e=10^{25}\,{\rm cm^{-3}}$.
+
+
+%%
+\vskip-2.5cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr001.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Electron and ion components: $n_e=10^{25}\,{\rm cm^{-3}}$,
+  $T_e=10\,{\rm keV}$, $T_\smI=10\,{\rm keV}$. [gr001.f90, gr001.sm,
+  gr001.dat, gr001.eps] 
+%%
+}
+\label{fig:gr001}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr002.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Electron and ion components: $n_e=10^{25}\,{\rm cm^{-3}}$,
+  $T_e=10\,{\rm keV}$, $T_\smI=100\,{\rm keV}$. [gr002.f90, gr002.sm,
+  gr002.dat, gr002.eps] 
+%%
+}
+\label{fig:gr002}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr003.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Electron and ion components: $n_e=10^{25}\,{\rm cm^{-3}}$,
+  $T_e=100\,{\rm keV}$, $T_\smI=10\,{\rm keV}$. [gr003.f90, gr003.sm,
+  gr003.dat, gr003.eps] 
+%%
+}
+\label{fig:gr003}
+\end{figure}
+%%
+~~
+\vfill
+~~
+
+\pagebreak
+\section{Small Energy Asymptotic Behavior}
+
+In the small energy limit, the ${\cal A}$-coefficients become:
+%%
+\begin{eqnarray}
+  v_p \to 0 \,: 
+  {\cal A}_b(v_p) 
+  =  
+  \underbrace{~
+  \frac{e_p^2\,\kappa_b^2}{4\pi} 
+  ~}_{c_1}
+  ~
+  \underbrace{
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} v_p 
+  }_{c_2}
+  \cdot
+  \left\{ A_b^\smC + A_b^{\Delta Q} \right\} \,,
+\label{low}
+\end{eqnarray}
+%%
+with
+%%
+\begin{eqnarray}
+  A_b^\smC 
+  &=& 
+  \frac{2}{3} \left[ \ln \left( 
+  \frac{16\pi}{e_p e_b \, \beta_b \kappa_\smD} \, \frac{m_{pb}}{m_b}
+  \right ) - \frac{1}{2} - 2 \gamma \right]
+\label{classvzero}
+\\[5pt]
+  A_b^{\Delta Q} 
+  &=& 
+  -\bar\eta_{pb}^2 \,\int_0^\infty du \, u \, 
+  \exp\left\{ - \frac{3}{2} \bar\eta_{pb}^2 \, u^2 \right\}
+  \left[2 \,  {\rm Re} \, \psi\left( 1 + \frac{i}{u} \right) 
+  + \ln u^2 \right] \,,
+\label{Dq}
+\end{eqnarray}
+%%
+and $\bar \eta_{pb}=e_p e_b/4\pi \hbar \bar v_b$ (note: $\bar v_b^2 = 3 T_b/m_b$). 
+The small energy quantum contribution takes separate
+forms for electrons and ions:
+%%
+\begin{eqnarray}
+  {\bar\eta_{pe}}^2 \ll 1 \,:&&
+  A_e^{\Delta Q} \simeq  - \bar\eta_{pe}^2 \,
+  \int_0^\infty du \, u \, 
+  \exp\left\{ - \frac{3}{2} \bar\eta_{pe}^2 \, u^2 \right\}
+  \left[- 2 \, \gamma  + \ln u^2 \right] 
+  =
+  \frac{1}{3} \, \ln\left( \frac{3}{2} \,\bar\eta^2_{pe} \right)
+  + \gamma \,.
+\nonumber\\
+\\[10pt]
+{\bar\eta_{pi}}^2 \gg 1 \,:&&
+  A_i^{\Delta Q}
+  \simeq 
+  - \frac{\bar\eta_{pi}^2}{6} \,\int_0^\infty du \, u^3 \, 
+  \exp\left\{ - \frac{3}{2} \bar\eta_{pi}^2 \, u^2 \right\}
+  =  
+  - \frac{1}{27} \, {\bar\eta}_{pi}^{\, -2} \,.
+\end{eqnarray}
+%%
+The next figure illustrates the relative size of the classical
+contribution ${\cal A}^\smC$ and the total coefficient ${\cal A}={\cal
+A}^\smC + {\cal A}^\smQM$. for the density $n_e=10^{25}\,{\rm
+cm}^{-3}$. This gives us an idea of the size of the quantum
+contribution.
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr011.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  The classical contributions to the {\cal A}-coefficient, with the
+  total (classical + quantum) in black.  [gr001.f90, gr011.sm,
+  gr001.dat, gr011.eps] 
+%%
+}
+\label{fig:gr011}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsection{Ions: Classical and Quantum}
+
+For each of the three cases illustrated in
+Figs.~\ref{fig:gr001}--\ref{fig:gr003}, we will now look at the ion
+contributions for the classical and quantum cases.
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr031.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at low energies. [gr001.f90,
+  gr031.sm, gr001.dat, gr001.smallE.dat, gr031.eps] 
+%%
+}
+\label{fig:gr031}
+\end{figure}
+%%
+
+%%
+\vskip-2.0cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr051.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at low energies. [gr001.f90,
+  gr051.sm, gr001.dat, gr001.smallE.dat, gr051.eps] 
+%%
+}
+\label{fig:gr051}
+\end{figure}
+%%
+
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr032.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at low energies. [gr002.f90,
+  gr032.sm, gr002.dat, gr002.smallE.dat, gr032.eps] 
+%%
+}
+\label{fig:gr032}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr052.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at low energies. [gr002.f90,
+  gr052.sm, gr002.dat, gr002.smallE.dat, gr052.eps] 
+%%
+}
+\label{fig:gr052}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr033.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at low energies. [gr003.f90,
+  gr033.sm, gr003.dat, gr003.smallE.dat, gr033.eps] 
+%%
+}
+\label{fig:gr033}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr053.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at low energies. [gr003.f90,
+  gr053.sm, gr003.dat, gr003.smallE.dat, gr053.eps] 
+%%
+}
+\label{fig:gr053}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsection{Electrons: Classical and Quantum}
+
+For each of the three cases illustrated in
+Figs.~\ref{fig:gr001}--\ref{fig:gr003}, we will now look at the
+electron contributions for the classical and quantum cases.
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr021.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at low
+  energies. [gr001.f90, gr021.sm, gr001.dat, gr001.smallE.dat,
+  gr021.eps] 
+%%
+}
+\label{fig:gr021}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr041.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at low
+  energies. [gr001.f90, gr041.sm, gr001.dat, gr001.smallE.dat,
+  gr041.eps] 
+%%
+}
+\label{fig:gr041}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr022.eps} 
+\vskip-0.5cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at low
+  energies. [gr002.f90, gr022.sm, gr002.dat, gr002.smallE.dat,
+  gr022.eps] 
+%%
+}
+\label{fig:gr022}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr042.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at low
+  energies. [gr002.f90, gr042.sm, gr002.dat, gr002.smallE.dat,
+  gr042.eps] 
+%%
+}
+\label{fig:gr042}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr023.eps} 
+\vskip-0.5cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at low
+  energies. [gr003.f90, gr023.sm, gr003.dat, gr003.smallE.dat,
+  gr023.eps]
+%%
+}
+\label{fig:gr023}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr043.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at low
+  energies. [gr003.f90, gr043.sm, gr003.dat, gr003.smallE.dat,
+  gr043.eps] 
+%%
+}
+\label{fig:gr043}
+\end{figure}
+%%
+
+
+
+\pagebreak
+\subsection{Total Electron and Ion Contributions}
+
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr081.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at low energies. 
+ [gr001.f90, gr081.sm, gr001.dat, gr001.smallE.dat, gr081.eps] 
+%%
+}
+\label{fig:gr081}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr061.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution at low energies. 
+ [gr001.f90, gr061.sm, gr001.dat, gr001.smallE.dat, gr061.eps] 
+%%
+}
+\label{fig:gr061}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr082.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at low energies. 
+ [gr002.f90, gr082.sm, gr002.dat, gr002.smallE.dat, gr082.eps] 
+%%
+}
+\label{fig:gr082}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr062.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution at low energies. 
+ [gr002.f90, gr062.sm, gr002.dat, gr002.smallE.dat, gr062.eps] 
+%%
+}
+\label{fig:gr062}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm
+    keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr083.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at low energies. 
+ [gr003.f90, gr083.sm, gr003.dat, gr003.smallE.dat, gr083.eps] 
+%%
+}
+\label{fig:gr083}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr063.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution at low energies. 
+ [gr003.f90, gr063.sm, gr003.dat, gr003.smallE.dat, gr063.eps] 
+%%
+}
+\label{fig:gr063}
+\end{figure}
+%%
+
+\pagebreak
+\subsection{More Classical: The Singular and Regular Contributions}
+
+
+Up to now, we have not been dividing the classical piece into its
+singular and regular contributions. 
+%%
+\begin{eqnarray}
+  v_p \to 0 \,: 
+  {\cal A}_b(v_p) 
+  =  
+  \underbrace{~
+  \frac{e_p^2\,\kappa_b^2}{4\pi} 
+  ~}_{c_1}
+  ~
+  \underbrace{
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} v_p 
+  }_{c_2}
+  \cdot
+  \left\{ \Big(\bar A_{b,\smS}^\smCL + \bar A_{b,\smR}^\smLT \Big) 
+  + 
+  A_b^{\Delta Q} \right\} \,,
+\label{lowagain}
+\end{eqnarray}
+%%
+Since the code calculates the singular and regular pieces separately,
+let's explore their respective small energy asymptotics. These are
+given by Eq.~(9.8) on p.\,300 and Eq.~(7.34) on p\,(287) of BPS,
+respectively:
+%%
+\begin{eqnarray}
+  \bar A_{b,\smS}^\smCL
+  &=&
+  -\left(\frac{2}{3} - \frac{1}{5}\,\beta_b m_b\,v_p^2 \right)
+  \left[\ln\left\{ \frac{e_p \,e_b \beta_b \, K}{16\pi}\,
+  \frac{m_b}{m_{pb}}\right\} + 2 \gamma
+  \right] 
+  + 
+  \frac{2}{15}\,\beta_b m_b \, v_p^2  
+  +
+  {\cal O}(v_p^4)\ ;
+\label{classvzero_sing}
+\\[10pt]
+\nonumber
+  \bar A_{b,\smR}^\smLT
+  &=&
+  -\left(\frac{2}{3} - \frac{1}{5}\,\beta_b m_b\, v_p^2 \right)
+  \left[ \frac{1}{2} + \ln\left\{\frac{\kappa_\smD}{K} \right\}\, \right]
+  +
+  \frac{1}{5}{\sum}_c \frac{\kappa_c^2}{\kappa_\smD^2} \,
+  \beta_c m_c\, v_p^2 ~   -
+\\
+  && \hskip5cm 
+  \frac{\pi}{36}\, \left[ {\sum}_c \frac{\kappa_c^2}{\kappa_\smD^2} 
+  \left( \beta_c m_c\,v_p^2\right)^{1/2} \right]^2
+  + 
+  {\cal O}(v_p^4) \ .
+\label{classvzero_reg}
+\\[5pt]
+\end{eqnarray}
+%%
+To leading order in $v_p$ these expressions become, 
+%%
+\begin{eqnarray}
+  \bar A_{b,\smS}^\smCL
+  &=&
+  -\frac{2}{3}
+  \left[\ln\left\{ \frac{e_p \,e_b \beta_b \, K}{16\pi}\,
+  \frac{m_b}{m_{pb}}\right\} + 2 \gamma \right] 
+  +
+  {\cal O}(v_p^2)
+\label{classvzero_sing_lo}
+\\[10pt]
+  \bar A_{b,\smR}^\smLT
+  &=&
+  -\frac{2}{3}
+  \left[ \frac{1}{2} + \ln\left\{\frac{\kappa_\smD}{K} \right\}\, \right]
+  +  {\cal O}(v_p^2) \ ,
+\label{classvzero_reg_lo}
+\end{eqnarray}
+%%
+and upon adding them the $K$'s cancel and we return to (\ref{classvzero}).
+Keep the $v_p^2$ terms, we have the more precise expression (this is the one
+actually used in the code):
+%%
+\begin{eqnarray}
+  \bar A_{b,\smS}^\smCL
+  &=&
+  -\left(\frac{2}{3} - \frac{1}{5}\,\beta_b m_b\, v_p^2 \right)
+  \left[\ln\left\{ \frac{e_p \,e_b \beta_b \, K}{16\pi}\,
+  \frac{m_b}{m_{pb}}\right\} + 2 \gamma \right] 
+  + 
+  \frac{2}{15}\,\beta_b m_b \, v_p^2  
+  +
+  {\cal O}(v_p^4) 
+\label{classvzero_sing_nlo}
+\\[10pt]
+\nonumber
+  \bar A_{b,\smR}^\smLT
+  &=&
+  -\left(\frac{2}{3} - \frac{1}{5}\,\beta_b m_b\, v_p^2 \right)
+  \left[ \frac{1}{2} + \ln\left\{\frac{\kappa_\smD}{K} \right\}\, \right]
+  +
+  \frac{1}{5}{\sum}_c \frac{\kappa_c^2}{\kappa_\smD^2} \,
+  \beta_c m_c\, v_p^2 ~   -
+\\
+  && \hskip5cm 
+  \frac{\pi}{36}\, \left[ {\sum}_c \frac{\kappa_c^2}{\kappa_\smD^2} 
+  \left( \beta_c m_c\,v_p^2\right)^{1/2} \right]^2
+  + 
+  {\cal O}(v_p^4) \ ,
+\label{classvzero_reg_nlo}
+\end{eqnarray}
+%%
+%%
+\begin{eqnarray}
+\nonumber
+  \bar A_b^\smCL
+  =
+  \bar A_{b,\smS}^\smCL
+  +
+  \bar A_{b,\smR}^\smLT
+  &=&
+  -\left(\frac{2}{3} - \frac{1}{5}\,\beta_b m_b\, v_p^2 \right)
+  \left[\ln\left\{ \frac{e_p \,e_b \beta_b \, \kappa_\smD}{16\pi}\,
+  \frac{m_b}{m_{pb}}\right\} + \frac{1}{2} + 2 \gamma \right] 
+  + 
+  \frac{2}{15}\,\beta_b m_b \, v_p^2  
+\\
+  && \hskip5cm 
+  \frac{\pi}{36}\, \left[ {\sum}_c \frac{\kappa_c^2}{\kappa_\smD^2} 
+  \left( \beta_c m_c\,v_p^2\right)^{1/2} \right]^2
+  + 
+  {\cal O}(v_p^4) \ .
+\nonumber
+\\
+\end{eqnarray}
+%%
+
+
+\pagebreak
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr034.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic singular ion contribution at low energies. 
+  [gr004.f90, gr004.dat, gr004.smallE.dat, gr104.sm]
+%%
+}
+%\label{fig:gr034}
+\end{figure}
+%%
+
+
+\pagebreak
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr054.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic regular ion contribution at low energies. 
+  *** [gr001.f90, gr034.sm, gr001.dat, gr001.highE.dat, gr034.eps] ***
+%%
+}
+%\label{fig:gr054}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr034.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic singular electron contribution at low energies. 
+  *** [gr001.f90, gr034.sm, gr001.dat, gr001.highE.dat, gr034.eps] ***
+%%
+}
+%\label{fig:gr034}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr054.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic regular electron contribution at low energies. 
+  *** [gr001.f90, gr034.sm, gr001.dat, gr001.highE.dat, gr034.eps] ***
+%%
+}
+%\label{fig:gr054}
+\end{figure}
+%%
+
+
+
+\pagebreak
+\section{High Energy Asymptotic Behavior}
+
+\subsection{Ions: Classical and Quantum}
+
+We will look at ion contributions before looking at the electrons
+(this is because there are two high energy electron regimes).  For
+high energy $E \gg T$, the ion contribution to the ${\cal
+A}$-coefficient becomes
+%%
+\begin{eqnarray}
+  E_p \gg T :
+  {\cal A}_\smI^\smC &=& 
+  \frac{e_p^2}{4\pi}\, \frac{1}{v_p^2} \,
+  {\sum}_i \omega_i^2 \left[
+  -\ln\left\{\frac{e_p e_i \kappa_e}{16\pi}\, 
+  \frac{2}{m_{pi} v_p^2} \right\} - \gamma - \frac{1}{2}
+  \right] 
+  ~~\text{[(B36) in text]}
+\label{highIa}
+\\[5pt]
+  {\cal A}_\smI^\smQM &=& 
+  \frac{e_p^2}{4\pi}\, \frac{1}{v_p^2} \,
+  {\sum}_i \omega_i^2 \left[
+  -\ln\left\{\frac{\hbar \kappa_e}{2 m_{pi} v_p} \right\}  - \frac{1}{2}
+  \right] \ .
+\label{highIb}
+\end{eqnarray}
+%% 
+To see this, note that the classical singular ion contribution at high
+energy is given by (B40) [v3.6]:
+%%
+\begin{eqnarray}
+  && E_p \gg T ~~~ \eta_{pi} = \frac{e_p e_i}{4\pi\hbar v_p} \gg 1:
+\nonumber \\[5pt]
+  &&
+  {\cal A}^\smC_{i,\smS} 
+  = 
+  -\frac{e_p^2}{4\pi}\, \frac{\omega_i^2}{v_p^2}\,
+  \left[
+  \ln\!\left\{ \frac{e_p \,e_i}{16\pi}\,\frac{2 \kappa_e}{m_{p i}
+    v_p^2} \right\} + \gamma 
+  \right]
+  ~~~\text{[(B40) in text]}
+%\\[5pt]
+%  &&
+%  {\cal A}^\smC_{e,\smS} 
+%  = 
+\end{eqnarray}
+%%
+The regular high energy asymptotic ion term is
+%%
+\begin{eqnarray}
+  && E_p \gg T\,\ln\!\left\{ \frac{m_\smI T_e^3}{m_e T_\smI^3} \right\}
+\nonumber \\[5pt]
+  &&
+  {\cal A}^\smC_{i,\smR} 
+  =
+  - \frac{e_p^2}{4\pi}\, \frac{\omega_i^2}{2 v_p^2} 
+  ~~~\text{ [(B34) in text w/o sum]}
+  \ .
+\end{eqnarray}
+%%
+The asymptotic quantum piece is given by subtracting (B36) for the
+singular contribution from (B42) [the singular + quantum], to give
+%%
+\begin{eqnarray}
+  && E_p \gg T : ~~ \eta_{pi}=\frac{e_p e_i}{4\pi\hbar\,v_p}
+\nonumber \\[5pt]
+  &&
+  {\cal A}^\smQM_i
+  = 
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}\bigg[
+  \ln \eta_{pi}  +\gamma \bigg] 
+  ~~\text{note:}~
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}
+  =
+  \frac{e_p^2\, \kappa_i^2}{4\pi}\,\frac{\omega_i^2}{\kappa_i^2 v_p^2}
+  =
+  \frac{e_p^2\, \kappa_i^2}{4\pi}\,\frac{1}{m_i \beta_i v_p^2}
+  \ .
+\end{eqnarray}
+%%
+The algebra is:
+%%
+\begin{eqnarray}
+  {\cal A}^\smQM_i
+  &=& {\rm (B42)} - {\rm (B36)}
+\\
+  &=&
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}\left[
+  \ln\!\left\{\frac{2 m_{pi} v_p}{\hbar \kappa_e} \right\}
+  \right]
+  -
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}\left[
+  -\ln\!\left\{\frac{e_p e_i \kappa_e}{16\pi}\,
+  \frac{2}{m_{pi} v_p^2} \right\}
+  -\gamma
+  \right]
+\\
+  &=&
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}\left[
+  \ln\!\left\{\frac{2 m_{pi} v_p}{\hbar \kappa_e} \cdot
+  \frac{e_p e_i \kappa_e}{16\pi}\,
+  \frac{2}{m_{pi} v_p^2} \right\}
+  +\gamma
+  \right]
+\\
+  &=&
+  \frac{e_p^2}{4\pi}\,\frac{\omega_i^2}{v_p^2}\left[
+  \ln\!\left\{
+  \frac{e_p e_i}{4\pi\, \hbar v_p}\,
+  \right\}
+  +\gamma
+  \right] \ .
+\end{eqnarray}
+%%
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr034.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at high energies. [gr001.f90,
+  gr034.sm, gr001.dat, gr001.highE.dat, gr034.eps] 
+%%
+}
+\label{fig:gr034}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr054.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at high energies. [gr001.f90,
+  gr054.sm, gr001.dat, gr001.highE.dat, gr054.eps] 
+%%
+}
+\label{fig:gr054}
+\end{figure}
+%%
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr035.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at high energies. [gr002.f90,
+  gr035.sm, gr002.dat, gr002.highE.dat, gr035.eps] 
+%%
+}
+\label{fig:gr035}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr055.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at high energies. [gr002.f90,
+  gr055.sm, gr002.dat, gr002.highE.dat, gr055.eps] 
+%%
+}
+\label{fig:gr055}
+\end{figure}
+%%
+
+\pagebreak
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr036.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical ion contribution at high energies. [gr003.f90,
+  gr036.sm, gr003.dat, gr003.highE.dat, gr036.eps] 
+%%
+}
+\label{fig:gr036}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr056.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum ion contribution at high energies. [gr003.f90,
+  gr056.sm, gr003.dat, gr003.highE.dat, gr056.eps] 
+%%
+}
+\label{fig:gr056}
+\end{figure}
+%%
+
+\pagebreak
+\subsection{Electrons: Classical and Quantum}
+
+The high energy electron regime is broken into two widely separated
+scales, one given by $T$ and the other by $m_\smI T/m_e$. In the 
+high-intermediate energy regime, 
+%%
+\begin{eqnarray}
+  && \hskip-1.5cm 
+  \frac{m_\smI}{m_e}\,T \gg E_p \gg T : 
+  ~~~\text{DT plasma at 10\,keV $\Rightarrow$ $\frac{m_{\smI \,,\,{\rm
+  av}}}{m_e}\, T = \frac{2.5\,{\rm GeV}}{10\,{\rm keV}}=2.5\,{\rm MeV}$. }
+\nonumber
+\\[3pt]
+  {\cal A}_{e, \smR}^\smLT 
+  &=& 
+  -\frac{e_p^2\, \kappa_e^2}{4\pi}\, 
+  \left(\frac{\beta_e m_e}{2\pi} \right)^{1/2}
+  \frac{v_p}{3}
+  \left[ \ln\left\{ \frac{\kappa_e^2}{K^2}\right\}+1 \right]
+  ~~~\text{[ (B51) in text]} 
+\label{Aea}
+\\[10pt]
+  {\cal A}_{e, \,\smS}^\smC  + {\cal A}_e^\smQM
+  &=&
+  \frac{e_p^2\, \kappa_e^2}{4\pi}\, 
+  \left(\frac{\beta_e m_e}{2\pi} \right)^{1/2}
+  \frac{v_p}{3}
+  \left[ \ln\left\{ \frac{8 T_e m_{pe}^2}{m_e \hbar^2 K^2}\right\} - \gamma \right]
+  ~~~\text{[ (B55) in text]}  
+\label{Aeb}
+\\[10pt]
+  {\cal A}_e &=& 
+  {\cal A}_{e, \smR}^\smLT + {\cal A}_{e, \,\smS}^\smC  
+  + {\cal A}_e^\smQM
+\nonumber
+\\
+  &=&
+  \frac{e_p^2\, \kappa_e^2}{4\pi}\, 
+  \left(\frac{\beta_e m_e}{2\pi} \right)^{1/2}
+  \frac{v_p}{3}
+  \left[ \ln\left\{ \frac{8 T_e m_{pe}^2}{m_e \hbar^2 \kappa_e^2}\right\} 
+  - \gamma  -1\right]
+  ~~~\text{[ (B56) in text]}  \ ,
+\label{Aec}
+\end{eqnarray}
+%% 
+and in the extreme high energy regime, 
+%%
+\begin{eqnarray}
+  && \hskip-1.5cm 
+  E_p \gg \frac{m_\smI}{m_e}\,T :
+\nonumber
+\\[5pt]
+  {\cal A}_e &=& 
+  \frac{e_p^2}{4\pi}\,\frac{\omega_e^2}{v_p^2}\,
+  \ln\left\{\frac{2 m_{pe} v_p^2}{\hbar \omega_e} \right\}
+  ~~~\text{[ (B58) in text]}  \ .
+\end{eqnarray}
+%% 
+We now have the total electron contribution ${\cal A}_e$ in the
+extreme and intermediate high energy regimes; however, I will have to
+calculate ${\cal A}_e^\smQM$ later since the text does not give ${\cal
+A}_{e,\,\smS}^\smC$ (as it did for the ions).  
+
+I will use the coding notation: 
+%%
+\begin{eqnarray}
+  a_b 
+  &=&
+  \frac{1}{2}\, \beta_b m_b v_p^2
+  =
+\frac{1}{2}\, \beta_b\, m_b c^2 \,\left( v_p^2/c^2\right)
+\\[5pt]
+  c_2 
+  &=& 
+  \left(\frac{a_e}{\pi}\right)^{1/2} 
+  =
+  \left( \frac{\beta_e m_e}{2\pi}\right)^{1/2}v_p
+  =
+  \left( \frac{\beta_e\, m_e c^2}{2\pi}\right)^{1/2} \frac{v_p}{c}
+\\[5pt]
+  c_1 
+  &=&
+  \frac{e_p^2 \, \kappa_e^2}{4\pi}
+  =
+  Z_p^2 \cdot \frac{e^2}{8\pi a_0} \cdot 2 a_0 \cdot \kappa_e^2
+  =
+  2 Z_p^2 \, B_e\, \kappa_e^2 a_0 \ .
+\end{eqnarray}
+%% 
+For coding purposes, the extreme high energy electron contribution can
+then be written,
+%%
+\begin{eqnarray}
+  {\cal A}_e
+  &=&
+  c_1 \, \frac{\omega_e^2}{\kappa_e^2\,v_p^2}
+  \ln\left\{ \frac{2 \,(m_{pe} c^2) v_p^2}{(\hbar c)\, c\,
+  \omega_e}\right\} 
+  =
+  \frac{c_1}{\beta_e m_e v_p^2}
+  \ln\left\{ \frac{2 \,(m_{pe} c^2) v_p^2}{(\hbar c)\, c\,
+  \omega_e}\right\} 
+\\
+  &=&
+  \frac{c_1}{2 a_e}
+  \ln\left\{ \frac{2 \,(m_{pe} c^2) v_p^2}{(\hbar c)\, c\,
+  \omega_e}\right\} 
+  ~~~\text{(B58)} \ ,
+\end{eqnarray}
+%% 
+and the intermediate high energy form is
+%%
+\begin{eqnarray}
+  {\cal A}_e
+  &=&
+  \frac{c_1\,c_2}{3}
+  \left[ \ln\left\{ \frac{8 T_e\, (m_{pe} c^2)^2}{(m_e c^2) (\hbar c)^2\, \kappa_e^2}\right\} 
+  - \gamma  -1\right]
+  ~~~\text{(B56)} \ .
+\end{eqnarray}
+%% 
+
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr024.eps} !
+%\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at high
+  energies. [gr001.f90, gr024.sm, gr001.dat, 
+  gr001.highE.dat, gr024.eps]
+%%
+}
+\label{fig:gr024}
+\end{figure}
+%%
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr044.eps} !
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at high
+  energies. [gr001.f90, gr044.sm, gr001.dat, gr001.highE.dat,
+  gr044.eps]
+%%
+}
+\label{fig:gr044}
+\end{figure}
+%%
+
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr025.eps} !
+%\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at high
+  energies. [gr002.f90, gr025.sm, gr002.dat, 
+  gr002.highE.dat, gr025.eps]
+%%
+}
+\label{fig:gr025}
+\end{figure}
+%%
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr045.eps} !
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at high
+  energies. [gr002.f90, gr045.sm, gr002.dat, gr002.highE.dat,
+  gr045.eps]
+%%
+}
+\label{fig:gr045}
+\end{figure}
+%%
+
+
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr026.eps} !
+%\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic classical electron contribution at high
+  energies. [gr003.f90, gr026.sm, gr003.dat, 
+  gr003.highE.dat, gr026.eps]
+%%
+}
+\label{fig:gr026}
+\end{figure}
+%%
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+%\includegraphics[scale=0.45]{gr046.eps} !
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Asymptotic quantum electron contribution at high
+  energies. [gr003.f90, gr046.sm, gr003.dat, gr003.highE.dat,
+  gr046.eps]
+%%
+}
+\label{fig:gr046}
+\end{figure}
+%%
+
+
+\pagebreak
+\subsection{Total Electron and Ion Contributions}
+
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr084.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at high energies. [gr001.f90,
+  gr084.sm, gr001.dat, gr001.highE.dat, gr084.eps] 
+%%
+}
+\label{fig:gr084}
+\end{figure}
+%%
+
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr064.eps}
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B58) at very high
+  energies. [gr001.f90, gr064.sm, gr001.dat, gr001.very.highE.dat,
+  gr064.eps] 
+%%
+}
+\label{fig:gr064}
+\end{figure}
+%%
+
+
+\pagebreak
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr264.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) at medium high
+  energies.  [gr001.f90, gr264.sm, gr001.dat, gr001.highE.dat,
+  gr264.eps] 
+%%
+}
+\label{fig:gr264}
+\end{figure}
+%%
+
+%%
+%\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr164.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) and (B58).  [gr001.f90,
+  gr164.sm, gr001.dat, gr001.highE.dat, gr001.very.highE.dat, gr164.eps] 
+%%
+}
+\label{fig:gr164}
+\end{figure}
+%%
+
+
+\vfill
+
+\pagebreak
+\subsubsection{Temperatures $T_e=10\,{\rm keV}$ and $T_\smI=100\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr085.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at high energies. [gr002.f90,
+  gr085.sm, gr002.dat, gr002.highE.dat, gr085.eps] 
+%%
+}
+\label{fig:gr085}
+\end{figure}
+%%
+
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr065.eps}
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B58) at very high
+  energies. [gr002.f90, gr065.sm, gr002.dat, gr002.highE.dat, gr065.eps] 
+%%
+}
+\label{fig:gr065}
+\end{figure}
+%%
+
+
+\pagebreak
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr265.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) at medium high
+  energies. [gr002.f90, gr265.sm, gr002.dat, gr002.highE.dat,
+  gr265.eps] 
+%%
+}
+\label{fig:gr265}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr165.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) and (B58).  [gr002.f90,
+  gr165.sm, gr002.dat, gr002.highE.dat, gr002.very.highE.dat, gr165.eps] 
+%% 
+}
+\label{fig:gr165}
+\end{figure}
+%%
+
+
+
+
+\pagebreak
+\subsubsection{Temperatures $T_e=100\,{\rm keV}$ and $T_\smI=10\,{\rm keV}$}
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr086.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic ion contribution at high energies. [gr003.f90,
+  gr086.sm, gr003.dat, gr003.highE.dat, gr086.eps] 
+%%
+}
+\label{fig:gr086}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr066.eps}
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B58) at very high
+  energies. [gr003.f90, gr066.sm, gr003.dat, gr003.very.highE.dat,
+  gr066.eps] 
+%%
+}
+\label{fig:gr066}
+\end{figure}
+%%
+
+
+
+\pagebreak
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr266.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) at medium high
+  energies.  [gr003.f90, gr266.sm, gr003.dat, 
+  gr003.highE.dat, gr266.eps] 
+%%
+}
+\label{fig:gr266}
+\end{figure}
+%%
+
+%%
+\vskip-2cm 
+\begin{figure}[h!]
+\includegraphics[scale=0.45]{gr166.eps} 
+\vskip-0.8cm 
+\caption{\footnoteskip  
+%%
+  Total asymptotic electron contribution (B56) at medium high
+  energies.  [gr003.f90, gr166.sm, gr003.dat, 
+  gr003.highE.dat, gr003.very.highE.dat, gr166.eps] 
+%%
+}
+\label{fig:gr166}
+\end{figure}
+%%
+
+
+
+\vfill
+\pagebreak
+\appendix
+\section{Coding the A-coefficients}
+
+\subsection{The Singular Contribution}
+
+The singular contribution,
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smS} 
+  &=& 
+  \left[
+  \frac{e_p^2\, \kappa_b^2}{4\pi}
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p
+  \right]
+  \int_0^1 du\, u^{1/2} e^{-\frac{1}{2}\, \beta_b m_b v_p^2 \,u}
+  \left[-\ln\!\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\,\frac{u}{1-u} \right\} 
+  -2\gamma + 2
+  \right] ,
+\nonumber\\
+\end{eqnarray}
+%%
+is quite easy to code. The integral can be broke into the pieces
+%%
+\begin{eqnarray}
+  \int_0^1 du\, u^{1/2} e^{-\frac{1}{2}\, \beta_b m_b v_p^2 \,u}
+  \Bigg[\ln\!\left\{\frac{u}{1-u} \right\} 
+  -\ln\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\right\} 
+  -2\gamma + 2 \Bigg] \ ,
+\end{eqnarray}
+%%
+which motivates the definition
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smS} 
+  &=& 
+  c_{b, 1}\, c_{b, 2} 
+  \cdot 
+  {\sf A}_\smS(a_{pb},b_{pb})
+\\
+  {\sf A}_\smS(a,b)
+  &=&
+  \int_0^1 du\, u^{1/2} e^{-a \,u}
+  \left[-\ln\!\left\{\frac{u}{1-u} \right\} + b \right]
+\\
+  a_{pb} &=& \frac{1}{2}\, \beta_b m_b v_p^2
+  \hskip1cm 
+  \text{and}
+  \hskip1cm 
+  b_{pb} =
+  -\ln\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
+  \frac{m_b}{m_{pb}}\right\} -2\gamma + 2 
+\\
+  c_{b, 1} &=& \frac{e_p^2\, \kappa_b^2}{4\pi}
+  ~~~~
+  c_{b, 2} =
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! v_p  \ .
+\end{eqnarray}
+%%
+The term involving $b$ can be integrated exactly, but we will use
+Gaussian quadrature for both pieces. 
+
+\vskip0.4cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+    FUNCTION dab_sing(u, a, b)
+      IMPLICIT NONE  ! a=(1/2)*beta*mpc2*vp^2/C^2
+      REAL,        INTENT(IN)  :: u ! [dimensionless]
+      REAL,        INTENT(IN)  :: a ! [dimensionless] 
+      REAL,        INTENT(IN)  :: b ! [dimensionless]
+      REAL                     :: dab_sing ! [dimensionless]
+      dab_sing=SQRT(u)*EXP(-a*u)*(-LOG(u/(1-u)) + b)
+    END FUNCTION dab_sing
+\end{verbatim}
+}
+
+\noindent
+The numerical integration is performed by Gaussian quadrature:
+\vskip0.4cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      SUBROUTINE a_sing(a, b, ac_s)
+        REAL,    INTENT(IN)  :: a
+        REAL,    INTENT(IN)  :: b
+        REAL,    INTENT(OUT) :: ac_s
+        REAL                 :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NS=1000            ! integration regions singular: must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+           ac_s=0
+           u0=0
+           u1=1
+           du=(u1-u0)/NS
+           u=u0-du
+           DO iu=1,NS,2 ! Gaussian quadrature
+              u=u+2.E0*du
+              ac_s=ac_s+W2*dab_sing(u,a,b)
+              um=u-du*UPM
+              ac_s=ac_s+W13*dab_sing(um,a,b)
+              um=u+du*UPM
+              ac_s=ac_s+W13*dab_sing(um,a,b)
+           ENDDO
+           ac_s=ac_s*du
+      END SUBROUTINE a_sing
+\end{verbatim}
+}
+
+
+\pagebreak
+\subsection{The Regular Contribution}
+
+
+The long-distance regular contribution can be expressed as
+%%
+\begin{eqnarray}
+  {\cal A}^\smLT_{b,\smR} 
+  &=&
+  \frac{e_p^2}{4\pi}
+  \frac{i}{2\pi} \int_{-1}^1 du\,u\,
+  \frac{\rho_b(v_p u)}{\rho_\text{total}(v_p u)}\,
+  F(v_p u) \ln \left\{ \frac{F(v_p u)}{K^2} \right\}
+\\[5pt]
+  &=&
+  \frac{e_p^2}{4\pi}
+  \frac{i}{2\pi} \int_0^1 du\,u\,
+  \frac{\rho_b(v_p u)}{\rho_\text{total}(v_p u)}\,
+  \left[
+  F(v_p u) \ln \left\{ \frac{F(v_p u)}{K^2} \right\}
+  -
+  F^*(v_p u) \ln \left\{ \frac{F^*(v_p u)}{K^2} \right\}
+  \right]
+\\[5pt]
+  &=&
+  -\frac{e_p^2}{4\pi}
+  \frac{1}{2\pi} \int_0^1 du\,u\,
+  \frac{\rho_b(v_p u)}{\rho_\text{total}(v_p u)}\, H(v_p u) \ ,
+\end{eqnarray}
+%%
+where we have defined
+%%
+\begin{eqnarray}
+  H(v) 
+  &\equiv&
+  -i\left[
+  F(v) \ln\!\left\{ \frac{F(v)}{K^2}\right\} -
+  F^*(v)\ln\!\left\{\frac{F^*(v)}{K^2} \right\}\right]
+  =
+  2\left[
+  F_\smRe\, {\rm arg}\{F\}
+  +
+  F_{\smIm} \ln\!\left\{\frac{\vert F \vert}{K^2}\right\}
+   \right] \ .
+\nonumber\\
+\label{Hbagain}
+\end{eqnarray}
+%%
+We shall factor out a dimensionfull wavenumber $K$ and define
+dimensionless quantities $\mathbb{F}(v)$ and $\mathbb{H}(v)$
+through
+%%
+\begin{eqnarray}
+  F(v) &=& K^2\,  \mathbb{F}(v) 
+  ~~~\text{and}~~~
+  H(v) = K^2\,  \mathbb{H}(v) \ .
+\end{eqnarray}
+%%
+Defining the parameters
+%%
+\begin{eqnarray}
+  a_c
+  &\equiv&
+  \left(\frac{\beta_c m_c}{2} \right)^{1/2}
+\\[5pt]
+  \bar\kappa_c^2 
+  &\equiv &
+  \frac{\kappa_c^2}{K^2} 
+\end{eqnarray}
+%%
+gives the real and imaginary parts of $\mathbb{F}$, 
+%%
+\begin{eqnarray}
+  \mathbb{F}_\smRe(\{a_c v\},\{\bar\kappa_c\}) &=& 
+  {\sum}_c \bar\kappa_c^2 \Big(1 - 2 a_c\, v\,{\rm daw}\{a_c\, v\}\Big)
+\label{defFreA}
+\\[5pt]
+  \mathbb{F}_\smIm(\{a_c v\},\{\bar\kappa_c\}) &=& 
+  \sqrt{\pi}\,{\sum}_c \bar\kappa_c^2\,a_c v\, e^{-a_c^2\, v^2} \ .
+\label{defFimA}
+\end{eqnarray}
+%%
+The ratio of weighting factors can be written
+%%
+\begin{eqnarray}
+  \frac{\kappa_b^2}{K^2}\,
+  \mathbb{R}_b(\{ (u\,\beta_c m_c v_p^2/2)^{1/2}\, \}) \equiv
+  \frac{\rho_b(v_p u)}{\rho_\text{total}(v_p u)}
+  &=&
+  \frac{
+  \kappa_b^2 \left(\beta_b m_b/2\pi\right)^{1/2} \,v_p u\,
+  e^{-\frac{1}{2}\,\beta_b m_b v_p^2\, u^2}}
+  {{\sum}_c\kappa_c^2 \left(\beta_c m_c/2\pi\right)^{1/2} 
+  \, v_p u\,  e^{-\frac{1}{2}\,\beta_c m_c v_p^2\, u^2}}
+\\[5pt]
+  &=&
+  \left[
+  {\sum}_c \, \frac{\kappa_c^2}{\kappa_b^2} 
+  \left(\frac{\beta_c m_c}{\beta_b m_b}\right)^{1/2} 
+  e^{\frac{1}{2}\,(\beta_b m_b-\beta_c m_c) v_p^2\, u^2}
+  \right]^{-1} \ ,
+\nonumber \\ 
+\end{eqnarray}
+%%
+or
+%%
+\begin{eqnarray}
+  \mathbb{R}_b(\{ (u\,\beta_c m_c v_p^2/2)^{1/2}\, \}) 
+  =
+  \left[
+  {\sum}_c \, \frac{\kappa_c^2}{K^2} 
+  \left(\frac{\beta_c m_c}{\beta_b m_b}\right)^{1/2} 
+  e^{\frac{1}{2}\,(\beta_b m_b-\beta_c m_c) v_p^2\, u^2}
+  \right]^{-1} \ .
+\end{eqnarray}
+%%
+We can now express the regular piece as
+%%
+\begin{eqnarray}
+  {\cal A}^\smC_{b,\smR}
+  &=& 
+  \underbrace{
+  \left[
+  \frac{e_p^2\, \kappa_b^2}{4\pi}\,
+  \right] 
+  }_{c_{b,1}}
+  \cdot \,
+  {\sf A}_\smR(v_p,\{a_c\},\{\bar\kappa_c\})
+\\
+  {\sf A}_{b\,\smR}(v_p,\{a_c\},\{\bar\kappa_c\})
+  &=&
+  \int_0^1 du\, 
+  \underbrace{
+  \mathbb{R}_b(\{a_c v_p u\})\,
+  \mathbb{H}(\{a_c\,v_p u\},\{\bar\kappa_c\})  
+  }_{\rm dab\_reg}
+  \ .
+\end{eqnarray}
+%%
+
+\vskip0.4cm
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      FUNCTION dab_reg(u, vp, ib, nni, k2, kb2, betab, mb)
+      USE mathvars
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u       !  [dimensionless]
+        REAL,                        INTENT(IN)  :: vp      !  Projectile velocity [cm/s]
+        INTEGER,                     INTENT(IN)  :: ib      !  Species number
+        INTEGER,                     INTENT(IN)  :: nni     !  Number of ion species
+        REAL,                        INTENT(IN)  :: k2      !  Wavenumber squared [1/cm^2]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: kb2     !  Debye wavenumber squared [1/cm^2]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab   !  Temperature array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb      !  Mass array [keV]
+        REAL                                     :: dab_reg !  [dimensionless]
+        REAL,    DIMENSION(1:nni+1) :: alfb, ab
+        REAL                        :: fr, fi, fabs, farg, h
+        REAL                        :: kcb, r_ib, bm_ic, bm_ib, a_ic, a_ib, ex, au
+        INTEGER                     :: ic
+        ab=SQRT(0.5*betab*mb)*vp/CC
+        alfb=kb2/k2
+        CALL frfi(u,nni,alfb,ab,fr,fi,fabs,farg)
+        h=2*(fr*farg + fi*LOG(fabs))
+!
+! construct spectral weight ratio Rb=rho_b/rho_tot
+!
+        r_ib=0
+        bm_ib=betab(ib)*mb(ib)
+        a_ib =ab(ib)*ab(ib)
+        DO ic=1,nni+1
+           kcb=kb2(ic)/k2
+           bm_ic=betab(ic)*mb(ic)
+           a_ic =ab(ic)*ab(ic)
+           IF (ic == ib) THEN
+              ex=1
+           ELSE
+              au=(a_ic-a_ib)*u
+              ex=EXP(-au)
+           ENDIF
+           r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
+        ENDDO      
+        r_ib=1/r_ib
+        dab_reg=-u*r_ib*h/TWOPI
+      END FUNCTION dab_reg
+\end{verbatim}
+}
+
+\noindent
+The numerical integration is performed by Gaussian quadrature:
+\vskip0.4cm
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      SUBROUTINE a_reg(ib, nni, vp, k2, kb2, betab, mb, ac_r)
+        INTEGER,                     INTENT(IN)  :: ib
+        INTEGER,                     INTENT(IN)  :: nni 
+        REAL,                        INTENT(IN)  :: k2
+        REAL,                        INTENT(IN)  :: kb2
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb
+        REAL,                        INTENT(OUT) :: ac_r
+        REAL               :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NR=10            ! integration regions singular: must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        ac_r=0
+        u0=0.
+        u1=1.
+        du=(u1-u0)/NR
+        u=u0-du
+        DO iu=1,NR,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           ac_r=ac_r+W2*dab_reg(u,vp,ib,nni,k2,kb2,betab,mb)
+           um=u-du*UPM
+           ac_r=ac_r+W13*dab_reg(um,vp,ib,nni,k2,kb2,betab,mb)
+           um=u+du*UPM
+           ac_r=ac_r+W13*dab_reg(um,vp,ib,nni,k2,kb2,betab,mb)
+        ENDDO
+        ac_r=ac_r*du
+      END SUBROUTINE a_reg
+\end{verbatim}
+}
+
+
+\pagebreak
+\subsection{Quantum Contribution}
+
+For the quantum term we make the change of variables
+$v_{pb}= v_p\,u$ so that
+%%
+\begin{eqnarray}
+  {\cal A}^\smQM_b
+  &\!=\!&  
+  -\frac{e_p^2\, \kappa_b^2}{4\pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \int_0^\infty du\, 
+  \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\bar\eta_{pb}}{u}
+  \right\}
+  - \ln\!\left\{\frac{\bar\eta_{pb}}{u} \right\} \Big] 
+  \frac{1}{\beta_b m_b v_p^2\,u}
+\nonumber
+\\ &&
+  \Bigg[ e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u-1)^2} 
+  \left(1 - \frac{1}{\beta_b m_b v_p^2\, u}\right) +
+  e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u+1)^2}  
+  \left(1 + \frac{1}{\beta_b m_b v_p^2\, u}\right)
+  \Bigg] \ .
+\end{eqnarray}
+%%
+The quantum function we need to code is therefore
+%%
+\begin{eqnarray}
+  {\cal A}^\smQM_b
+  &\!=\!&  
+  \underbrace{
+  \left[\frac{e_p^2\, \kappa_b^2}{4\pi}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \right] 
+  }_{c_{b, 1} \cdot c_{b, 2}}
+  \cdot \,
+  {\sf A}_1^\smQM(a_{pb}, \tilde\eta_{pb}) \ ,
+\label{qmA}
+\end{eqnarray}
+%%
+where the arguments of the function are defined by 
+%%
+\begin{eqnarray}
+  a_{pb} 
+  &=& 
+  \frac{1}{2}\,\beta_b m_b\, v_p^2
+\\
+  \tilde\eta_{pb}
+  &=& 
+  \frac{e_p e_b}{4 \pi \hbar v_p}
+  =
+  \vert Z_p Z_b\vert\,\frac{e^2}{8 \pi a_0}\,\frac{2 a_0}{\hbar}\,
+  \frac{1}{v_p}
+  =
+  \vert Z_p Z_b\vert\ \cdot 13.606\,{\rm eV}\,\cdot
+  \frac{2 \cdot 5.29 \times 10^{-9}\,{\rm cm}}{6.5821 \times
+  10^{-16}\,{\rm eV\,s}}\,
+  \frac{1}{v_p}
+\nonumber
+\\
+  &=&
+  2.1870 \times 10^8 \, \frac{\vert Z_p Z_b\vert}{v_p
+  \cdot ({\rm cm/s})^{-1}} \ ,
+\end{eqnarray}
+%%
+and the function itself takes the form
+%%
+\begin{eqnarray}
+  {\sf A}_1^\smQM(a,\eta)
+  &\!=\!&  
+  -\int_0^\infty \! du\, 
+  \left[{\rm Re}\,\psi\! \left\{1 + i\, \frac{\eta}{u} \right\} - 
+  \ln\left\{ \frac{\eta}{u}  \right\} \right]
+\nonumber
+\\ && 
+  \frac{1}{2 a\,u}\left[\left(e^{-a(u-1)^2} + e^{-a(u+1)^2} \right) 
+  - \frac{e^{-a(u-1)^2} - e^{-a(u+1)^2} } {2 a\, u}\right] \ .
+\label{qmAB}
+\end{eqnarray}
+
+
+\vskip1cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+      FUNCTION daq(u, a, eta)
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL                                     :: daq  ! [dimensionless]
+        REAL, PARAMETER :: AMAX=25.
+        REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh
+        eu=eta/u 
+        psilog=repsi(eu) - LOG(eu)
+        au =2*a*u
+        au2=a*u*u
+        IF (a <= AMAX) THEN      
+          ch =EXP(-au2)*COSH(au)
+          sh =EXP(-au2)*SINH(au)
+        ELSE
+          ap = au-au2-a
+          am =-au-au2-a
+          ch =0.5*(EXP(ap)+EXP(am))
+          sh =0.5*(EXP(ap)-EXP(am))
+        ENDIF
+        daq=-psilog*2*(ch - sh/au)/au
+      END FUNCTION daq
+
+
+      SUBROUTINE a_quantum(ib, a, eta, aq)
+        IMPLICIT NONE
+        INTEGER, INTENT(IN)  :: ib    ! species index
+        REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
+        REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
+        REAL,    INTENT(OUT) :: aq 
+        REAL               :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        REAL    :: daq
+        INTEGER :: iu
+        aq=0
+        u0=0.
+        aq=0
+        IF (ib == 1) THEN
+           u0=0
+           u1=4./SQRT(a)
+        ELSE
+           u0=1-10./SQRT(a)
+           u0=MAX(0.,u0)  
+           u1=1+10./SQRT(a)
+        ENDIF
+        du=(u1-u0)/NQ
+        u=u0-du
+        DO iu=1,NQ,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           aq=aq+W2*daq(u,a,eta)
+           um=u-du*UPM
+           aq=aq+W13*daq(um,a,eta)
+           um=u+du*UPM
+           aq=aq+W13*daq(um,a,eta)
+        ENDDO
+        aq=aq*du
+      END SUBROUTINE a_quantum
+\end{verbatim}
+}
+
+
+\pagebreak
+\section{Complete Source Code Listing: \lowercase{acoeff.f90} }
+
+This section gives the complete listing for the source acoeff.f90 as
+it currently stands, including comments for the user and comments that
+I have made for myself (the latter will eventually disappear). This
+source module calculates the {\cal A}-coefficients (coeff\_bps), their
+low energy asymptotic limits (coeff\_bps\_small\_E), and their high
+energy asymptotic limits (coeff\_bps\_high\_E). For the electron,
+there are two distinct high energy regions: an intermediate high
+energy regime $T \ll E_p \ll (m_\smI/m_e)\,T$ and an extreme high
+energy regime $E \gg (m_\smI/m_e)\,T$.
+
+
+\vskip0.5cm
+\noindent
+Note: Currently, the subroutine coeff\_bps\_high\_E only returns the
+total electron contribution ${\cal A}_e$ (regular + singular + quantum).
+
+
+
+\vskip0.5cm
+\noindent
+To do: To complete the subroutine coeff\_bps\_high\_E, I need to
+calculate the regular and singular contributions for the electrons in
+both high energy regimes. That is to say, I need to calculate the
+asymptotic limits of ${\cal A}_{e \,,\,\smS}^\smC$ and ${\cal A}_{e
+\,,\,\smR}^\smLT$ respectively. The quantum asymptotic correction
+can then be obtained by
+  $$
+  {\cal A}_e^\smQM = {\cal A}_e - {\cal A}_e^\smC = 
+  {\cal A}_e - ({\cal A}_{e\,,\,\smS}^\smC + {\cal A}_{e
+  \,,\,\smR}^\smLT ).
+  $$ 
+Before coeff\_bps\_high\_E returns the same quantities for electrons
+and ions, I will need to analytically calculate ${\cal A}_{e \, ,
+\,\smS}^\smC$ and ${\cal A}_{e \,, \, \smR}^\smLT$ and their high
+energy limits. To repeat the above note: until I finish this
+calculation, the subroutine coeff\_bps\_high\_E only returns the total
+electron contribution ${\cal A}_e$, although it returns the complete
+set of contributions for ${\cal A}_\smI$. 
+
+\subsection{The {\cal A}-Coefficients}
+
+\vskip1cm 
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
+!
+! Robert Singleton
+! - Santa Fe, Winter 2005 
+! - Santa Fe, March 2009    [start  rewrite]
+! - Santa Fe, November 2009 [finish rewrite]
+!
 ! 
 ! ROUTINE: bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
 !            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
@@ -728,10 +2985,18 @@
         ENDIF
       END SUBROUTINE a_collect
 
-!
-!=============== low- and high-energy asymptotic limits ====================
-!
+\end{verbatim}
+}
 
+
+\subsection{Low Energy Asymptotics}
+
+\vskip1cm 
+\noindent
+acoeff.f90 cont.:
+{
+\baselineskip 10pt
+\begin{verbatim}
 ! 
 ! ROUTINE: SUBROUTINE coeff_bps_small_E(nni, ep, zp, mp, betab, zb, mb, nb, &
 !   a_tot_lim, a_i_lim, a_e_lim, ac_tot_lim, ac_i_lim, ac_e_lim, aq_tot_lim,&
@@ -817,8 +3082,7 @@
         nnb =nni+1
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-!       kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         kd2 = SUM(kb2)              ! [1/cm^2]
         zp2 = zp**2                 ! [dimensionless]
         ab  =0.5*betab*mb*vp2/CC2   ! [dimensionless]
@@ -856,7 +3120,7 @@
 ! regular: asymptotic low energy form
 !
            CALL a_reg_ib_small_E(nni,ib,ep,zp,mp,betab,zb,mb,nb,ac_r_lim)
-           ac_r_lim=c1*c2*ac_r_lim
+           ac_r_lim=c1*ac_r_lim
 !
 ! quantum: asymptotic low energy form
 !
@@ -865,13 +3129,16 @@
 !
 ! collect components
 !
-           CALL x_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,   &
+           CALL a_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,   &
              a_e_lim,ac_tot_lim,ac_i_lim,ac_e_lim,aq_tot_lim,aq_i_lim,aq_e_lim,&
              ac_s_i_lim, ac_s_e_lim, ac_r_i_lim, ac_r_e_lim)
         ENDIF
         ENDDO
       END SUBROUTINE coeff_bps_small_E
-
+!
+! Same as coeff_bps_small_E, except returns A-coefficients for a single plasma 
+! index ib.
+!
 
       SUBROUTINE a_sing_ib_small_E(nni, ib, ep, zp, mp, betab, zb, mb, nb, ac_s_lim)
       USE physvars
@@ -900,7 +3167,7 @@
 
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         kd2 = SUM(kb2)              ! [1/cm^2]
         kd  = SQRT(kd2)             ! [1/cm]
         k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
@@ -910,21 +3177,18 @@
         ab  =0.5*betab*mb*vp2/CC2   ! [dimensionless] 
         mpb = mp*mb/(mp+mb)         ! [keV]
         mbpb= mb/mpb                ! [dimensionless]
-
-        IF (SMALL_E_NLO) THEN
-          a=ab(ib)             
-        ELSE
-          a=0
-        ENDIF
+!
+        a=ab(ib)                    ! [dimensionless] 
 !
 ! singular: asymptotic low energy form
 !
-        ac_s_lim=-(2./3. - 2*a/5.)*(LOG(betab(ib)*BEKEV*ABS(zp*zb(ib))* &
-        0.5*k*A0CM*mbpb(ib) ) + 2*GAMMA) + (4./15.)*a
+        ac_s_lim=-(2./3. - 0.4*a)*(LOG(betab(ib)*BEKEV*ABS(zp*zb(ib))* &
+          0.5*k*A0CM*mbpb(ib) ) + 2*GAMMA) - (4./15.)*a
+!
       END SUBROUTINE a_sing_ib_small_E
 
 
-      SUBROUTINE a_reg_ib_small_E_old(nni, ib, ep, zp, mp, betab, zb, mb, nb, ac_r_lim)
+      SUBROUTINE a_reg_ib_small_E(nni, ib, ep, zp, mp, betab, zb, mb, nb, ac_r_lim)
       USE physvars
       USE mathvars      
         IMPLICIT NONE
@@ -949,11 +3213,11 @@
         REAL    :: kd2, k2                   ! [1/cm^2]
         REAL    :: kd, k                     ! [1/cm]
         REAL    :: a, zp2                    ! [dimensionless]
-        REAL    :: ar1, ar2                  ! [dimensionless]
+        REAL    :: ar1, ar2, c2              ! [dimensionless]
 
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         kd2 = SUM(kb2)              ! [1/cm^2]
         kd  = SQRT(kd2)             ! [1/cm]
         k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
@@ -963,7 +3227,9 @@
         ab  =0.5*betab*mb*vp2/CC2   ! [dimensionless] 
         mpb = mp*mb/(mp+mb)         ! [keV]
         mbpb= mb/mpb                ! [dimensionless]
+!
         a=ab(ib)                    ! [dimensionless] 
+        c2=SQRT(a/PI)               ! [dimensionless]
 !
 ! regular: asymptotic low energy form
 !
@@ -971,62 +3237,7 @@
         ar1 =-2*SUM(kb2*ab)/k2/5.   ! [dimensionless] coeff for A_reg with E<<T
         ar2 = SUM(kb2*ab2)/k2       ! [dimensionless] coeff for A_reg with E<<T
         ar2 = ar2*ar2*PI/30.        !
-        ac_r_lim=-((THIRD - 0.2*a)*(LOG(kd2/k2)+1) + ar1 + ar2 )
-      END SUBROUTINE a_reg_ib_small_E_old
-
-
-
-      SUBROUTINE a_reg_ib_small_E(nni, ib, ep, zp, mp, betab, zb, mb, nb, ac_r_lim)
-      USE physvars
-      USE mathvars      
-        IMPLICIT NONE
-        INTEGER,                     INTENT(IN)  :: nni      !  number of ions
-        INTEGER,                     INTENT(IN)  :: ib       !  plasma species number
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab    !  temp array [1/keV]
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb       !  mass array [keV]
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb       !  density [1/cc]
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb       !  charge array
-        REAL,                        INTENT(IN)  :: ep       !  projectile energy [keV]
-        REAL,                        INTENT(IN)  :: mp       !  projectile mass   [keV]
-        REAL,                        INTENT(IN)  :: zp       !  projectile charge
-        REAL,                        INTENT(OUT) :: ac_r_lim !  A-coeffs [MeV/micron]
-
-        REAL,    DIMENSION(1:nni+1)  :: kb2  ! [1/cm^2]
-        REAL,    DIMENSION(1:nni+1)  :: ab   ! [dimensionless]
-        REAL,    DIMENSION(1:nni+1)  :: mpb  ! [keV]
-        REAL,    DIMENSION(1:nni+1)  :: mbpb ! [dimensionless]
-        REAL    :: vp                        ! [cm/s]
-        REAL    :: vp2                       ! [cm^2/s^2]
-        REAL    :: kd2, k2                   ! [1/cm^2]
-        REAL    :: kd, k                     ! [1/cm]
-        REAL    :: a, zp2                    ! [dimensionless]
-        REAL    :: ar1, ar2, logone ! [dimensionless]
-
-        vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
-        vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
-        kd2 = SUM(kb2)              ! [1/cm^2]
-        kd  = SQRT(kd2)             ! [1/cm]
-        k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
-        k   = SQRT(k2)              ! [1/cm]    k =k_e
-        zp2 = zp**2                 ! [dimensionless]
-        logone=LOG(kd2/k2)+1        ! [dimensionless]
-                                    ! ab=(1/2) betab(ib)*mbc2(ib)*vp2/CC2
-        ab  =0.5*betab*mb*vp2/CC2   ! [dimensionless] 
-        mpb = mp*mb/(mp+mb)         ! [keV]
-        mbpb= mb/mpb                ! [dimensionless]
-
-        IF (SMALL_E_NLO) THEN       ! NLO in v_p correction
-          a=ab(ib)                  ! [dimensionless] 
-          ar1=2*SUM(kb2*ab)/kd2/5.
-          ar2=SUM(kb2*SQRT(2*ab))/kd2
-          ar2=-PI*ar2*ar2/60.
-        ELSE
-          a=0    ! set NLO to zero
-          ar1=0  !
-          ar2=0  !
-        ENDIF
-        ac_r_lim=(-THIRD + a/10.)*(1 + LOG(kd2/k2)) + ar1 + ar2 ! LO + NLO
+        ac_r_lim=-c2*((THIRD - 0.2*a)*(LOG(kd2/k2)+1) + ar1 + ar2 )
       END SUBROUTINE a_reg_ib_small_E
 
       SUBROUTINE aq_ib_small_E(nni, ib, ep, zp, mp, betab, zb, mb, nb, aq_lim)
@@ -1057,7 +3268,7 @@
 
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         kd2 = SUM(kb2)              ! [1/cm^2]
         kd  = SQRT(kd2)             ! [1/cm]
         k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
@@ -1081,7 +3292,21 @@
               aq_lim=-1./(27*etbar2)
            ENDIF
       END SUBROUTINE aq_ib_small_E
+\end{verbatim}
+}
 
+
+\subsection{High Energy Asymptotics}
+
+\noindent
+Medium-high energy electrons:
+
+\vskip1cm
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
 ! 
 ! ROUTINE: SUBROUTINE coeff_bps_high_E(nni, ep, zp, mp, betab, zb, mb, nb, &
 !   a_tot_lim, a_i_lim, a_e_lim, ac_tot_lim, ac_i_lim, ac_e_lim, aq_tot_lim,&
@@ -1180,7 +3405,7 @@
         nnb = nni+1
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
         k   = SQRT(k2)              ! [1/cm]    k =k_e
         zp2 = zp**2                 ! [dimensionless]
@@ -1253,26 +3478,24 @@
               aq_lim=LOG(eta) + GAMMA
               aq_lim=aq_lim*c1/a/2
            ENDIF
-           CALL x_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,    &
+           CALL a_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,    &
              a_e_lim,ac_tot_lim,ac_i_lim,ac_e_lim,aq_tot_lim,aq_i_lim,aq_e_lim, &
              ac_s_i_lim, ac_s_e_lim, ac_r_i_lim, ac_r_e_lim)
         ENDIF
         ENDDO
-!*!
-!a_i_lim=c1*c2*LOG(SUM(kb2)/k2)/3     ! ***===*** 
-!*!
       END SUBROUTINE coeff_bps_high_E
-!
-!======================================
+\end{verbatim}
+}
 
-! Extreme high energy limit for electrons: E >> (mI/me)*T
-! The ions have the same limit in coeff_bps_high_E and coeff_bps_very_high_E.
-!
-! This limit is not really self-consistent since relativistic effects become
-! important.
-!
-!
-!======================================
+\noindent
+Extreme-high energy electrons:
+
+\vskip1cm
+\noindent
+acoeff.f90:
+{
+\baselineskip 10pt
+\begin{verbatim}
       SUBROUTINE coeff_bps_very_high_E(nni, ep, zp, mp, betab, zb, mb, nb, &
             a_tot_lim, a_i_lim, a_e_lim, ac_tot_lim, ac_i_lim, ac_e_lim,   &
             aq_tot_lim, aq_i_lim, aq_e_lim, ac_s_i_lim, ac_s_e_lim,        &
@@ -1329,7 +3552,7 @@
         nnb = nni+1
         vp  = CC*SQRT(2*ep/mp)      ! [cm/s]
         vp2 = vp*vp                 ! [cm^2/s^2]
-        kb2 =8*PI*A0CM*BEKEV*zb*zb*nb*betab
+        kb2 = DEBYE2*zb*zb*nb*betab ! [1/cm^2]
         k2  = kb2(1)                ! [1/cm^2]  k2=k_e^2
         k   = SQRT(k2)              ! [1/cm]    k =k_e
         zp2 = zp**2                 ! [dimensionless]
@@ -1399,10 +3622,23 @@
               aq_lim=LOG(eta) + GAMMA
               aq_lim=aq_lim*c1/a/2
            ENDIF
-           CALL x_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,   &
+           CALL a_collect(ib,nnb,ac_s_lim,ac_r_lim,aq_lim,a_tot_lim,a_i_lim,   &
              a_e_lim,ac_tot_lim,ac_i_lim,ac_e_lim,aq_tot_lim,aq_i_lim,aq_e_lim,&
              ac_s_i_lim, ac_s_e_lim, ac_r_i_lim, ac_r_e_lim)
         ENDIF
         ENDDO
       END SUBROUTINE coeff_bps_very_high_E
+\end{verbatim}
+}
+
+
+%\bibitem{ref1}
+%  R.J. Goldston and P.H. Rutherford, 
+%  {\em Introduction to Plasma Physics},
+%  IOP Publishing Ltd., Bristol UK, 2000.
+%\end{thebibliography}
+
+\end{document}
+  
+
 
