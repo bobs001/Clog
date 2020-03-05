@@ -57,9 +57,9 @@
         epp=0
         DO j=0,nit
            epp=j*de
-           IF (epp .EQ. 0) epp=1.E-5
+           IF (epp .EQ. 0) epp=de/2.0
            
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
+           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb, &
                 dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
                 dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
         
@@ -70,8 +70,10 @@
 
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
-           WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-           WRITE (2,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot, &
+                dedxc_e, dedxc_i, dedxc_tot, dedxq_e, dedxq_i, dedxq_tot
+           WRITE (2,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot, &
+                dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
         ENDDO
         
         CLOSE (1)
