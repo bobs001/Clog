@@ -299,42 +299,44 @@ charge $e_a$ and energy $E_a = \frac{1}{2}\, m_a v_a^2$.  The BPS
 ${\cal C^{\ell\ell}}$-coefficients take the form
 
 
-**
 %%
 \begin{eqnarray}
-  {\cal A}_{ab} 
+  C_{ab}^{\ell\ell} 
   &=&  
-  \Big({\cal A}^\smLT_{ab,\smR}  + {\cal A}^\smC_{ab,\smS} \Big) +
-  {\cal A}^{\Delta Q}_{ab} 
+  \Big(C^{\ell\ell\,\smLT}_{ab,\smR}  
+  + 
+  C^{\ell\ell\,\smC}_{ab,\smS} \Big) 
+  +
+  C^{\ell\ell \, \Delta Q}_{ab} 
 \label{all}
 \end{eqnarray}
 %%
 with
 %%
 \begin{eqnarray}
-  {\cal A}^\smLT_{ab,\smR}
+  C^{\ell\ell\smLT}_{ab,\smR}
   &=&
   \frac{e_a^2}{4 \pi}\, \frac{i}{2 \pi}
-  \int_{-1}^1 \! d\cos\theta\, \cos\theta\,
+  \int_{-1}^1   \frac{d\cos\theta}{\cos\theta} \,
   \frac{\rho_b(v_a\cos\theta)}
   {\rho_{\rm total}(v_a\cos\theta)}\,F(v_a \cos\theta) 
   \ln\!\left\{\frac{F(v_a\cos\theta)}{K^2}\right\} \,, 
 \label{nun}
 \\[10pt]
-  {\cal A}^\smC_{ab,\smS}
+  C^{\ell\ell \, \smC}_{ab,\smS}
   &=& 
   \frac{e_a^2\,\kappa^2_b}{4\pi} \,   
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\!\!
-  v_a\int_0^1 du \, u^{1/2} \,\exp\left\{ - \frac{1}{2} \,
+  v_a\int_0^1 du \, u^{-1/2} \,\exp\left\{ - \frac{1}{2} \,
   \beta_b m_b v^2_a \, u \right\}
 \nonumber\\
   && \qquad
   \left[ -\ln \left(\beta_b  \frac{e_a e_b}{4\pi} \,
   K \, \frac{m_b}{m_{ab}} \, \frac{u}{1-u} \right) 
-  - 2 \gamma + 2 \right] 
+  - 2 \gamma \right] 
 \label{wonderclassic}
 \\[10pt]
-  {\cal A}^{\Delta Q}_{ab}
+  C^{\ell\ell \, \Delta Q}_{ab}
   &=&
   -\frac{e_a^2\, \kappa_b^2}{4 \pi}\,
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\,
@@ -343,20 +345,18 @@ with
   \right) - \ln \eta_{ab}  \bigg\}
 \nonumber\\
   &&
-  \frac{1}{\beta_b m_b v_a v_{ab}} \, 
   \Bigg[ \exp\left\{ - \frac{1}{2}\, \beta_b
   m_b \left( v_a - v_{ab} \right)^2\right\} 
-   \left( 1 - \frac{1}{\beta_b m_b v_a v_{ab} } \right) 
-\nonumber\\
-  && \qquad\qquad\quad
-  + \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_a + v_{ab} 
+%\nonumber\\
+ % && \qquad\qquad\quad
+  - \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_a + v_{ab} 
   \right)^2\right\} 
-   \left( 1 + \frac{1}{\beta_b m_b v_a v_{ab} } \right) 
 \Bigg]	\,,
 \label{regb}
 \end{eqnarray}
 %% 
-and
+This regular form is  BPS (9.7); the singular form is BPS (9.5);
+the quantum form is BPS (10.27), where
 %%
 \begin{eqnarray}
 \eta_{ab}= \frac{e_a e_b}{4\pi\hbar v_{ab}} \ .
@@ -388,14 +388,14 @@ and its relation to the dielectric function is
   F(\hat{\bf k} \cdot {\bf v}) \ .
 \end{eqnarray}
 %%
-The first term ${\cal A}_{b ,\smR}^\smLT$ arises from long-distance
+The first term $C_{ab ,\smR}^{\ell\ell \, \smLT}$ arises from long-distance
 collective effects from the dielectric function, and it involves {\em
 all} plasma species (even species $c$ different from $a$ and $b$).
 This is the term I call non-separable, meaning that it cannot be
 written as a sum of individual plasma components involving only a
-single species. The second term ${\cal A}_{b ,\smS}^\smC$ arises from
+single species. The second term $C_{ab ,\smS}^{\ell\ell \, \smC}$ arises from
 short-distance two-body classical scattering, and the third term
-${\cal A}_{b}^\smQM$ is the two-body quantum scattering correction to
+$C_{ab}^{\ell\ell \, \smQM}$ is the two-body quantum scattering correction to
 all orders in the quantum parameters $\bar\eta_{ab}$. Three body and
 higher effects are contained in our systematic error term, the
 next-to-next-to-leading order term proportional to $g^3$. In a
@@ -405,7 +405,7 @@ weakly coupled plasma they are negligible.
 \pagebreak
 \section{The Main Driver}
 
-I will return the ${\cal A}$-coefficients in three forms:
+I will return the $C$-coefficients in three forms:
 %%
 \begin{enumerate}
   \baselineskip 10pt plus 1pt minus 1pt
@@ -413,27 +413,27 @@ I will return the ${\cal A}$-coefficients in three forms:
   \setlength{\parskip}{1pt} %
   \setlength{\parsep}{0pt}  %
 
-\item[i.] \verb+bps_acoeff_ab_mass+: For a given pair of indices $p$
+\item[i.] \verb+bps_ccoeff_ab_mass+: For a given pair of indices $p$
 and $b$ (the projectile $p$ will often be denoted by species index
-$a$), this routine returns the individual component ${\cal A}_{ab}(E)$
+$a$), this routine returns the individual component $C^{\ell\ell}_{ab}(E)$
 for a given energy $E$. The quantum parameter $\eta$ can be arbitrary. 
 This routine is used to construct the entries in the next two subroutines.
 
-\item[ii.] \verb+bps_acoeff_ab_matrix+: Returns the complete
-matrix of coefficients ${\cal A}_{ab}(E)$. 
+\item[ii.] \verb+bps_ccoeff_ab_matrix+: Returns the complete
+matrix of coefficients $C^{\ell\ell}_{ab}(E)$. 
 
 
-\item[iii.] \verb+bps_acoeff_ei_mass+: This routine returns the sum
-over the ions ${\cal A}_{p\smI}={\sum}_i {\cal A}_{pi}$ for a given
+\item[iii.] \verb+bps_ccoeff_ei_mass+: This routine returns the sum
+over the ions $C^{\ell\ell}_{p\smI}={\sum}_i C^{\ell\ell}_{pi}$ for a given
 projectile $p$. It also returns the coulomb logarithm.
 
 \end{enumerate}
 %%
 
 \subsection{The Driver Routine:
-\lowercase{bps}\_\lowercase{acoeff}\_\lowercase{ab}\_\lowercase{mass}}
+\lowercase{bps}\_\lowercase{ccoeff}\_\lowercase{ab}\_\lowercase{mass}}
 
-
+**
 
 This subroutine returns the matrix of values ${\cal A}_{ab}(E)$ for a
 given energy $E$. The driving routine that calls and assembles the
