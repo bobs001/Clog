@@ -198,22 +198,22 @@
         c2=SQRT(a/PI)                  ! [dimensionless] 
                                        ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
 !
-! A_{ab}-classical-singular 
+! C_{ab}-classical-singular 
 !
         CALL c_sing_mass(a,b,ac_s) 
         a_ab_sing=c1*c2*ac_s
 !
-! A_{ab}-classical-regular 
+! C_{ab}-classical-regular 
 !
         CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
         a_ab_reg=c1*ac_r
 !
-! A_{ab}-quantum
+! C_{ab}-quantum
 !
         CALL c_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
         a_ab_qm=c1*c2*aq
 !
-! A_{ab}-total
+! C_{ab}-total
 !
         a_ab=a_ab_sing + a_ab_reg + a_ab_qm
         ENDIF
@@ -478,7 +478,7 @@
            IF (ic == ib) THEN
               ex=1.
            ELSE
-              au=(a_ic-a_ib)*u
+              au=(a_ic-a_ib)/u !*! is this correct for C^ll?
               ex=EXP(-au)
            ENDIF
            r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
