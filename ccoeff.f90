@@ -5,20 +5,20 @@
 ! Assume a plasma composed of several species b, each separately in 
 ! thermal equilibrium with themselves but not necessarily with each 
 ! other[1]. This routine returns several useful components of the 
-! corresponding A-coefficients introduced in Note [2] below (BPS).
+! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
 ! UNITS: A_{pb} has units of [MeV/micron] (subject to change in updates)
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
-! eventually equilibrate to a common temperature. The A-coefficients 
+! eventually equilibrate to a common temperature. The C-coefficients 
 ! introduced in Ref. [2] encode this coulomb energy exchange, exactly to 
 ! leading and next-to-leading orders in the plasma coupling constant g.
 ! See Refs. [3,4,5] for more details. For a weakly coupled plasma (g << 1), 
 ! the BPS calculation is essentially exact, and the error is O(g). Physical 
 ! properties of interest, such as the stopping power dE/dx and the temperature 
 ! equilibration rate between plasma species, can be obtained directly from 
-! the A-coefficients. 
+! the C-coefficients. 
 !
 ! USAGE:
 ! Since electrons are thousands of times lighter than ions, separate
@@ -50,7 +50,7 @@
 ! OUTPUT: a_ab, a_ab_sing, a_ab_reg, a_ab_qm
 !
 ! Each plasma component b makes a linear contribution A_b to the total 
-! A-coefficient, i.e. A = sum_b A_b [5]. Each A_b in turn can be be 
+! C-coefficient, i.e. A = sum_b A_b [5]. Each A_b in turn can be be 
 ! decomposed into a classical-quantum or electron-ion contributions.
 !
 ! classical electron  : ac_e
@@ -140,11 +140,11 @@
 !
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! main driver for A-coefficient for general quantum and electron-mass regimes
+! main driver for C-coefficient for general quantum and electron-mass regimes
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
       SUBROUTINE bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
-            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
+            c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
       USE physvars
       USE mathvars    
         IMPLICIT NONE                                             ! Plasma:
@@ -159,21 +159,21 @@
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
                                                                   !
-                                                                  ! A-coeffs [MeV/micron]
-        REAL,                               INTENT(OUT) :: a_ab
-        REAL,                               INTENT(OUT) :: a_ab_sing
-        REAL,                               INTENT(OUT) :: a_ab_reg
-        REAL,                               INTENT(OUT) :: a_ab_qm
+                                                                  ! C-coeffs [MeV/micron]
+        REAL,                               INTENT(OUT) :: c_ab
+        REAL,                               INTENT(OUT) :: c_ab_sing
+        REAL,                               INTENT(OUT) :: c_ab_reg
+        REAL,                               INTENT(OUT) :: c_ab_qm
 
         REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, kb2, ab
         REAL                         :: vp, zp2, k, k2, kd, kd2, a, b, eta
-        REAL                         :: ac_r, ac_s, aq, c1, c2
+        REAL                         :: cc_r, cc_s, cq, c1, c2
 
         REAL, PARAMETER              :: EPS_SMALL_E=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_REG=2.E-4
 !
-! initialize components of A-coefficients
+! initialize components of C-coefficients
 !
         kb2=8*PI*A0CM*BEKEV*zb*zb*nb*betab
         kd2 = SUM(kb2)                ! [1/cm^2]
@@ -198,24 +198,24 @@
         c2=SQRT(a/PI)                  ! [dimensionless] 
                                        ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
 !
-! A_{ab}-classical-singular 
+! C_{ab}-classical-singular 
 !
-        CALL a_sing_mass(a,b,ac_s) 
-        a_ab_sing=c1*c2*ac_s
+        CALL c_sing_mass(a,b,cc_s) 
+        c_ab_sing=c1*c2*cc_s
 !
-! A_{ab}-classical-regular 
+! C_{ab}-classical-regular 
 !
-        CALL a_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
-        a_ab_reg=c1*ac_r
+        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,cc_r)
+        c_ab_reg=c1*cc_r
 !
-! A_{ab}-quantum
+! C_{ab}-quantum
 !
-        CALL a_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
-        a_ab_qm=c1*c2*aq
+        CALL c_quantum_mass(ia,ib,a,eta,cq) ! eta = dimensionless quantum param.
+        c_ab_qm=c1*c2*cq
 !
-! A_{ab}-total
+! C_{ab}-total
 !
-        a_ab=a_ab_sing + a_ab_reg + a_ab_qm
+        c_ab=c_ab_sing + c_ab_reg + c_ab_qm
         ENDIF
       END SUBROUTINE bps_ccoeff_ab_mass
 !
@@ -236,7 +236,7 @@
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
                                                                   !
-                                                                  ! A-coeffs [MeV/micron]
+                                                                  ! C-coeffs [MeV/micron]
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab_sing
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab_reg
@@ -268,7 +268,7 @@
           mp=mb(ia)
           zp=zb(ia)
           DO ib=1,nni+1
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cab, cab_sing, cab_reg, cab_qm) !*! change to bps_acoeff_ab_mass
             c_ab(ia,ib)     =cab
             c_ab_sing(ia,ib)=cab_sing
@@ -317,7 +317,7 @@
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
-                                                           ! A-coeffs [MeV/micron]
+                                                           ! C-coeffs [MeV/micron]
         REAL,                        INTENT(OUT) :: c_tot  !  electron + ion
         REAL,                        INTENT(OUT) :: c_i    !  ion contribution
         REAL,                        INTENT(OUT) :: c_e    !  electron contribution
@@ -335,7 +335,7 @@
         REAL     :: cdum, cc_s, cc_r, cq
         INTEGER  :: ia, ib, nnb
 !
-! initialize components of A-coefficients
+! initialize components of C-coefficients
 !
         c_tot =0  ! electron + ion
         c_i   =0  ! ion contribution
@@ -355,7 +355,7 @@
         ia=1
         DO ib=1,nni+1
         IF (zb(ib) .NE. 0.) THEN
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cdum, cc_s, cc_r, cq)
             CALL x_collect(ib, NNB, cc_s, cc_r, cq,       &
             c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot,  &
@@ -377,18 +377,18 @@
         INTEGER, PARAMETER :: NS=1000 ! integration regions: must be even
         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
-           ac_s=0
+           cc_s=0
            u0=0
            u1=1
            du=(u1-u0)/NS
            u=u0-du
            DO iu=1,NS,2 ! Gaussian quadrature
               u=u+2.E0*du
-              cc_s=ac_s+W2*dcab_sing(u,a,b)
+              cc_s=cc_s+W2*dcab_sing(u,a,b)
               um=u-du*UPM
-              cc_s=ac_s+W13*dcab_sing(um,a,b)
+              cc_s=cc_s+W13*dcab_sing(um,a,b)
               um=u+du*UPM
-              cc_s=ac_s+W13*dcab_sing(um,a,b)
+              cc_s=cc_s+W13*dcab_sing(um,a,b)
            ENDDO
            cc_s=cc_s*du
       END SUBROUTINE c_sing_mass
@@ -400,7 +400,7 @@
                                              ! a=(1/2)*beta*mpc2*vp^2/C^2
         REAL,        INTENT(IN)  :: b        ! [dimensionless]
         REAL                     :: dcab_sing! [dimensionless]
-        dcab_sing=SQRT(u)*EXP(-a*u)*(-LOG(u/(1-u)) + b)
+        dcab_sing=SQRT(u)*EXP(-a*u)*(-LOG(u/(1-u)) + b) !*! find correction for C-coeff
       END FUNCTION dcab_sing
 
 !
@@ -445,8 +445,6 @@
         cc_r=cc_r*du
       END SUBROUTINE c_reg_mass
 
-      
-      
       FUNCTION d_cab_reg(u, vp, ia, ib, nni, k2, kb2, betab, mb)
       USE mathvars
       USE physvars
@@ -458,99 +456,98 @@
         INTEGER,                     INTENT(IN)  :: nni    ! Number of ion species
         REAL,                        INTENT(IN)  :: k2     ! Wave-number squared [1/cm^2]
         REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: kb2    ! Debye wavenumber squared [1/cm^2]
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  ! Temperature array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  ! Inv temperature array [1/keV]
         REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     ! Mass array [keV]
         REAL                                     :: d_cab_reg! [dimensionless]
         REAL,    DIMENSION(1:nni+1) :: kbar2b, ab, ab2
         REAL                        :: fr, fi, fabs, farg, h, r_ib
-        REAL                        :: kcb, bm_ic, bm_ib, a_ic, a_ib, ex, au
+        REAL                        :: kcb, bm_ic, bm_ib, a2_ic, a2_ib, ex, au
         INTEGER                     :: ic
         ab=SQRT(0.5*betab*mb)*vp/CC
         ab2=ab*ab
         kbar2b=kb2/k2
         CALL frfi(u,nni,kbar2b,ab,fr,fi,fabs,farg)
-        h=2*(fr*farg + fi*LOG(fabs))*u
+        h=2*(fr*farg + fi*LOG(fabs))
+
+        ! calculate spectral density
         r_ib=0
         bm_ib=betab(ib)*mb(ib)
-        a_ib =ab(ib)*ab(ib)
+        a2_ib =ab(ib)*ab(ib)
         DO ic=1,nni+1
            kcb=kb2(ic)/k2
            bm_ic=betab(ic)*mb(ic)
-           a_ic =ab(ic)*ab(ic)
+           a2_ic =ab(ic)*ab(ic)
            IF (ic == ib) THEN
               ex=1.
            ELSE
-              au=(a_ic-a_ib)*u
-              ex=EXP(-au)
+              au=(a2_ic-a2_ib)*u ! avoids exp of 
+              ex=EXP(-au)        ! large numbers
            ENDIF
            r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
         ENDDO      
-        r_ib=1./r_ib
-!
-        d_cab_reg=-r_ib*h/TWOPI
+        r_ib=1./r_ib 
+
+        d_cab_reg=-r_ib*h/(u*TWOPI) ! See * in ccoeff_1.0.pdf
       END FUNCTION d_cab_reg
 
-! ***xxx***
-      
-! !
-! !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! ! quantum contribution for non-zero electron mass
-! !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! !
-!       FUNCTION daq(u, a, eta)
-!       USE physvars
-!         IMPLICIT NONE
-!         REAL,                        INTENT(IN)  :: u          ! [dimensionless]
-!         REAL,                        INTENT(IN)  :: a          ! [dimensionless]
-!         REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
-!         REAL                                     :: daq  ! [dimensionless]
-!         REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh, csh
-!         eu=eta/u 
-!         psilog=repsi(eu) - LOG(eu)
-!         au =2*a*u
-!         au2=a*u*u
-!         ap = au-au2-a
-!         am =-au-au2-a
-!         ch =0.5*(EXP(ap)+EXP(am))
-!         sh =0.5*(EXP(ap)-EXP(am))
-!         csh=2*(ch - sh/au)/au
-!         daq=-psilog*csh
-!       END FUNCTION daq
+!
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+! quantum contribution for non-zero electron mass
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!
+      SUBROUTINE c_quantum_mass(ia, ib, a, eta, aq)
+        IMPLICIT NONE
+        INTEGER, INTENT(IN)  :: ia    ! species index
+        INTEGER, INTENT(IN)  :: ib    ! species index
+        REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
+        REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
+        REAL,    INTENT(OUT) :: aq 
+        REAL               :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        REAL    :: dcq
+        INTEGER :: iu
+        aq=0.
+        u0=0.
+        ! choose plot range of gaussian e^{-a^2}
+        IF (ib == ia) THEN
+           u0=0
+           u1=4./SQRT(a)
+        ELSE
+           u0=1-10./SQRT(a)
+           u0=MAX(0.,u0)  
+           u1=1+10./SQRT(a)
+        ENDIF
+        ! gaussian quadrature
+        du=(u1-u0)/NQ
+        u=u0-du
+        DO iu=1,NQ,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           aq=aq+W2*dcq(u,a,eta)
+           um=u-du*UPM
+           aq=aq+W13*dcq(um,a,eta)
+           um=u+du*UPM
+           aq=aq+W13*dcq(um,a,eta)
+        ENDDO
+        aq=aq*du
+      END SUBROUTINE c_quantum_mass
 
-!       SUBROUTINE a_quantum_mass(ia, ib, a, eta, aq)
-!         IMPLICIT NONE
-!         INTEGER, INTENT(IN)  :: ia    ! species index
-!         INTEGER, INTENT(IN)  :: ib    ! species index
-!         REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
-!         REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
-!         REAL,    INTENT(OUT) :: aq 
-!         REAL               :: u0, u1, du, u, um
-!         INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
-!         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
-!         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
-!         REAL    :: daq
-!         INTEGER :: iu
-!         aq=0
-!         u0=0.
-!         aq=0
-!         IF (ib == ia) THEN
-!            u0=0
-!            u1=4./SQRT(a)
-!         ELSE
-!            u0=1-10./SQRT(a)
-!            u0=MAX(0.,u0)  
-!            u1=1+10./SQRT(a)
-!         ENDIF
-!         du=(u1-u0)/NQ
-!         u=u0-du
-!         DO iu=1,NQ,2 ! Gaussian quadrature
-!            u=u+2.E0*du
-!            aq=aq+W2*daq(u,a,eta)
-!            um=u-du*UPM
-!            aq=aq+W13*daq(um,a,eta)
-!            um=u+du*UPM
-!            aq=aq+W13*daq(um,a,eta)
-!         ENDDO
-!         aq=aq*du
-!       END SUBROUTINE a_quantum_mass
+      FUNCTION dcq(u, a, eta)
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL                                     :: dcq  ! [dimensionless]
+        REAL            :: repsi, au, eu, ep, em, psilog, ch, sh, csh
+        eu = eta/u
+        au = 2*a*u
+        psilog = repsi(eu) - LOG(eu)
+        em = EXP(-a * (u - 1)**2)
+        ep = EXP(-a * (u + 1)**2)
+        csh = em - ep
+        dcq =-psilog*csh/au
+      END FUNCTION dcq
+
 
