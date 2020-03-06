@@ -1,0 +1,19 @@
+\begin{figure}[h!]
+\begin{minipage}[c]{0.4\linewidth}
+\includegraphics[scale=0.40]{figs/K4_embedding_0.png}
+%\caption{Image A}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\includegraphics[scale=0.35]{figs/K4_embedding_1.png}
+%\caption{Image B}
+\end{minipage}
+\vskip-2.0cm
+\caption{\footnoteskip
+A $K_4$ embedding in $C_8$ The blue lines represent connections between
+qubits, while the red lines represent chained (or slaved) qubits.
+}
+\label{fig_K4_embedding_1}
+\end{figure}
+%
+

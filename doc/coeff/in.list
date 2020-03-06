@@ -1,0 +1,12 @@
+%
+\vskip0.4cm 
+\begin{enumerate}
+  \baselineskip 10pt plus 1pt minus 1pt
+  \setlength{\itemsep}{3pt} % single spacing
+  \setlength{\parskip}{1pt} %
+  \setlength{\parsep}{0pt}  %
+\item[1.] item one
+\item[2.] item two
+\item[3.] \verb+{three}+
+\end{enumerate}
+%
