@@ -5,20 +5,20 @@
 ! Assume a plasma composed of several species b, each separately in 
 ! thermal equilibrium with themselves but not necessarily with each 
 ! other[1]. This routine returns several useful components of the 
-! corresponding A-coefficients introduced in Note [2] below (BPS).
+! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
 ! UNITS: A_{pb} has units of [MeV/micron] (subject to change in updates)
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
-! eventually equilibrate to a common temperature. The A-coefficients 
+! eventually equilibrate to a common temperature. The C-coefficients 
 ! introduced in Ref. [2] encode this coulomb energy exchange, exactly to 
 ! leading and next-to-leading orders in the plasma coupling constant g.
 ! See Refs. [3,4,5] for more details. For a weakly coupled plasma (g << 1), 
 ! the BPS calculation is essentially exact, and the error is O(g). Physical 
 ! properties of interest, such as the stopping power dE/dx and the temperature 
 ! equilibration rate between plasma species, can be obtained directly from 
-! the A-coefficients. 
+! the C-coefficients. 
 !
 ! USAGE:
 ! Since electrons are thousands of times lighter than ions, separate
@@ -50,7 +50,7 @@
 ! OUTPUT: a_ab, a_ab_sing, a_ab_reg, a_ab_qm
 !
 ! Each plasma component b makes a linear contribution A_b to the total 
-! A-coefficient, i.e. A = sum_b A_b [5]. Each A_b in turn can be be 
+! C-coefficient, i.e. A = sum_b A_b [5]. Each A_b in turn can be be 
 ! decomposed into a classical-quantum or electron-ion contributions.
 !
 ! classical electron  : ac_e
@@ -140,7 +140,7 @@
 !
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! main driver for A-coefficient for general quantum and electron-mass regimes
+! main driver for C-coefficient for general quantum and electron-mass regimes
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
       SUBROUTINE bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
@@ -159,7 +159,7 @@
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
                                                                   !
-                                                                  ! A-coeffs [MeV/micron]
+                                                                  ! C-coeffs [MeV/micron]
         REAL,                               INTENT(OUT) :: a_ab
         REAL,                               INTENT(OUT) :: a_ab_sing
         REAL,                               INTENT(OUT) :: a_ab_reg
@@ -173,7 +173,7 @@
         REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_REG=2.E-4
 !
-! initialize components of A-coefficients
+! initialize components of C-coefficients
 !
         kb2=8*PI*A0CM*BEKEV*zb*zb*nb*betab
         kd2 = SUM(kb2)                ! [1/cm^2]
@@ -200,17 +200,17 @@
 !
 ! A_{ab}-classical-singular 
 !
-        CALL a_sing_mass(a,b,ac_s) 
+        CALL c_sing_mass(a,b,ac_s) 
         a_ab_sing=c1*c2*ac_s
 !
 ! A_{ab}-classical-regular 
 !
-        CALL a_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
+        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
         a_ab_reg=c1*ac_r
 !
 ! A_{ab}-quantum
 !
-        CALL a_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
+        CALL c_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
         a_ab_qm=c1*c2*aq
 !
 ! A_{ab}-total
@@ -236,7 +236,7 @@
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: nb     !  density [1/cc]
                                                                   !
-                                                                  ! A-coeffs [MeV/micron]
+                                                                  ! C-coeffs [MeV/micron]
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab_sing
         REAL,    DIMENSION(1:nni+1,1:nni+1),INTENT(OUT) :: c_ab_reg
@@ -268,7 +268,7 @@
           mp=mb(ia)
           zp=zb(ia)
           DO ib=1,nni+1
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cab, cab_sing, cab_reg, cab_qm) !*! change to bps_acoeff_ab_mass
             c_ab(ia,ib)     =cab
             c_ab_sing(ia,ib)=cab_sing
@@ -317,7 +317,7 @@
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
-                                                           ! A-coeffs [MeV/micron]
+                                                           ! C-coeffs [MeV/micron]
         REAL,                        INTENT(OUT) :: c_tot  !  electron + ion
         REAL,                        INTENT(OUT) :: c_i    !  ion contribution
         REAL,                        INTENT(OUT) :: c_e    !  electron contribution
@@ -335,7 +335,7 @@
         REAL     :: cdum, cc_s, cc_r, cq
         INTEGER  :: ia, ib, nnb
 !
-! initialize components of A-coefficients
+! initialize components of C-coefficients
 !
         c_tot =0  ! electron + ion
         c_i   =0  ! ion contribution
@@ -355,7 +355,7 @@
         ia=1
         DO ib=1,nni+1
         IF (zb(ib) .NE. 0.) THEN
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cdum, cc_s, cc_r, cq)
             CALL x_collect(ib, NNB, cc_s, cc_r, cq,       &
             c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot,  &
