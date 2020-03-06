@@ -562,8 +562,6 @@
 
 !=============== dE/dx from A-coefficient =================================
 !
-!! **xx** !
-!
 ! This is a driver to check the analytic evalulation dE_b/dx
 ! against the one obtained by differentiating A_b.
 !
