@@ -7,7 +7,7 @@
 ! other[1]. This routine returns several useful components of the 
 ! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
-! UNITS: A_{pb} has units of [MeV/micron] (subject to change in updates)
+! UNITS: C_{pb} has units of **[MeV/micron] (subject to change in updates)
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
@@ -393,6 +393,8 @@
            cc_s=cc_s*du
       END SUBROUTINE c_sing_mass
 !
+! a = betab * mb * vp^2/ 2
+!      
       FUNCTION dcab_sing(u, a, b)
         IMPLICIT NONE
         REAL,        INTENT(IN)  :: u        ! [dimensionless]
@@ -400,7 +402,7 @@
                                              ! a=(1/2)*beta*mpc2*vp^2/C^2
         REAL,        INTENT(IN)  :: b        ! [dimensionless]
         REAL                     :: dcab_sing! [dimensionless]
-        dcab_sing=SQRT(u)*EXP(-a*u)*(-LOG(u/(1-u)) + b) !*! find correction for C-coeff
+        dcab_sing=EXP(-a*u)*(-LOG(u/(1-u)) + b)/SQRT(u) ! Eq BPS (9.5)
       END FUNCTION dcab_sing
 
 !
