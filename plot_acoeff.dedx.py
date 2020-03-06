@@ -101,10 +101,8 @@ plt.grid(True)
 plt.savefig('plot_acoeff.dedx_3.png')
 plt.show()
 
-
-
 #############################################
-# Create a loglog plot of data
+# 
 plt.plot(E1, del_dedxe3, label='del_dedx_e')
 plt.plot(E1, del_dedxi3, label='del_dedx_i')
 plt.plot(E1, del_dedx3, label='del_dedx_tot')
@@ -120,3 +118,35 @@ plt.grid(True)
 plt.savefig('plot_acoeff.dedx_4.png')
 plt.show()
 
+##### is thie the right A-coeff?
+#############################################
+# Read in data from an ASCII data table
+data = np.genfromtxt('acoeff_dedx_0.out')
+E = data[:, 1]          # [keV]
+Ae = data[:, 2]      # [MeV/mu-m]
+Ai = data[:, 3]      # [MeV/mu-m]
+A_tot = data[:, 4]       # [MeV/mu-m]
+Ae_c = data[:, 5]      # [MeV/mu-m]
+Ai_c = data[:, 6]      # [MeV/mu-m]
+A_c = data[:, 7]       # [MeV/mu-m]
+Ae_q = data[:, 8]      # [MeV/mu-m]
+Ai_q = data[:, 9]      # [MeV/mu-m]
+A_q = data[:, 10]       # [MeV/mu-m]
+
+#############################################
+# plot stopping power total
+plt.plot(E,Ae, label='A_e')
+plt.plot(E,Ai, label='A_i')
+plt.plot(E,A_tot, label='A_tot')
+
+xmax = 3.5
+ymax = 5.0
+plt.xlim(0, xmax)
+#plt.ylim(-8, 5)
+plt.xlabel(r'$E \,\, {\rm [MeV]}$')
+plt.ylabel(r'$C^{\ell \ell} \,\, {\rm [MeV/\mu m]}$')
+plt.title(r'${\calA}$ profile: BPS')
+plt.legend(loc=0)
+plt.grid(True)
+plt.savefig('plot_ccoeff_5.png')
+plt.show()
