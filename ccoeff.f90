@@ -444,8 +444,6 @@
         ENDDO
         cc_r=cc_r*du
       END SUBROUTINE c_reg_mass
-
-      
       
       FUNCTION d_cab_reg(u, vp, ia, ib, nni, k2, kb2, betab, mb)
       USE mathvars
@@ -490,67 +488,66 @@
         d_cab_reg=-r_ib*h/TWOPI
       END FUNCTION d_cab_reg
 
-! ***xxx***
-      
-! !
-! !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! ! quantum contribution for non-zero electron mass
-! !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-! !
-!       FUNCTION daq(u, a, eta)
-!       USE physvars
-!         IMPLICIT NONE
-!         REAL,                        INTENT(IN)  :: u          ! [dimensionless]
-!         REAL,                        INTENT(IN)  :: a          ! [dimensionless]
-!         REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
-!         REAL                                     :: daq  ! [dimensionless]
-!         REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh, csh
-!         eu=eta/u 
-!         psilog=repsi(eu) - LOG(eu)
-!         au =2*a*u
-!         au2=a*u*u
-!         ap = au-au2-a
-!         am =-au-au2-a
-!         ch =0.5*(EXP(ap)+EXP(am))
-!         sh =0.5*(EXP(ap)-EXP(am))
-!         csh=2*(ch - sh/au)/au
-!         daq=-psilog*csh
-!       END FUNCTION daq
+!
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+! quantum contribution for non-zero electron mass
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!
+      SUBROUTINE c_quantum_mass(ia, ib, a, eta, aq)
+        IMPLICIT NONE
+        INTEGER, INTENT(IN)  :: ia    ! species index
+        INTEGER, INTENT(IN)  :: ib    ! species index
+        REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
+        REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
+        REAL,    INTENT(OUT) :: aq 
+        REAL               :: u0, u1, du, u, um
+        INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
+        REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
+        REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
+        REAL    :: dcq
+        INTEGER :: iu
+        aq=0
+        u0=0.
+        aq=0
+        IF (ib == ia) THEN
+           u0=0
+           u1=4./SQRT(a)
+        ELSE
+           u0=1-10./SQRT(a)
+           u0=MAX(0.,u0)  
+           u1=1+10./SQRT(a)
+        ENDIF
+        du=(u1-u0)/NQ
+        u=u0-du
+        DO iu=1,NQ,2 ! Gaussian quadrature
+           u=u+2.E0*du
+           aq=aq+W2*dcq(u,a,eta)
+           um=u-du*UPM
+           aq=aq+W13*dcq(um,a,eta)
+           um=u+du*UPM
+           aq=aq+W13*dcq(um,a,eta)
+        ENDDO
+        aq=aq*du
+      END SUBROUTINE c_quantum_mass
 
-!       SUBROUTINE a_quantum_mass(ia, ib, a, eta, aq)
-!         IMPLICIT NONE
-!         INTEGER, INTENT(IN)  :: ia    ! species index
-!         INTEGER, INTENT(IN)  :: ib    ! species index
-!         REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
-!         REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
-!         REAL,    INTENT(OUT) :: aq 
-!         REAL               :: u0, u1, du, u, um
-!         INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
-!         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
-!         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
-!         REAL    :: daq
-!         INTEGER :: iu
-!         aq=0
-!         u0=0.
-!         aq=0
-!         IF (ib == ia) THEN
-!            u0=0
-!            u1=4./SQRT(a)
-!         ELSE
-!            u0=1-10./SQRT(a)
-!            u0=MAX(0.,u0)  
-!            u1=1+10./SQRT(a)
-!         ENDIF
-!         du=(u1-u0)/NQ
-!         u=u0-du
-!         DO iu=1,NQ,2 ! Gaussian quadrature
-!            u=u+2.E0*du
-!            aq=aq+W2*daq(u,a,eta)
-!            um=u-du*UPM
-!            aq=aq+W13*daq(um,a,eta)
-!            um=u+du*UPM
-!            aq=aq+W13*daq(um,a,eta)
-!         ENDDO
-!         aq=aq*du
-!       END SUBROUTINE a_quantum_mass
+      FUNCTION dcq(u, a, eta)
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL                                     :: dcq  ! [dimensionless]
+        REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh, csh
+        eu=eta/u 
+        psilog=repsi(eu) - LOG(eu)
+        au =2*a*u
+        au2=a*u*u
+        ap = au-au2-a
+        am =-au-au2-a
+        ch =0.5*(EXP(ap)+EXP(am))
+        sh =0.5*(EXP(ap)-EXP(am))
+        csh=2*(ch - sh/au)/au
+        dcq=-psilog*csh
+      END FUNCTION dcq
+
 
