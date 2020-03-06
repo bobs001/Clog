@@ -427,10 +427,7 @@
         ab2=ab*ab
         kbar2b=kb2/k2
         CALL frfi(u,nni,kbar2b,ab,fr,fi,fabs,farg)
-        h=2*(fr*farg + fi*LOG(fabs))*u
-!*!
-!        h=2*(fr*farg + fi*LOG(fabs))
-!*!
+        h=2*(fr*farg + fi*LOG(fabs))
 !
 ! construct spectral weight ratio Rb=rho_b/rho_tot
 !
@@ -461,7 +458,7 @@
 !r_ib=1.
 !*!
 !
-        dab_reg=-r_ib*h/TWOPI
+        dab_reg=-r_ib*h*u/TWOPI
       END FUNCTION dab_reg
 
       SUBROUTINE a_reg_mass(nni, ia, ib, vp, k2, kb2, betab, mb, ac_r)
