@@ -453,12 +453,9 @@
            ENDIF
            r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
         ENDDO      
-        r_ib=1./r_ib
-!*!
-!r_ib=1.
-!*!
+        r_ib=1./r_ib 
 !
-        dab_reg=-r_ib*h*u/TWOPI
+        dab_reg=-r_ib*h*u/TWOPI ! see Eq. (2.13) in acoeff_1.0.pdf
       END FUNCTION dab_reg
 
       SUBROUTINE a_reg_mass(nni, ia, ib, vp, k2, kb2, betab, mb, ac_r)
