@@ -144,7 +144,7 @@
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
       SUBROUTINE bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
-            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
+            c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
       USE physvars
       USE mathvars    
         IMPLICIT NONE                                             ! Plasma:
@@ -160,14 +160,14 @@
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
                                                                   !
                                                                   ! C-coeffs [MeV/micron]
-        REAL,                               INTENT(OUT) :: a_ab
-        REAL,                               INTENT(OUT) :: a_ab_sing
-        REAL,                               INTENT(OUT) :: a_ab_reg
-        REAL,                               INTENT(OUT) :: a_ab_qm
+        REAL,                               INTENT(OUT) :: c_ab
+        REAL,                               INTENT(OUT) :: c_ab_sing
+        REAL,                               INTENT(OUT) :: c_ab_reg
+        REAL,                               INTENT(OUT) :: c_ab_qm
 
         REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, kb2, ab
         REAL                         :: vp, zp2, k, k2, kd, kd2, a, b, eta
-        REAL                         :: ac_r, ac_s, aq, c1, c2
+        REAL                         :: cc_r, cc_s, cq, c1, c2
 
         REAL, PARAMETER              :: EPS_SMALL_E=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
@@ -200,22 +200,22 @@
 !
 ! C_{ab}-classical-singular 
 !
-        CALL c_sing_mass(a,b,ac_s) 
-        a_ab_sing=c1*c2*ac_s
+        CALL c_sing_mass(a,b,cc_s) 
+        c_ab_sing=c1*c2*cc_s
 !
 ! C_{ab}-classical-regular 
 !
-        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
-        a_ab_reg=c1*ac_r
+        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,cc_r)
+        c_ab_reg=c1*cc_r
 !
 ! C_{ab}-quantum
 !
-        CALL c_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
-        a_ab_qm=c1*c2*aq
+        CALL c_quantum_mass(ia,ib,a,eta,cq) ! eta = dimensionless quantum param.
+        c_ab_qm=c1*c2*cq
 !
 ! C_{ab}-total
 !
-        a_ab=a_ab_sing + a_ab_reg + a_ab_qm
+        c_ab=c_ab_sing + c_ab_reg + c_ab_qm
         ENDIF
       END SUBROUTINE bps_ccoeff_ab_mass
 !
@@ -508,9 +508,9 @@
         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
         REAL    :: dcq
         INTEGER :: iu
-        aq=0
+        aq=0.
         u0=0.
-        aq=0
+        ! choose plot range of gaussian e^{-a^2}
         IF (ib == ia) THEN
            u0=0
            u1=4./SQRT(a)
@@ -519,6 +519,7 @@
            u0=MAX(0.,u0)  
            u1=1+10./SQRT(a)
         ENDIF
+        ! gaussian quadrature
         du=(u1-u0)/NQ
         u=u0-du
         DO iu=1,NQ,2 ! Gaussian quadrature
@@ -539,17 +540,14 @@
         REAL,                        INTENT(IN)  :: a          ! [dimensionless]
         REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
         REAL                                     :: dcq  ! [dimensionless]
-        REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh, csh
-        eu=eta/u 
-        psilog=repsi(eu) - LOG(eu)
-        au =2*a*u
-        au2=a*u*u
-        ap = au-au2-a
-        am =-au-au2-a
-        ch =0.5*(EXP(ap)+EXP(am))
-        sh =0.5*(EXP(ap)-EXP(am))
-        csh=ch - sh
-        dcq=-psilog*csh
+        REAL            :: repsi, au, eu, ep, em, psilog, ch, sh, csh
+        eu = eta/u
+        au = 2*a*u
+        psilog = repsi(eu) - LOG(eu)
+        em = EXP(-a * (u - 1)**2)
+        ep = EXP(-a * (u + 1)**2)
+        csh = em - ep
+        dcq =-psilog*csh/au
       END FUNCTION dcq
 
 
