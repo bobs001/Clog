@@ -287,7 +287,7 @@ Research Notes   \\[3pt]
 \pagebreak
 \clearpage
 
-\section{General Analytic Expressions for the BPS A-Coefficients}
+\section{General Analytic Expressions for the BPS C-Coefficients}
 
 Suppose we have a plasma with various species labeled by an index $b$
 at distinct temperatures $T_b$, number densities $n_b$, and species
@@ -311,12 +311,13 @@ ${\cal C^{\ell\ell}}$-coefficients take the form
 \label{all}
 \end{eqnarray}
 %%
-with
+with 
 %%
 \begin{eqnarray}
   C^{\ell\ell\smLT}_{ab,\smR}
   &=&
-  \frac{e_a^2}{4 \pi}\, \frac{i}{2 \pi}
+  \frac{e_a^2}{4 \pi}\, \frac{1}{\beta_b v_a}\,
+  \frac{i}{2 \pi}
   \int_{-1}^1   \frac{d\cos\theta}{\cos\theta} \,
   \frac{\rho_b(v_a\cos\theta)}
   {\rho_{\rm total}(v_a\cos\theta)}\,F(v_a \cos\theta) 
@@ -326,8 +327,8 @@ with
   C^{\ell\ell \, \smC}_{ab,\smS}
   &=& 
   \frac{e_a^2\,\kappa^2_b}{4\pi} \,   
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\!\!
-  v_a\int_0^1 du \, u^{-1/2} \,\exp\left\{ - \frac{1}{2} \,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \, \frac{1}{\beta_b}
+  \int_0^1 du \, u^{-1/2} \,\exp\left\{ - \frac{1}{2} \,
   \beta_b m_b v^2_a \, u \right\}
 \nonumber\\
   && \qquad
@@ -339,7 +340,8 @@ with
   C^{\ell\ell \, \Delta Q}_{ab}
   &=&
   -\frac{e_a^2\, \kappa_b^2}{4 \pi}\,
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2}\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! \!
+   \frac{1}{\beta_b v_a}
   \int_0^\infty dv_{ab}
   \bigg\{ {\rm Re} \, \psi \left( 1 + i \eta_{ab}
   \right) - \ln \eta_{ab}  \bigg\}
@@ -448,7 +450,7 @@ ccoeff.f90:bps\_ccoeff\_ab\_mass
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
       SUBROUTINE bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
-            a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
+            c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
       USE physvars
       USE mathvars    
         IMPLICIT NONE                                             ! Plasma:
@@ -464,14 +466,14 @@ ccoeff.f90:bps\_ccoeff\_ab\_mass
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
                                                                   !
                                                                   ! C-coeffs [MeV/micron]
-        REAL,                               INTENT(OUT) :: a_ab
-        REAL,                               INTENT(OUT) :: a_ab_sing
-        REAL,                               INTENT(OUT) :: a_ab_reg
-        REAL,                               INTENT(OUT) :: a_ab_qm
+        REAL,                               INTENT(OUT) :: c_ab
+        REAL,                               INTENT(OUT) :: c_ab_sing
+        REAL,                               INTENT(OUT) :: c_ab_reg
+        REAL,                               INTENT(OUT) :: c_ab_qm
 
         REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, kb2, ab
         REAL                         :: vp, zp2, k, k2, kd, kd2, a, b, eta
-        REAL                         :: ac_r, ac_s, aq, c1, c2
+        REAL                         :: cc_r, cc_s, cq, c1, c2
 
         REAL, PARAMETER              :: EPS_SMALL_E=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
@@ -504,22 +506,22 @@ ccoeff.f90:bps\_ccoeff\_ab\_mass
 !
 ! C_{ab}-classical-singular 
 !
-        CALL c_sing_mass(a,b,ac_s) 
-        a_ab_sing=c1*c2*ac_s
+        CALL c_sing_mass(a,b,cc_s) 
+        c_ab_sing=c1*c2*cc_s
 !
 ! C_{ab}-classical-regular 
 !
-        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,ac_r)
-        a_ab_reg=c1*ac_r
+        CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,cc_r)
+        c_ab_reg=c1*cc_r
 !
 ! C_{ab}-quantum
 !
-        CALL c_quantum_mass(ia,ib,a,eta,aq) ! eta = dimensionless quantum param.
-        a_ab_qm=c1*c2*aq
+        CALL c_quantum_mass(ia,ib,a,eta,cq) ! eta = dimensionless quantum param.
+        c_ab_qm=c1*c2*cq
 !
 ! C_{ab}-total
 !
-        a_ab=a_ab_sing + a_ab_reg + a_ab_qm
+        c_ab=c_ab_sing + c_ab_reg + c_ab_qm
         ENDIF
       END SUBROUTINE bps_ccoeff_ab_mass
 \end{verbatim}
@@ -616,6 +618,7 @@ ccoeff.f90:bps\_ccoeff\_ei\_mass
 {
 \baselineskip 10pt
 \begin{verbatim}
+!
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ! Returns C_{p I} = \sum_i C_{p i} for backward compatibility
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -696,13 +699,13 @@ The long-distance regular contribution can be expressed as
 \begin{eqnarray}
   C^{\ell\ell \, \smLT}_{ab,\smR} 
   &=&
-  \frac{e_a^2}{4\pi}
+  \frac{e_a^2}{4\pi} \, \frac{1}{\beta_b v_a} \, 
   \frac{i}{2\pi} \int_{-1}^1 \frac{du}{u}\,
   \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\,
   F(v_a u) \ln \left\{ \frac{F(v_a u)}{K^2} \right\}
 \\[5pt]
   &=&
-  \frac{e_a^2}{4\pi}
+  \frac{e_a^2}{4\pi}\,\frac{1}{\beta_b v_a} \, 
   \frac{i}{2\pi} \int_0^1 \frac{du}{u}\,
   \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\!
   \left[
@@ -710,9 +713,10 @@ The long-distance regular contribution can be expressed as
   -
   F^*(v_a u) \ln \left\{ \frac{F^*(v_a u)}{K^2} \right\}
   \right]
+  \nonumber\\
 \\[5pt]
   &=&
-  -\frac{e_a^2}{4\pi}
+  -\frac{e_a^2}{4\pi}\,\frac{1}{\beta_b v_a} \, 
   \frac{1}{2\pi} \int_0^1 \frac{du}{u}\,
   \frac{\rho_b(v_a u)}{\rho_\text{total}(v_a u)}\, H(v_a u) \ ,
 \end{eqnarray}
@@ -811,6 +815,8 @@ We can now express the regular piece as
   \right] 
   }_{c_{ab,1}}
   \cdot \,
+  \frac{1}{\beta_b v_a}
+  \cdot
   {\sf C}_{ab\,\smR}(v_a,\{a_c\},\{\bar\kappa_c\})
 \\
   {\sf C}_{ab\,\smR}(v_a,\{a_c\},\{\bar\kappa_c\})
@@ -871,7 +877,7 @@ ccoeff.f90: d\_cab\_reg
         ENDDO
         cc_r=cc_r*du
       END SUBROUTINE c_reg_mass
-      
+
       FUNCTION d_cab_reg(u, vp, ia, ib, nni, k2, kb2, betab, mb)
       USE mathvars
       USE physvars
@@ -883,36 +889,38 @@ ccoeff.f90: d\_cab\_reg
         INTEGER,                     INTENT(IN)  :: nni    ! Number of ion species
         REAL,                        INTENT(IN)  :: k2     ! Wave-number squared [1/cm^2]
         REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: kb2    ! Debye wavenumber squared [1/cm^2]
-        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  ! Temperature array [1/keV]
+        REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  ! Inv temperature array [1/keV]
         REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     ! Mass array [keV]
         REAL                                     :: d_cab_reg! [dimensionless]
         REAL,    DIMENSION(1:nni+1) :: kbar2b, ab, ab2
         REAL                        :: fr, fi, fabs, farg, h, r_ib
-        REAL                        :: kcb, bm_ic, bm_ib, a_ic, a_ib, ex, au
+        REAL                        :: kcb, bm_ic, bm_ib, a2_ic, a2_ib, ex, au
         INTEGER                     :: ic
         ab=SQRT(0.5*betab*mb)*vp/CC
         ab2=ab*ab
         kbar2b=kb2/k2
         CALL frfi(u,nni,kbar2b,ab,fr,fi,fabs,farg)
-        h=2*(fr*farg + fi*LOG(fabs))*u
+        h=2*(fr*farg + fi*LOG(fabs))
+
+        ! calculate spectral density
         r_ib=0
         bm_ib=betab(ib)*mb(ib)
-        a_ib =ab(ib)*ab(ib)
+        a2_ib =ab(ib)*ab(ib)
         DO ic=1,nni+1
            kcb=kb2(ic)/k2
            bm_ic=betab(ic)*mb(ic)
-           a_ic =ab(ic)*ab(ic)
+           a2_ic =ab(ic)*ab(ic)
            IF (ic == ib) THEN
               ex=1.
            ELSE
-              au=(a_ic-a_ib)*u
-              ex=EXP(-au)
+              au=(a2_ic-a2_ib)*u ! avoids exp of 
+              ex=EXP(-au)        ! large numbers
            ENDIF
            r_ib=r_ib + kcb*SQRT(bm_ic/bm_ib)*ex
         ENDDO      
-        r_ib=1./r_ib
-!
-        d_cab_reg=-r_ib*h/TWOPI
+        r_ib=1./r_ib 
+
+        d_cab_reg=-r_ib*h/(u*TWOPI) ! See * in ccoeff_1.0.pdf
       END FUNCTION d_cab_reg
 \end{verbatim}
 }
@@ -982,54 +990,50 @@ Gaussian quadrature for both pieces.
 
 \vskip0.5cm 
 \noindent
-acoeff.f90:
+acoeff.f90: sing
 {
 \baselineskip 10pt
 \begin{verbatim}
-**
-    FUNCTION dab_sing(u, a, b)
-      IMPLICIT NONE  ! a=(1/2)*beta*mpc2*vp^2/C^2
-      REAL,        INTENT(IN)  :: u ! [dimensionless]
-      REAL,        INTENT(IN)  :: a ! [dimensionless] 
-      REAL,        INTENT(IN)  :: b ! [dimensionless]
-      REAL                     :: dab_sing ! [dimensionless]
-      dab_sing=SQRT(-u)*EXP(-a*u)*(-LOG(u/(1-u)) + b)
-    END FUNCTION dab_sing
-\end{verbatim}
-}
-
-\noindent
-The numerical integration is performed by Gaussian quadrature:
-\vskip0.4cm 
-\noindent
-acoeff.f90:
-{
-\baselineskip 10pt
-\begin{verbatim}
-**
-      SUBROUTINE a_sing(a, b, ac_s)
+!
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+! singular contribution for non-zero electron mass
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!
+      SUBROUTINE c_sing_mass(a, b, cc_s)
         REAL,    INTENT(IN)  :: a
         REAL,    INTENT(IN)  :: b
-        REAL,    INTENT(OUT) :: ac_s
+        REAL,    INTENT(OUT) :: cc_s
         REAL                 :: u0, u1, du, u, um
-        INTEGER, PARAMETER :: NS=1000            ! integration regions singular: must be even
+        INTEGER, PARAMETER :: NS=1000 ! integration regions: must be even
         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
-           ac_s=0
+           cc_s=0
            u0=0
            u1=1
            du=(u1-u0)/NS
            u=u0-du
            DO iu=1,NS,2 ! Gaussian quadrature
               u=u+2.E0*du
-              ac_s=ac_s+W2*dab_sing(u,a,b)
+              cc_s=cc_s+W2*dcab_sing(u,a,b)
               um=u-du*UPM
-              ac_s=ac_s+W13*dab_sing(um,a,b)
+              cc_s=cc_s+W13*dcab_sing(um,a,b)
               um=u+du*UPM
-              ac_s=ac_s+W13*dab_sing(um,a,b)
+              cc_s=cc_s+W13*dcab_sing(um,a,b)
            ENDDO
-           ac_s=ac_s*du
-      END SUBROUTINE a_sing
+           cc_s=cc_s*du
+      END SUBROUTINE c_sing_mass
+!
+! a = betab * mb * vp^2/ 2
+!      
+      FUNCTION dcab_sing(u, a, b)
+        IMPLICIT NONE
+        REAL,        INTENT(IN)  :: u        ! [dimensionless]
+        REAL,        INTENT(IN)  :: a        ! [dimensionless] 
+                                             ! a=(1/2)*beta*mpc2*vp^2/C^2
+        REAL,        INTENT(IN)  :: b        ! [dimensionless]
+        REAL                     :: dcab_sing! [dimensionless]
+        dcab_sing=EXP(-a*u)*(-LOG(u/(1-u)) + b)/SQRT(u) ! Eq BPS (9.5)
+      END FUNCTION dcab_sing
 \end{verbatim}
 }
 
@@ -1043,7 +1047,7 @@ $v_{pb}= v_p\,u$ so that
   C^{\ell\ell \, \smQM}_b
   &\!=\!&  
   -\frac{e_p^2\, \kappa_b^2}{4\pi}\,
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! 
   \int_0^\infty du\, 
   \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\bar\eta_{pb}}{u}
   \right\}
@@ -1062,6 +1066,7 @@ The quantum function we need to code is therefore
   C^{\ell \ell \, \smQM}_b
   &\!=\!&  
   \underbrace{
+  **
   \left[\frac{e_p^2\, \kappa_b^2}{4\pi}\,
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
   \right] 
@@ -1114,39 +1119,18 @@ and the function itself takes the form
 
 \vskip1cm 
 \noindent
-acoeff.f90:
+acoeff.f90: quantum
 {
 \baselineskip 10pt
 \begin{verbatim}
-**
-      FUNCTION daq(u, a, eta)
-      USE physvars
+!
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+! quantum contribution for non-zero electron mass
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!
+      SUBROUTINE c_quantum_mass(ia, ib, a, eta, aq)
         IMPLICIT NONE
-        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
-        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
-        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
-        REAL                                     :: daq  ! [dimensionless]
-        REAL, PARAMETER :: AMAX=25.
-        REAL            :: repsi, au, eu, au2, ap, am, psilog, ch, sh
-        eu=eta/u 
-        psilog=repsi(eu) - LOG(eu)
-        au =2*a*u
-        au2=a*u*u
-        IF (a <= AMAX) THEN      
-          ch =EXP(-au2)*COSH(au)
-          sh =EXP(-au2)*SINH(au)
-        ELSE
-          ap = au-au2-a
-          am =-au-au2-a
-          ch =0.5*(EXP(ap)+EXP(am))
-          sh =0.5*(EXP(ap)-EXP(am))
-        ENDIF
-        daq=-psilog*2*(ch - sh/au)/au
-      END FUNCTION daq
-
-
-      SUBROUTINE a_quantum(ib, a, eta, aq)
-        IMPLICIT NONE
+        INTEGER, INTENT(IN)  :: ia    ! species index
         INTEGER, INTENT(IN)  :: ib    ! species index
         REAL,    INTENT(IN)  :: a     ! [dimensionless] (1/2) betab mb vp^2
         REAL,    INTENT(IN)  :: eta   ! [dimensionless] ep eb/4pi hbar vp
@@ -1155,12 +1139,12 @@ acoeff.f90:
         INTEGER, PARAMETER :: NQ=1000            ! integration regions quantum : must be even
         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
-        REAL    :: daq
+        REAL    :: dcq
         INTEGER :: iu
-        aq=0
+        aq=0.
         u0=0.
-        aq=0
-        IF (ib == 1) THEN
+        ! choose plot range of gaussian e^{-a^2}
+        IF (ib == ia) THEN
            u0=0
            u1=4./SQRT(a)
         ELSE
@@ -1168,18 +1152,36 @@ acoeff.f90:
            u0=MAX(0.,u0)  
            u1=1+10./SQRT(a)
         ENDIF
+        ! gaussian quadrature
         du=(u1-u0)/NQ
         u=u0-du
         DO iu=1,NQ,2 ! Gaussian quadrature
            u=u+2.E0*du
-           aq=aq+W2*daq(u,a,eta)
+           aq=aq+W2*dcq(u,a,eta)
            um=u-du*UPM
-           aq=aq+W13*daq(um,a,eta)
+           aq=aq+W13*dcq(um,a,eta)
            um=u+du*UPM
-           aq=aq+W13*daq(um,a,eta)
+           aq=aq+W13*dcq(um,a,eta)
         ENDDO
         aq=aq*du
-      END SUBROUTINE a_quantum
+      END SUBROUTINE c_quantum_mass
+
+      FUNCTION dcq(u, a, eta)
+      USE physvars
+        IMPLICIT NONE
+        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL                                     :: dcq  ! [dimensionless]
+        REAL            :: repsi, au, eu, ep, em, psilog, ch, sh, csh
+        eu = eta/u
+        au = 2*a*u
+        psilog = repsi(eu) - LOG(eu)
+        em = EXP(-a * (u - 1)**2)
+        ep = EXP(-a * (u + 1)**2)
+        csh = em - ep
+        dcq =-psilog*csh/au
+      END FUNCTION dcq
 \end{verbatim}
 }
 

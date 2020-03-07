@@ -185,18 +185,17 @@
 !
         mpb = mp*mb/(mp+mb)            ! [keV]
         mbpb= mb/mpb                   ! [dimensionless]
-        vp =CC*SQRT(2*ep/mp)           ! [cm/s]
-        zp2=zp**2                      ! [dimensionless]
-                                       ! ab=(1/2) betab(ib)*mbc2(ib)*vp2/CC2
-        ab  =0.5*betab*mb*vp*vp/CC2    ! [dimensionless] 
-        IF (zb(ib) .NE. 0.) THEN
-        a  =ab(ib)
-        b  =-Log(2*betab(ib)*BEKEV*ABS(zp*zb(ib))*k*A0CM*mbpb(ib) )-2*GAMMA+2
-        eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
-        c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
-        c1=c1*1.E-7                    ! [MeV/micron]  
-        c2=SQRT(a/PI)                  ! [dimensionless] 
-                                       ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
+        vp = CC*SQRT(2*ep/mp)          ! [cm/s]
+        zp2 = zp**2                    ! [dimensionless]
+        ab  = 0.5*betab*mb*vp*vp/CC2   ! [dimensionless] 
+        IF (zb(ib) .NE. 0.) THEN       ! ab=(1/2) betab(ib)*mbc2(ib)*vp2/CC2
+           a   =ab(ib)
+           b  =-Log(2*betab(ib)*BEKEV*ABS(zp*zb(ib))*k*A0CM*mbpb(ib) )-2*GAMMA
+           eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
+           c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
+           c1=c1*1.E-7                    ! [MeV/micron]  
+           c2=SQRT(a/PI)                  ! [dimensionless] 
+                                          ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
 !
 ! C_{ab}-classical-singular 
 !
@@ -294,7 +293,7 @@
         ENDDO
       END SUBROUTINE bps_ccoeff_ab_matrix
 
-
+!
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ! Returns C_{p I} = \sum_i C_{p i} for backward compatibility
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
