@@ -471,7 +471,6 @@
         REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb
         REAL,                        INTENT(OUT) :: ac_r
         REAL,    DIMENSION(1:nni+1)  :: ab
-!       INTEGER, PARAMETER :: NR=10 ! integration regions: must be even
         INTEGER, PARAMETER :: NR=100 ! integration regions: must be even
         REAL,    PARAMETER :: UPM=0.7745966692E0 ! parameters for Gaussian Quad
         REAL,    PARAMETER :: W13=0.5555555556E0, W2=0.8888888889E0
