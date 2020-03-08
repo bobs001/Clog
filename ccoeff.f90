@@ -544,15 +544,13 @@
         REAL,                        INTENT(IN)  :: a          ! [dimensionless]
         REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
         REAL                                     :: dcq  ! [dimensionless]
-        REAL            :: repsi, au, eu, ep, em, psilog, ch, sh, csh
+        REAL            :: repsi, eu, ep, em, psilog, sh
         eu = eta/u
-        au = 2*a*u
         psilog = repsi(eu) - LOG(eu)
         em = EXP(-a * (u - 1)**2)
         ep = EXP(-a * (u + 1)**2)
-        csh = em - ep
-        !dcq =-psilog*csh/au
-        dcq =-psilog*csh
+        sh = em - ep
+        dcq =-psilog*sh
       END FUNCTION dcq
 
 
