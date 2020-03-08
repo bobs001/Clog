@@ -551,7 +551,8 @@
         em = EXP(-a * (u - 1)**2)
         ep = EXP(-a * (u + 1)**2)
         csh = em - ep
-        dcq =-psilog*csh/au
+        !dcq =-psilog*csh/au
+        dcq =-psilog*csh
       END FUNCTION dcq
 
 
