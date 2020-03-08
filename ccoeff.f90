@@ -167,7 +167,7 @@
 
         REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, kb2, ab
         REAL                         :: vp, zp2, k, k2, kd, kd2, a, b, eta
-        REAL                         :: cc_r, cc_s, cq, c1, c2, c3
+        REAL                         :: cc_r, cc_s, cq, c1, c2, c3, e2
 
         REAL, PARAMETER              :: EPS_SMALL_E=2.E-4
         REAL, PARAMETER              :: EPS_SMALL_E_SING=2.E-4
@@ -190,11 +190,13 @@
         ab  = 0.5*betab*mb*vp*vp/CC2   ! [dimensionless] 
         IF (zb(ib) .NE. 0.) THEN       ! ab=(1/2) betab(ib)*mbc2(ib)*vp2/CC2
            a   =ab(ib)
-           b  =-Log(2*betab(ib)*BEKEV*ABS(zp*zb(ib))*k*A0CM*mbpb(ib) )-2*GAMMA
+           e2 = 2*BEKEV*A0CM  ! e^2 = (e^2/a0) * a0 = 2*13.6eV * 0.5A0
+           b  =-Log( betab(ib)*e2*ABS(zp*zb(ib))*k*mbpb(ib) )-2*GAMMA
            eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
            c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
-           c1=c1*1.E-7                    ! [MeV/micron]  
+           c1=c1*1.E-7                    ! [MeV/micron]
            c2=SQRT(a/PI)                  ! [dimensionless] c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC
+           ! ** units still incorrect **
            C3=CC/(betab(ib)*vp)  ! 1/betab(ib)*vp  note: dE_\per/dx = C/m*c^2
            c3=c3/1000.           ! convert from KeV to MeV
    
@@ -542,14 +544,13 @@
         REAL,                        INTENT(IN)  :: a          ! [dimensionless]
         REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
         REAL                                     :: dcq  ! [dimensionless]
-        REAL            :: repsi, au, eu, ep, em, psilog, ch, sh, csh
+        REAL            :: repsi, eu, ep, em, psilog, sh
         eu = eta/u
-        au = 2*a*u
         psilog = repsi(eu) - LOG(eu)
         em = EXP(-a * (u - 1)**2)
         ep = EXP(-a * (u + 1)**2)
-        csh = em - ep
-        dcq =-psilog*csh/au
+        sh = em - ep
+        dcq =-psilog*sh
       END FUNCTION dcq
 
 

@@ -249,13 +249,6 @@ Research Notes   \\[3pt]
    LS2 9JT
 }
 
-%\vskip 0.2cm 
-%\affiliation{\affiliationskip
-%     %$^1$
-%     Los Alamos National Laboratory\\
-%     Los Alamos, New Mexico 87545, USA
-%}
-
 \date{\datechange}
 
 \begin{abstract}
@@ -353,11 +346,11 @@ with
  % && \qquad\qquad\quad
   - \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_a + v_{ab} 
   \right)^2\right\} 
-\Bigg]	\,,
+\Bigg]	\,.
 \label{regb}
 \end{eqnarray}
 %% 
-This regular form is  BPS (9.7); the singular form is BPS (9.5);
+The regular form is  BPS (9.7); the singular form is BPS (9.5);
 the quantum form is BPS (10.27), where
 %%
 \begin{eqnarray}
@@ -444,6 +437,7 @@ ccoeff.f90:bps\_ccoeff\_ab\_mass
 {
 \baselineskip 10pt
 \begin{verbatim}
+!*** still need to fix scaling/units ***
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ! main driver for C-coefficient for general quantum and electron-mass regimes
@@ -933,12 +927,13 @@ ccoeff.f90: d\_cab\_reg
 The singular contribution,
 %%
 \begin{eqnarray}
-  {\cal A}^\smC_{b,\smS} 
+  C^{\ell \ell \, \smC}_{b,\smS} 
   &=& 
   \left[
   \frac{e_p^2\, \kappa_b^2}{4\pi}
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p
   \right]
+  \frac{1}{\beta_b v_p}
   \int_0^1 du\, u^{-1/2} e^{-\frac{1}{2}\, \beta_b m_b v_p^2 \,u}
   \left[-\ln\!\left\{\frac{\beta_b e_b e_p}{4\pi}\,K\,
   \frac{m_b}{m_{pb}}\,\frac{u}{1-u} \right\} 
@@ -962,7 +957,7 @@ which motivates the definition
 \begin{eqnarray}
   C^{\ell\ell \, \smC}_{b,\smS} 
   &=& 
-  c_{b, 1}\, c_{b, 2} 
+  c_{b, 1}\, c_{b, 2} \, c_{b_3}
   \cdot 
   {\sf C}_\smS(a_{pb},b_{pb})
 \\
@@ -982,7 +977,9 @@ which motivates the definition
   c_{b, 1} &=& \frac{e_p^2\, \kappa_b^2}{4\pi}
   ~~~~
   c_{b, 2} =
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! v_p  \ .
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! v_p  
+    ~~~~
+  c_{b, 3} = \frac{1}{\beta_b v_p}
 \end{eqnarray}
 %%
 The term involving $b$ can be integrated exactly, but we will use
@@ -1047,13 +1044,14 @@ $v_{pb}= v_p\,u$ so that
   C^{\ell\ell \, \smQM}_b
   &\!=\!&  
   -\frac{e_p^2\, \kappa_b^2}{4\pi}\,
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! 
+  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} v_p \, 
+  \frac{1}{\beta_b v_p}
   \int_0^\infty du\, 
   \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\bar\eta_{pb}}{u}
   \right\}
   - \ln\!\left\{\frac{\bar\eta_{pb}}{u} \right\} \Big] 
 \nonumber
-\\ && \hskip4.5cm
+\\ && \hskip2.5cm
   \Bigg[ e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u-1)^2} 
   -
   e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u+1)^2}  
@@ -1066,11 +1064,11 @@ The quantum function we need to code is therefore
   C^{\ell \ell \, \smQM}_b
   &\!=\!&  
   \underbrace{
-  **
   \left[\frac{e_p^2\, \kappa_b^2}{4\pi}\,
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \!\! v_p\,
+  \frac{1}{\beta_b v_p}
   \right] 
-  }_{c_{b, 1} \cdot c_{b, 2}}
+  }_{c_{b, 1} \cdot c_{b, 2} \cdot c_{b, 3}}
   \cdot \,
   {\sf C}_1^\smQM(a_{pb}, \tilde\eta_{pb}) \ ,
 \label{qmA}
@@ -1111,7 +1109,8 @@ and the function itself takes the form
   \ln\left\{ \frac{\eta}{u}  \right\} \right]
 %\nonumber
 %\\ && 
-  \frac{1}{2 a\,u}\left[e^{-a(u-1)^2} - e^{-a(u+1)^2} 
+  \frac{1}{2 a\,u}
+  \left[e^{-a(u-1)^2} - e^{-a(u+1)^2} 
   \right] \ .
 \label{qmAB}
 \end{eqnarray}
@@ -1180,7 +1179,8 @@ acoeff.f90: quantum
         em = EXP(-a * (u - 1)**2)
         ep = EXP(-a * (u + 1)**2)
         csh = em - ep
-        dcq =-psilog*csh/au
+        !dcq =-psilog*csh/au
+        dcq =-psilog*csh
       END FUNCTION dcq
 \end{verbatim}
 }
