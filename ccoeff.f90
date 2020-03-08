@@ -195,8 +195,8 @@
            c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
            c1=c1*1.E-7                    ! [MeV/micron]  
            c2=SQRT(a/PI)                  ! [dimensionless] c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC
-           C3=1 ! 1/betab(ib)*vp
-           c3=c3/1000. ! convert from KeV to MeV
+           C3=CC/(betab(ib)*vp)  ! 1/betab(ib)*vp  note: dE_\per/dx = C/m*c^2
+           c3=c3/1000.           ! convert from KeV to MeV
    
 ! C_{ab}-classical-singular 
 !
