@@ -5,7 +5,7 @@ from matplotlib import rc, rcParams
 
 #############################################
 # Read in data from an ASCII data table
-data = np.genfromtxt('ccoeff_dedx_1.out')
+data = np.genfromtxt('ccoeff_1.out')
 E = data[:, 1]          # [keV]
 Clle = data[:, 2]      # [MeV/mu-m]
 Clli = data[:, 3]      # [MeV/mu-m]

@@ -32,7 +32,7 @@
 !
 ! plot the regular and singular contributions
 !
-        OPEN  (1, FILE='ccoeff_dedx_1.out')  ! C-coeffs
+        OPEN  (1, FILE='ccoeff_1.out')  ! C-coeffs
 
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
