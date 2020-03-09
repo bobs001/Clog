@@ -327,10 +327,9 @@
                  cdum, cc_s, cc_r, cq)
 
             vp = CC*SQRT(2*ep/mp)            
-            bc_s = cc_s - CC*ac_s/betab(ib)/vp/100.  ! - A/beta vp
+            bc_s = cc_s - CC*ac_s/betab(ib)/vp/100.  !C - A/beta vp
             bc_r = cc_r - CC*ac_r/betab(ib)/vp/100.
             bq = cq - CC*aq/betab(ib)/vp/1000.
-                        
             
             CALL x_collect(ib, NNB, bc_s, bc_r, bq,       &
             b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot,  &
