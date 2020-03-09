@@ -36,40 +36,40 @@ plt.savefig('plot_ccoeff_1.png')
 plt.show()
 
 
-# #############################################
-# # plot stopping power classical
-# plt.plot(E,Be_c, label='B_e_c')
-# plt.plot(E,Bi_c, label='B_i_c')
-# plt.plot(E,B_c, label='B_tot_c')
+#############################################
+# plot stopping power classical
+plt.plot(E,Be_c, label='B_e_c')
+plt.plot(E,Bi_c, label='B_i_c')
+plt.plot(E,B_c, label='B_tot_c')
+
 #
-# #
-# xmax = 3.5
-# ymax = 5.0
-# plt.xlim(0, xmax)
-# #plt.ylim(-8, 5)
-# plt.xlabel(r'$E \,\, {\rm [MeV]}$')
-# plt.ylabel(r'$B^{C} \,\, {\rm [MeV/\mu m]}$*')
-# plt.title(r'classical: $B^C}$: BPS')
-# plt.legend(loc=0)
-# plt.grid(True)
-# plt.savefig('plot_ccoeff_2.png')
-# plt.show()
+xmax = 3.5
+ymax = 5.0
+plt.xlim(0, xmax)
+#plt.ylim(-8, 5)
+plt.xlabel(r'$E \,\, {\rm [MeV]}$')
+plt.ylabel(r'$B^{C} \,\, {\rm [MeV/\mu m]}$*')
+plt.title(r'classical: $B^C}$: BPS')
+plt.legend(loc=0)
+plt.grid(True)
+plt.savefig('plot_ccoeff_2.png')
+plt.show()
+
+#############################################
+# plot stopping power quantum
+plt.plot(E,Be_q, label='B_e_q')
+plt.plot(E,Bi_q, label='B_i_q')
+#plt.plot(E,B_q, label='B_tot_q')
+
 #
-# #############################################
-# # plot stopping power quantum
-# plt.plot(E,Be_q, label='B_e_q')
-# plt.plot(E,Bi_q, label='B_i_q')
-# #plt.plot(E,B_q, label='B_tot_q')
-#
-# #
-# xmax = 3.5
-# ymax = 5.0
-# plt.xlim(0, xmax)
-# #plt.ylim(-8, 5)
-# plt.xlabel(r'$E \,\, {\rm [MeV]}$')
-# plt.ylabel(r'$B^{Q} \,\, {\rm [MeV^2/\mu m]}$**')
-# plt.title(r'quantum: $B^{Q}$: BPS')
-# plt.legend(loc=0)
-# plt.grid(True)
-# plt.savefig('plot_ccoeff_3.png')
-# plt.show()
+xmax = 3.5
+ymax = 5.0
+plt.xlim(0, xmax)
+#plt.ylim(-8, 5)
+plt.xlabel(r'$E \,\, {\rm [MeV]}$')
+plt.ylabel(r'$B^{Q} \,\, {\rm [MeV^2/\mu m]}$**')
+plt.title(r'quantum: $B^{Q}$: BPS')
+plt.legend(loc=0)
+plt.grid(True)
+plt.savefig('plot_ccoeff_3.png')
+plt.show()
