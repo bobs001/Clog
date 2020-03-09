@@ -491,7 +491,7 @@
         ENDDO      
         r_ib=1./r_ib 
 
-        d_cab_reg=-r_ib*h/(u*TWOPI) ! See * in ccoeff_1.0.pdf
+        d_cab_reg=-r_ib*h/(u*TWOPI) ! Eq. (9.7) BPS
       END FUNCTION d_cab_reg
 
 !
