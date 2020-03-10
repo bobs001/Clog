@@ -320,7 +320,7 @@ with
   C^{\ell\ell \, \smC}_{ab,\smS}
   &=& 
   \frac{e_a^2\,\kappa^2_b}{4\pi} \,   
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \, \frac{1}{\beta_b}
+  \left( \frac{\beta_b m_b v_a^2}{2\pi} \right)^{1/2} \, \frac{1}{\beta_b v_a}
   \int_0^1 du \, u^{-1/2} \,\exp\left\{ - \frac{1}{2} \,
   \beta_b m_b v^2_a \, u \right\}
 \nonumber\\
@@ -333,19 +333,20 @@ with
   C^{\ell\ell \, \Delta Q}_{ab}
   &=&
   -\frac{e_a^2\, \kappa_b^2}{4 \pi}\,
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! \!
+  \left( \frac{\beta_b m_b v_p^2}{2\pi} \right)^{1/2} \! \!
    \frac{1}{\beta_b v_a}
-  \int_0^\infty dv_{ab}
-  \bigg\{ {\rm Re} \, \psi \left( 1 + i \eta_{ab}
-  \right) - \ln \eta_{ab}  \bigg\}
+  \int_0^\infty du \, 
+  \bigg\{ {\rm Re} \, \psi \left( 1 + i \frac{\eta_{ab}}{u}
+  \right)
+   - 
+   \ln \frac{\eta_{ab}}{u}  \bigg\}
 \nonumber\\
   &&
   \Bigg[ \exp\left\{ - \frac{1}{2}\, \beta_b
-  m_b \left( v_a - v_{ab} \right)^2\right\} 
+  m_b v_a^2 \left(u-1 \right)^2\right\} 
 %\nonumber\\
  % && \qquad\qquad\quad
-  - \exp\left\{ - \frac{1}{2} \beta_b m_b \left( v_a + v_{ab} 
-  \right)^2\right\} 
+  - \exp\left\{ - \frac{1}{2} \beta_b m_b v_a^2 \left( u + 1\right)^2\right\} 
 \Bigg]	\,.
 \label{regb}
 \end{eqnarray}
@@ -354,7 +355,7 @@ The regular form is  BPS (9.7); the singular form is BPS (9.5);
 the quantum form is BPS (10.27), where
 %%
 \begin{eqnarray}
-\eta_{ab}= \frac{e_a e_b}{4\pi\hbar v_{ab}} \ .
+\eta_{ab}= \frac{e_a e_b}{4\pi\hbar v_{a}} \ .
 \end{eqnarray}
 %%
 The Debye wavenumber $K$ is arbitrary and will typically be chosen as
@@ -977,7 +978,7 @@ which motivates the definition
   c_{b, 1} &=& \frac{e_p^2\, \kappa_b^2}{4\pi}
   ~~~~
   c_{b, 2} =
-  \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} \! v_p  
+  \left( \frac{\beta_b m_b  v_p^2}{2\pi} \right)^{1/2} 
     ~~~~
   c_{b, 3} = \frac{1}{\beta_b v_p}
 \end{eqnarray}
@@ -1047,9 +1048,9 @@ $v_{pb}= v_p\,u$ so that
   \left( \frac{\beta_b m_b}{2\pi} \right)^{1/2} v_p \, 
   \frac{1}{\beta_b v_p}
   \int_0^\infty du\, 
-  \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\bar\eta_{pb}}{u}
+  \Big[{\rm Re}\,\psi\!\left\{ 1 + i\, \frac{\eta_{pb}}{u}
   \right\}
-  - \ln\!\left\{\frac{\bar\eta_{pb}}{u} \right\} \Big] 
+  - \ln\!\left\{\frac{\eta_{pb}}{u} \right\} \Big] 
 \nonumber
 \\ && \hskip2.5cm
   \Bigg[ e^{-\frac{1}{2}\,\beta_b m_b v_p^2 (u-1)^2} 
@@ -1081,7 +1082,7 @@ where the arguments of the function are defined by
   &=& 
   \frac{1}{2}\,\beta_b m_b\, v_p^2
 \\
-  \tilde\eta_{pb}
+  \eta_{pb}
   &=& 
   \frac{e_p e_b}{4 \pi \hbar v_p}
   =
