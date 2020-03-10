@@ -13,6 +13,7 @@
 *.aux
 *.log
 *.toc
+*.gz
 
 # No Mac file
 .DS_Store
