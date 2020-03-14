@@ -1,7 +1,6 @@
       PROGRAM dedx
 !
-! This program calculates dE/dx using dedx_bps() and by taking a
-! numerical derivative of A. Very good agreement.        
+! This program calculates the C-coefficients of BPS
 !
 ! nts = number of time steps
 !
@@ -10,15 +9,8 @@
       USE physvars
       USE mathvars
         IMPLICIT NONE
-        REAL    :: dedx_tot,  dedx_i,  dedx_e
-        REAL    :: dedxc_tot, dedxc_i, dedxc_e
-        REAL    :: dedxq_tot, dedxq_i, dedxq_e
-        REAL    :: dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e
-        REAL    :: dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e
-        REAL    :: dedxc_a_r_i, dedxc_a_r_e
-        REAL    :: a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
-        REAL    :: ac_r_e, ac_r_i, ac_s_e, ac_s_i
-        
+        REAL ::  b_tot, b_i, b_e, bc_tot, bc_i, bc_e
+        REAL ::  bq_tot, bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e
         INTEGER :: j, nit
 
         REAL    :: te, ti, ne, ep, mp, zp, epp, de
@@ -40,77 +32,32 @@
 !
 ! plot the regular and singular contributions
 !
-        OPEN (7, FILE='acoeff_dedx_0.out')  ! A-coeffs        
-        OPEN (1, FILE='acoeff.dedx_1.out')  ! dE/dx from dedx_bps
-        OPEN (2, FILE='acoeff.dedx_2.out')  ! dE/dx from acoeff_dedx_bps
-        OPEN (3, FILE='acoeff.dedx_3.out')  ! errors
+        OPEN  (1, FILE='pcoeff_1.out')  ! hat{vp} \cdot dP/dx
+
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
-
 !
-! A-coeff profile
+! evolution
 !
-        WRITE(6,'(A)') '#'
-        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(6,'(A)') '#'
-        WRITE(7,'(A)') '#'
-        WRITE(7,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(7,'(A)') '#'
+        ! WRITE(6,'(A)') '#'
+        ! WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        ! WRITE(6,'(A)') '#'
+        ! WRITE(1,'(A)') '#'
+        ! WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        ! WRITE(1,'(A)') '#'
         de=ep/nit
         epp=0
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
 
-           CALL bps_acoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
-                a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e, &
-                ac_s_i, ac_s_e, ac_r_i, ac_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
-           WRITE (7,'(I6,E17.8,9E22.13)') j, epp/1000., a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
+           CALL bps_pcoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
+                b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e, &
+                bc_s_i, bc_s_e, bc_r_i, bc_r_e)
+           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
         ENDDO
-!
-! dE/dx compared in two ways
-!
-        WRITE(6,'(A)') '#'
-        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(6,'(A)') '#'
-        WRITE(1,'(A)') '#'
-        WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(1,'(A)') '#'
-        WRITE(2,'(A)') '#'
-        WRITE(2,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(2,'(A)') '#'
-        WRITE(3,'(A)') '#'
-        WRITE(3,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(3,'(A)') '#'
-        de=ep/nit
-        epp=0
-        DO j=0,nit
-           epp=j*de
-           IF (epp .EQ. 0) epp=de/2.0
-           
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb, &
-                dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
-                dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
         
-           CALL acoeff_dedx_bps(nni,epp,zp,mp,betab,zb,mb,nb,  &
-                dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
-                dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
-                dedxc_a_r_i, dedxc_a_r_e)
-
-           WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-           WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot, &
-                dedxc_e, dedxc_i, dedxc_tot, dedxq_e, dedxq_i, dedxq_tot
-           WRITE (2,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot, &
-                dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
-           WRITE (3,'(I6,E17.8,9E22.13)') j, epp/1000., (dedx_tot-dedx_a_tot)/dedx_tot, &
-                (dedxc_tot-dedxc_a_tot)/dedxc_tot, (dedxq_tot-dedxq_a_tot)/dedxq_tot
-        ENDDO
-
-        CLOSE (7)        
         CLOSE (1)
-        CLOSE (2)
-        Close (3)
         END PROGRAM dedx
 
     SUBROUTINE define_plasma_dt(te, ti, ne, nni)
@@ -191,7 +138,7 @@
       WRITE(6,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [keV]:', mb
       WRITE(6,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','charge array zb            :', zb
 
-      DO i=0,2
+      DO i=1,1
          WRITE(i,'(A)') '#'  
          WRITE(i,'(A)') '#'
          WRITE(i,'(A, 3X,A17)') '#','Plasma Parameters'

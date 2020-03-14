@@ -1,9 +1,13 @@
       PROGRAM dedx
 !
-! This program calculates dE/dx using dedx_bps() and by taking a
-! numerical derivative of A. Very good agreement.        
+! This program finds the range of a charged partcile in a plasma, where the
+! charged particle is created with threshold energy Ep. 
+!
+! The subroutine rk4(y,t,dt,nit) advances y at time t by nit iterations, each
+! of which has a constant time-step dt. 
 !
 ! nts = number of time steps
+! nit = number of iterations per time step
 !
       USE allocatablevars
       USE bpsvars
@@ -13,107 +17,77 @@
         REAL    :: dedx_tot,  dedx_i,  dedx_e
         REAL    :: dedxc_tot, dedxc_i, dedxc_e
         REAL    :: dedxq_tot, dedxq_i, dedxq_e
-        REAL    :: dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e
-        REAL    :: dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e
-        REAL    :: dedxc_a_r_i, dedxc_a_r_e
-        REAL    :: a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
-        REAL    :: ac_r_e, ac_r_i, ac_s_e, ac_s_i
-        
         INTEGER :: j, nit
 
-        REAL    :: te, ti, ne, ep, mp, zp, epp, de
+        REAL    :: te, ti, ne, ep, mp, zp, de, epp
         INTEGER :: nni
 !
-! number of iterations
         nit=100
 !
 ! A: alpha particle projectile
 !
+        te=1.       ! Electron temperature       [keV]
+        ti=1.       ! Ion temperature            [keV]
+        ne=2.E26    ! Electron number density    [cm^-3]
         ep=3540.    ! Projectile energy  [keV]
         mp=4*MPKEV  ! Projectile mass    [keV]
         zp=2.       ! Projectile charge  [e]
+! !
+! ! B: triton projectile
+! !
+!         te=0.5      ! Electron temperature       [keV]
+!         ti=0.5      ! Ion temperature            [keV]
+!         ne=2.E26    ! Electron number density    [cm^-3]
+!         ep=10000.   ! Projectile energy  [keV]
+!         mp=3*MPKEV  ! Projectile mass    [keV]
+!         zp=1.       ! Projectile charge  [e]
+
+! !
+! ! C: triton projectile
+! !
+!         te=1.       ! Electron temperature       [keV]
+!         ti=1.       ! Ion temperature            [keV]
+!         ne=2.E26    ! Electron number density    [cm^-3]
+!         ep=10000.   ! Projectile energy  [keV]
+!         mp=3*MPKEV  ! Projectile mass    [keV]
+!         zp=1.       ! Projectile charge  [e]
+
 !
 !
 ! DT plasma with alpha particle projectile
 !
-        CALL define_plasma_dt(te,ti,ne,nni)
+        CALL define_plasma(te,ti,ne,nni)
 !
 ! plot the regular and singular contributions
 !
-        OPEN (7, FILE='acoeff_dedx_0.out')  ! A-coeffs        
-        OPEN (1, FILE='acoeff.dedx_1.out')  ! dE/dx from dedx_bps
-        OPEN (2, FILE='acoeff.dedx_2.out')  ! dE/dx from acoeff_dedx_bps
-        OPEN (3, FILE='acoeff.dedx_3.out')  ! errors
+        OPEN  (1, FILE='plot_dedx.out')
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
-
 !
-! A-coeff profile
+! evolution
 !
-        WRITE(6,'(A)') '#'
-        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(6,'(A)') '#'
-        WRITE(7,'(A)') '#'
-        WRITE(7,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(7,'(A)') '#'
-        de=ep/nit
-        epp=0
-        DO j=0,nit
-           epp=j*de
-           IF (epp .EQ. 0) epp=de/2.0
-
-           CALL bps_acoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
-                a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e, &
-                ac_s_i, ac_s_e, ac_r_i, ac_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
-           WRITE (7,'(I6,E17.8,9E22.13)') j, epp/1000., a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
-        ENDDO
-!
-! dE/dx compared in two ways
-!
-        WRITE(6,'(A)') '#'
-        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(6,'(A)') '#'
         WRITE(1,'(A)') '#'
         WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
         WRITE(1,'(A)') '#'
-        WRITE(2,'(A)') '#'
-        WRITE(2,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(2,'(A)') '#'
-        WRITE(3,'(A)') '#'
-        WRITE(3,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(3,'(A)') '#'
         de=ep/nit
         epp=0
         DO j=0,nit
            epp=j*de
-           IF (epp .EQ. 0) epp=de/2.0
-           
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb, &
-                dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
-                dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
-        
-           CALL acoeff_dedx_bps(nni,epp,zp,mp,betab,zb,mb,nb,  &
-                dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
-                dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
-                dedxc_a_r_i, dedxc_a_r_e)
-
+           IF (epp .EQ. 0) epp=1.E-5
+           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
+             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
+             dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
-           WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot, &
-                dedxc_e, dedxc_i, dedxc_tot, dedxq_e, dedxq_i, dedxq_tot
-           WRITE (2,'(I6,E17.8,9E22.13)') j, epp/1000., dedx_a_e, dedx_a_i, dedx_a_tot, &
-                dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
-           WRITE (3,'(I6,E17.8,9E22.13)') j, epp/1000., (dedx_tot-dedx_a_tot)/dedx_tot, &
-                (dedxc_tot-dedxc_a_tot)/dedxc_tot, (dedxq_tot-dedxq_a_tot)/dedxq_tot
-        ENDDO
-
-        CLOSE (7)        
+           WRITE (1,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
+        END DO
         CLOSE (1)
-        CLOSE (2)
-        Close (3)
         END PROGRAM dedx
 
-    SUBROUTINE define_plasma_dt(te, ti, ne, nni)
+!
+! SUBROUTINE define_plasma:
+! Returns the plasma species arrays: betab, mb, nb, zb
+! Allocates other plasma arrays
+!
+    SUBROUTINE define_plasma(te, ti, ne, nni)
     USE allocatablevars
     USE physvars
       IMPLICIT NONE
@@ -127,11 +101,8 @@
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: zb     ! [e]
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: gb, etab, mpb, mbpb
 
-      te=1.       ! Electron temperature       [keV]
-      ti=1.       ! Ion temperature            [keV]
-      ne=2.E26    ! electron number density    [1/cc]    
-      nni=2       ! number of ion species
-      
+      nni=2  ! number of ion species
+
       ALLOCATE(betab(1:nni+1),zb(1:nni+1),mb(nni+1),nb(1:nni+1))   ! allocatablevars
       ALLOCATE(gb(1:nni+1),etab(1:nni+1),mpb(nni+1),mbpb(1:nni+1)) ! allocatablevars
 
@@ -149,7 +120,8 @@
       nb=nb*ne                          ! number density array [cm^-3]
       betab(1)=1./te                    ! inverse temp array   [keV^-1]
       betab(2:nni+1)=1./ti              !
-    END SUBROUTINE define_plasma_dt
+    END SUBROUTINE define_plasma
+
 
 
     SUBROUTINE write_output(ep, mp, zp, te, ti, ne, nni, betab, zb, mb, nb)
@@ -173,7 +145,6 @@
 
       REAL  :: vp
       REAL,    DIMENSION(1:nni+1) :: ab, etab
-      INTEGER :: i
 !
 ! write header
 !
@@ -191,23 +162,21 @@
       WRITE(6,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [keV]:', mb
       WRITE(6,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','charge array zb            :', zb
 
-      DO i=0,2
-         WRITE(i,'(A)') '#'  
-         WRITE(i,'(A)') '#'
-         WRITE(i,'(A, 3X,A17)') '#','Plasma Parameters'
-         WRITE(i,'(A, 4X,A28, X,D12.4, X,D12.4)')  '#','electron and ion temp [keV]:', te, ti
-         WRITE(i,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','number density nb   [cm^-3]:', nb
-         WRITE(i,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [amu]:', mb/AMUKEV
-         WRITE(i,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [keV]:', mb
-         WRITE(i,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','charge array zb            :', zb
-         WRITE(i,'(A)') '#'
-         WRITE(i,'(A)') '#'
-         WRITE(i,'(A, 3X,A21)') '#','Projectile Parameters'
-         WRITE(i,'(A, 4X,A13, X,D12.4)') '#','charge      :', zp
-         WRITE(i,'(A, 4X,A13, X,D12.4)') '#','mass   [amu]:', mp/AMUKEV
-         WRITE(i,'(A, 4X,A13, X,D12.4)') '#','mass   [keV]:', mp
-         WRITE(i,'(A, 4X,A13, X,D12.4)') '#','energy [keV]:', ep
-      ENDDO
+      WRITE(1,'(A)') '#'  
+      WRITE(1,'(A)') '#'
+      WRITE(1,'(A, 3X,A17)') '#','Plasma Parameters'
+      WRITE(1,'(A, 4X,A28, X,D12.4, X,D12.4)')  '#','electron and ion temp [keV]:', te, ti
+      WRITE(1,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','number density nb   [cm^-3]:', nb
+      WRITE(1,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [amu]:', mb/AMUKEV
+      WRITE(1,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','mass array mb         [keV]:', mb
+      WRITE(1,'(A, 4X,A28, X,D12.4, X,5D12.4)') '#','charge array zb            :', zb
+      WRITE(1,'(A)') '#'
+      WRITE(1,'(A)') '#'
+      WRITE(1,'(A, 3X,A21)') '#','Projectile Parameters'
+      WRITE(1,'(A, 4X,A13, X,D12.4)') '#','charge      :', zp
+      WRITE(1,'(A, 4X,A13, X,D12.4)') '#','mass   [amu]:', mp/AMUKEV
+      WRITE(1,'(A, 4X,A13, X,D12.4)') '#','mass   [keV]:', mp
+      WRITE(1,'(A, 4X,A13, X,D12.4)') '#','energy [keV]:', ep
 !
 ! Print plasma parameters
 !
@@ -238,4 +207,3 @@
 !        "#  iu", "ep[keV]", "a_tot", "a_e", "a_i", "ac_tot", "ac_e", "ac_i", "aq_tot", "aq_e","aq_i"
 
     END SUBROUTINE write_output
-
