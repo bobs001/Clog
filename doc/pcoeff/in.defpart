@@ -1,0 +1,9 @@
+%%
+\begin{eqnarray}
+  \beta{\textstyle\frac{a}{x}(y)} = \left\{
+  \begin{array}{cl}
+  \beta(y) & ;\, y \neq x \\
+  a        & ;\, y=x 
+  \end{array} \right. \ .
+\end{eqnarray}
+%%

@@ -1,0 +1,14 @@
+%
+\begin{table}[hb]
+\caption{\footnoteskip 
+%
+  LP particle count for case (a).
+%
+}
+\begin{tabular}{|l||c|c|c|} \hline
+   ~LP                   &  n    &  H    &  D     \\ \hline
+   ~TN production        & ~2.2~ & ~3.2~ & ~4.2~  \\
+\end{tabular} 
+\label{table:fractALP}
+\end{table}
+%

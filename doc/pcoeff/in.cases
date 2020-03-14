@@ -1,0 +1,13 @@
+%
+\begin{eqnarray}
+  \kappa(x)
+  =
+ \left\{
+ \begin{array}{ll}
+  0 & ; 0 \le x < a_1 \\[-5pt]
+  \kappa & ; a_1 \le x \le a_2 \\[-5pt]
+  0 & ; a_2 < x \le L 
+  \end{array}
+  \right.
+\end{eqnarray}
+%
