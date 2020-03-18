@@ -9,8 +9,8 @@
       USE physvars
       USE mathvars
         IMPLICIT NONE
-        REAL ::  b_tot, b_i, b_e, bc_tot, bc_i, bc_e
-        REAL ::  bq_tot, bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e
+        REAL ::  p_tot, p_i, p_e, pc_tot, pc_i, pc_e
+        REAL ::  pq_tot, pq_i, pq_e, pc_s_i, pc_s_e, pc_r_i, pc_r_e
         INTEGER :: j, nit
 
         REAL    :: te, ti, ne, ep, mp, zp, epp, de
@@ -51,10 +51,10 @@
            IF (epp .EQ. 0) epp=de/2.0
 
            CALL bps_pcoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
-                b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e, &
-                bc_s_i, bc_s_e, bc_r_i, bc_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
+                p_tot, p_i, p_e, pc_tot, pc_i, pc_e, pq_tot, pq_i, pq_e, &
+                pc_s_i, pc_s_e, pc_r_i, pc_r_e)
+           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
         ENDDO
         
         CLOSE (1)
