@@ -266,8 +266,8 @@
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
       SUBROUTINE bps_pcoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb, &
-            b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e, &
-            bc_s_i, bc_s_e, bc_r_i, bc_r_e)
+            p_tot, p_i, p_e, pc_tot, pc_i, pc_e, pq_tot, pq_i, pq_e, &
+            pc_s_i, pc_s_e, pc_r_i, pc_r_e)
       USE physvars
       USE mathvars    
       USE controlvars  
@@ -284,38 +284,41 @@
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
                                                            ! B-coeffs [MeV/micron]**
-        REAL,                        INTENT(OUT) :: b_tot  !  electron + ion
-        REAL,                        INTENT(OUT) :: b_i    !  ion contribution
-        REAL,                        INTENT(OUT) :: b_e    !  electron contribution
-        REAL,                        INTENT(OUT) :: bc_tot !  classical
-        REAL,                        INTENT(OUT) :: bc_i   !  classical
-        REAL,                        INTENT(OUT) :: bc_e   !  classical
-        REAL,                        INTENT(OUT) :: bq_tot !  quantum
-        REAL,                        INTENT(OUT) :: bq_i   !  quantum
-        REAL,                        INTENT(OUT) :: bq_e   !  quantum
-        REAL,                        INTENT(OUT) :: bc_s_i
-        REAL,                        INTENT(OUT) :: bc_s_e 
-        REAL,                        INTENT(OUT) :: bc_r_i
-        REAL,                        INTENT(OUT) :: bc_r_e
+        REAL,                        INTENT(OUT) :: p_tot  !  electron + ion
+        REAL,                        INTENT(OUT) :: p_i    !  ion contribution
+        REAL,                        INTENT(OUT) :: p_e    !  electron contribution
+        REAL,                        INTENT(OUT) :: pc_tot !  classical
+        REAL,                        INTENT(OUT) :: pc_i   !  classical
+        REAL,                        INTENT(OUT) :: pc_e   !  classical
+        REAL,                        INTENT(OUT) :: pq_tot !  quantum
+        REAL,                        INTENT(OUT) :: pq_i   !  quantum
+        REAL,                        INTENT(OUT) :: pq_e   !  quantum
+        REAL,                        INTENT(OUT) :: pc_s_i
+        REAL,                        INTENT(OUT) :: pc_s_e 
+        REAL,                        INTENT(OUT) :: pc_r_i
+        REAL,                        INTENT(OUT) :: pc_r_e
 
-        REAL     :: cdum, cc_s, cc_r, cq, adum, ac_s, ac_r, aq, bc_s, bc_r, bq, vp
+        REAL     :: cdum, cc_s, cc_r, cq, c_tot, c_i, c_e, cc_tot, cc_i, cc_e
+        REAL     :: cq_tot, cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e, vp
+        REAL     :: dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, dedxc_e, dedxq_tot, dedxq_i, dedxq_e
         INTEGER  :: ia, ib, nnb
-!
+        
+!        
 ! initialize components of C-coefficients
 !
-        b_tot =0  ! electron + ion
-        b_i   =0  ! ion contribution
-        b_e   =0  ! electron contribution
-        bc_tot=0  ! classical total
-        bc_e  =0  ! classical electron
-        bc_i  =0  ! classical ion
-        bq_tot=0  ! quantum total
-        bq_e  =0  ! quantum electron
-        bq_i  =0  ! quantum ion
-        bc_s_i=0 
-        bc_s_e=0 
-        bc_r_i=0
-        bc_r_e=0
+        p_tot =0  ! electron + ion
+        p_i   =0  ! ion contribution
+        p_e   =0  ! electron contribution
+        pc_tot=0  ! classical total
+        pc_e  =0  ! classical electron
+        pc_i  =0  ! classical ion
+        pq_tot=0  ! quantum total
+        pq_e  =0  ! quantum electron
+        pq_i  =0  ! quantum ion
+        pc_s_i=0 
+        pc_s_e=0 
+        pc_r_i=0
+        pc_r_e=0
 
         !*! new epxression for hat vp \cdot dP/dt
         
@@ -323,24 +326,33 @@
         ia=1
         DO ib=1,nni+1
            IF (zb(ib) .NE. 0.) THEN
-           ! CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb, &
-           !      dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
-           !      dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
+              
+            CALL dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb, &
+                 dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
+                 dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
               
             CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
                  cdum, cc_s, cc_r, cq)
+            CALL x_collect(ib, NNB, cc_s, cc_r, cq,       &
+            c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot,  &
+            cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e)
 
+            ! p_tot \equiv v^k dP^k/dx = dE/dx - C^ll/m v
             vp = CC*SQRT(2*ep/mp)            
-            bc_s = cc_s - CC*ac_s/betab(ib)/vp/100.  !C - A/beta vp
-            bc_r = cc_r - CC*ac_r/betab(ib)/vp/100.
-            bq = cq - CC*aq/betab(ib)/vp/1000.
+            p_tot = dedx_tot - c_tot*CC/(mp*vp)
+            pc_tot = dedxc_tot - cc_tot*CC/(mp*vp)
+            pq_tot = dedxq_tot - cq_tot*CC/(mp*vp)
+            p_e = dedx_e - c_e*CC/(mp*vp)
+            p_i = dedx_i - c_i*CC/(mp*vp)
+            pc_e = dedxc_e - cc_e*CC/(mp*vp)
+            pc_i = dedxc_i - cc_i*CC/(mp*vp)
+            pq_e = dedxq_e - cq_e*CC/(mp*vp)
+            pq_i = dedxq_i - cq_i*CC/(mp*vp)
             
-            CALL x_collect(ib, NNB, bc_s, bc_r, bq,       &
-            b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot,  &
-            bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e)
-        ENDIF
-        ENDDO
-      END SUBROUTINE bps_pcoeff_ei_mass
+         ENDIF
+      ENDDO
+
+    END SUBROUTINE bps_pcoeff_ei_mass
       
 ! vp = projectile speed [cm/s]
 !
