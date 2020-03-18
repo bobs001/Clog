@@ -33,6 +33,6 @@ plt.ylabel(r'$v^k \, dP^k/dx \,\, {\rm [MeV/c-\mu m]}$')
 plt.title(r'$v^k dP^k/dx$: BPS')
 plt.legend(loc=0)
 plt.grid(True)
-plt.savefig('plot_ccoeff_1.png')
+plt.savefig('plot_pcoeff_1.png')
 plt.show()
 
