@@ -29,7 +29,7 @@ ymax = 5.0
 plt.xlim(0, xmax)
 #plt.ylim(-8, 5)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
-plt.ylabel(r'$P^{\ell \ell} \,\, {\rm [MeV/\mu m]}$*')
+plt.ylabel(r'$v^k \, dP^k/dx \,\, {\rm [MeV/c-\mu m]}$')
 plt.title(r'$v^k dP^k/dx$: BPS')
 plt.legend(loc=0)
 plt.grid(True)
