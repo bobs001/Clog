@@ -540,9 +540,9 @@
       FUNCTION dcq(u, a, eta)
       USE physvars
         IMPLICIT NONE
-        REAL,                        INTENT(IN)  :: u          ! [dimensionless]
-        REAL,                        INTENT(IN)  :: a          ! [dimensionless]
-        REAL,                        INTENT(IN)  :: eta        ! [dimensionless]
+        REAL,                        INTENT(IN)  :: u    ! [dimensionless]
+        REAL,                        INTENT(IN)  :: a    ! [dimensionless]
+        REAL,                        INTENT(IN)  :: eta  ! [dimensionless]
         REAL                                     :: dcq  ! [dimensionless]
         REAL            :: repsi, eu, ep, em, psilog, sh
         eu = eta/u
