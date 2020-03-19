@@ -20,9 +20,9 @@ CFLAGS =
 
 #OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o pcoeff.o dedx.o dedx.models.o main.pcoeff.o
 #OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o bcoeff.o dedx.o dedx.models.o main.bcoeff.o
-#OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o dedx.o dedx.models.o main.acoeff.dedx.o
+OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o dedx.o dedx.models.o main.acoeff.dedx.o
 #OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o dedx.o dedx.models.o main.dedx.o
-OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o dedx.o dedx.models.o main.range.o
+#OBJ_FILES =  ferf.o vars.o mathvars.o physvars.o common.o rate.o acoeff.o ccoeff.o dedx.o dedx.models.o main.range.o
 
 
 #   1. main.dedx.f90          <== template for stopping power

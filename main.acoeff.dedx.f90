@@ -21,7 +21,7 @@
         
         INTEGER :: j, nit
 
-        REAL    :: te, ti, ne, ep, mp, zp, epp, de
+        REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale
         INTEGER :: nni
 !
 ! number of iterations
@@ -57,11 +57,12 @@
         WRITE(7,'(A)') '#'
         de=ep/nit
         epp=0
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m        
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
 
-           CALL bps_acoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
+           CALL bps_acoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e, &
                 ac_s_i, ac_s_e, ac_r_i, ac_r_e)
            WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., a_e, a_i, a_tot, ac_e, ac_i, ac_tot, aq_e, aq_i, aq_tot
@@ -84,15 +85,16 @@
         WRITE(3,'(A)') '#'
         de=ep/nit
         epp=0
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m                
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
            
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb, &
+           CALL dedx_bps(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
                 dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
         
-           CALL acoeff_dedx_bps(nni,epp,zp,mp,betab,zb,mb,nb,  &
+           CALL acoeff_dedx_bps(nni,scale,epp,zp,mp,betab,zb,mb,nb,  &
                 dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
                 dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
                 dedxc_a_r_i, dedxc_a_r_e)

@@ -141,7 +141,7 @@
 !
         j=0
         ep=0.5*mp*(vt(j)/CC)**2
-        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m        
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
         CALL dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,   &
             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
             dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]

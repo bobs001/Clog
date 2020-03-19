@@ -143,7 +143,7 @@
 ! main driver for A-coefficient for general quantum and electron-mass regimes
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+      SUBROUTINE bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
       USE physvars
       USE mathvars    
@@ -152,6 +152,7 @@
         REAL,                               INTENT(IN)  :: ep     !  energy input [keV]
         REAL,                               INTENT(IN)  :: mp     !  mass [keV]
         REAL,                               INTENT(IN)  :: zp     !  charge
+        REAL,                               INTENT(IN)  :: scale  !
         INTEGER,                            INTENT(IN)  :: ia     !  
         INTEGER,                            INTENT(IN)  :: ib     !  
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: betab  !  temp array [1/keV]
@@ -194,7 +195,7 @@
         b  =-Log(2*betab(ib)*BEKEV*ABS(zp*zb(ib))*k*A0CM*mbpb(ib) )-2*GAMMA+2
         eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
         c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
-        c1=c1*1.E-7                    ! [MeV/micron]  
+        c1=c1*scale                    ! scale=1.e-7 [MeV/micron] **
         c2=SQRT(a/PI)                  ! [dimensionless] 
                                        ! c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC 
 !
@@ -223,7 +224,7 @@
 ! Assembles the matrix A_{ab} of the A-coefficients.
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_acoeff_ab_matrix(nni, ep, betab, zb, mb, nb,    &
+      SUBROUTINE bps_acoeff_ab_matrix(nni, scale, ep, betab, zb, mb, nb,    &
         a_ab, a_ab_sing, a_ab_reg, a_ab_qm, a_tot, a_i, a_e, ac_tot, &
         ac_i, ac_e, aq_tot, aq_i, aq_e, ac_s_i, ac_s_e, ac_r_i, ac_r_e)
       USE physvars
@@ -231,6 +232,7 @@
         IMPLICIT NONE                                             ! Plasma:
         INTEGER,                            INTENT(IN)  :: nni    !  number of ions
         REAL,                               INTENT(IN)  :: ep     !  energy
+        REAL,                               INTENT(IN)  :: scale  ! 1.e-7 converts KeV/cm to MeV/mu-m
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: betab  !  temp array [1/keV]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
@@ -268,15 +270,15 @@
           mp=mb(ia)
           zp=zb(ia)
           DO ib=1,nni+1
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             aab, aab_sing, aab_reg, aab_qm)
             a_ab(ia,ib)     =aab
             a_ab_sing(ia,ib)=aab_sing
             a_ab_reg(ia,ib) =aab_reg
             a_ab_qm(ia,ib)  =aab_qm 
             IF (ib == 1) THEN
-               a_e(ia)   = aab 
-               ac_s_e(ia)= aab_sing
+               a_e(ia)   = aab
+               ac_s_e(ia)= aab_sing 
                ac_r_e(ia)= aab_reg
                ac_e(ia)  = aab_sing + aab_reg
                aq_e(ia)  = aab_qm
@@ -298,7 +300,7 @@
 ! Returns A_{p I} = \sum_i A_{p i} for backward compatibility
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_acoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb, &
+      SUBROUTINE bps_acoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
             a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e,&
             ac_s_i, ac_s_e, ac_r_i, ac_r_e)
       USE physvars
@@ -313,6 +315,7 @@
                                                            !
                                                            ! Projectile  
         REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+        REAL,                        INTENT(IN)  :: scale  !  1.e-7 converts KeV/cm to Mev/mu-m
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
@@ -354,7 +357,7 @@
         ia=1
         DO ib=1,nni+1
         IF (zb(ib) .NE. 0.) THEN
-            CALL bps_acoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             adum, ac_s, ac_r, aq)
             CALL x_collect(ib, NNB, ac_s, ac_r, aq,       &
             a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot,  &
@@ -578,7 +581,7 @@
 !             [        Ep  ]                     dEp
 !
 !
-      SUBROUTINE acoeff_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,  &
+      SUBROUTINE acoeff_dedx_bps(nni,scale,ep,zp,mp,betab,zb,mb,nb,  &
             dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
             dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
             dedxc_a_r_i, dedxc_a_r_e)
@@ -593,6 +596,7 @@
                                                            !
                                                            ! Projectile  
         REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+        REAL,                        INTENT(IN)  :: scale  ! 1.e-7 converts KeV/cm to MeV/mu-m
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
@@ -638,17 +642,17 @@
 
         dep = ep * 1.E-4
         dep2 = 2 * dep
-        CALL bps_acoeff_ei_mass(nni,ep,zp,mp,betab,zb,mb,nb,a_tot,a_i, &
+        CALL bps_acoeff_ei_mass(nni,scale,ep,zp,mp,betab,zb,mb,nb,a_tot,a_i, &
           a_e,ac_tot,ac_i,ac_e,aq_tot,aq_i,aq_e,ac_s_i,ac_s_e,&
           ac_r_i,ac_r_e)
 
         epp = ep + dep
-        CALL bps_acoeff_ei_mass(nni,epp,zp,mp,betab,zb,mb,nb,a_tot_p,a_i_p, &
+        CALL bps_acoeff_ei_mass(nni,scale,epp,zp,mp,betab,zb,mb,nb,a_tot_p,a_i_p, &
           a_e_p,ac_tot_p,ac_i_p,ac_e_p,aq_tot_p,aq_i_p,aq_e_p,ac_s_i_p,ac_s_e_p,&
           ac_r_i_p,ac_r_e_p)
 
         epm = ep - dep
-        CALL bps_acoeff_ei_mass(nni,epm,zp,mp,betab,zb,mb,nb,a_tot_m,a_i_m, &
+        CALL bps_acoeff_ei_mass(nni,scale,epm,zp,mp,betab,zb,mb,nb,a_tot_m,a_i_m, &
           a_e_m,ac_tot_m,ac_i_m,ac_e_m,aq_tot_m,aq_i_m,aq_e_m,ac_s_i_m,ac_s_e_m,&
           ac_r_i_m,ac_r_e_m)
 
