@@ -13,7 +13,7 @@
         REAL ::  bq_tot, bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e
         INTEGER :: j, nit
 
-        REAL    :: te, ti, ne, ep, mp, zp, epp, de
+        REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale
         INTEGER :: nni
 !
 ! number of iterations
@@ -46,11 +46,12 @@
         ! WRITE(1,'(A)') '#'
         de=ep/nit
         epp=0
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
 
-           CALL bps_bcoeff_ei_mass(nni, epp, zp, mp, betab, zb, mb, nb, &
+           CALL bps_bcoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e, &
                 bc_s_i, bc_s_e, bc_r_i, bc_r_e)
            WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot

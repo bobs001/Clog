@@ -143,13 +143,14 @@
 ! main driver for C-coefficient for general quantum and electron-mass regimes
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+      SUBROUTINE bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
       USE physvars
       USE mathvars    
         IMPLICIT NONE                                             ! Plasma:
         INTEGER,                            INTENT(IN)  :: nni    !  number of ions
         REAL,                               INTENT(IN)  :: ep     !  energy input [keV]
+        REAL,                               INTENT(IN)  :: scale  !
         REAL,                               INTENT(IN)  :: mp     !  mass [keV]
         REAL,                               INTENT(IN)  :: zp     !  charge
         INTEGER,                            INTENT(IN)  :: ia     !  
@@ -194,7 +195,7 @@
            b  =-Log( betab(ib)*e2*ABS(zp*zb(ib))*k*mbpb(ib) )-2*GAMMA
            eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
            c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
-           c1=c1*1.E-7                    ! [MeV/micron]
+           c1=c1*scale                    ! [MeV/micron]
            c2=SQRT(a/PI)                  ! [dimensionless] c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC
            ! ** units still incorrect **
            C3=CC/(betab(ib)*vp)  ! 1/betab(ib)*vp  note: dE_\per/dx = C/m*c^2
@@ -225,7 +226,7 @@
 ! Assembles the matrix C_{ab} of the C-coefficients.
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_ccoeff_ab_matrix(nni, ep, betab, zb, mb, nb,    &
+      SUBROUTINE bps_ccoeff_ab_matrix(nni, scale, ep, betab, zb, mb, nb,    &
         c_ab, c_ab_sing, c_ab_reg, c_ab_qm, c_tot, c_i, c_e, cc_tot, &
         cc_i, cc_e, cq_tot, cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e)
       USE physvars
@@ -233,6 +234,7 @@
         IMPLICIT NONE                                             ! Plasma:
         INTEGER,                            INTENT(IN)  :: nni    !  number of ions
         REAL,                               INTENT(IN)  :: ep     !  energy
+        REAL,                               INTENT(IN)  :: scale  !        
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: betab  !  temp array [1/keV]
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: zb     !  charge array
         REAL,    DIMENSION(1:nni+1),        INTENT(IN)  :: mb     !  mass array [keV]
@@ -270,7 +272,7 @@
           mp=mb(ia)
           zp=zb(ia)
           DO ib=1,nni+1
-            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cab, cab_sing, cab_reg, cab_qm) !*! change to bps_acoeff_ab_mass
             c_ab(ia,ib)     =cab
             c_ab_sing(ia,ib)=cab_sing
@@ -301,7 +303,7 @@
 ! Returns C_{p I} = \sum_i C_{p i} for backward compatibility
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !
-      SUBROUTINE bps_ccoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb, &
+      SUBROUTINE bps_ccoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
             c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e, &
             cc_s_i, cc_s_e, cc_r_i, cc_r_e)
       USE physvars
@@ -316,6 +318,7 @@
                                                            !
                                                            ! Projectile  
         REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+        REAL,                        INTENT(IN)  :: scale  !
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
                                                            !
@@ -357,7 +360,7 @@
         ia=1
         DO ib=1,nni+1
         IF (zb(ib) .NE. 0.) THEN
-            CALL bps_ccoeff_ab_mass(nni, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
+            CALL bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
             cdum, cc_s, cc_r, cq)
             CALL x_collect(ib, NNB, cc_s, cc_r, cq,       &
             c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot,  &
