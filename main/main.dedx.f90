@@ -15,7 +15,7 @@
         REAL    :: dedxq_tot, dedxq_i, dedxq_e
         INTEGER :: j, nit
 
-        REAL    :: te, ti, ne, ep, mp, zp, de, epp
+        REAL    :: te, ti, ne, ep, mp, zp, de, epp, scale
         INTEGER :: nni
 !
 ! number of iterations
@@ -43,10 +43,11 @@
         WRITE(1,'(A)') '#'
         de=ep/nit
         epp=0
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
         DO j=0,nit
            epp=j*de
-           IF (epp .EQ. 0) epp=1.E-5
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
+           IF (epp .EQ. 0) epp=de/2.
+           CALL dedx_bps(nni, scale, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp/1000., dedx_e, dedx_i, dedx_tot
