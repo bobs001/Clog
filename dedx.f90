@@ -4,7 +4,7 @@
 ! - Santa Fe, March 2009    [start  rewrite]
 ! - Santa Fe, November 2009 [finish rewrite]
 ! 
-! ROUTINE: dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb,             &
+! ROUTINE: dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,      &
 !            dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, dedxc_e, & 
 !            dedxq_tot, dedxq_i, dedxq_e)
 ! 
@@ -56,7 +56,7 @@
 ! total     ion       : dedx_i = dedxc_i + dedxq_i
 ! total               ! dedx_tot = dedx_e + dedx_i
 !
-      SUBROUTINE dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb,  &
+      SUBROUTINE dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,  &
             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, dedxc_e, & 
             dedxq_tot, dedxq_i, dedxq_e)
       USE physvars
@@ -72,8 +72,9 @@
         REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
         REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
         REAL,                        INTENT(IN)  :: zp     !  projectile charge
-                                                           !
+
                                                               ! dE/dx [MeV/micron]
+        REAL,                        INTENT(IN)  :: scale     !  1.e-7 converts KeV/cm to MeV/mu-m
         REAL,                        INTENT(OUT) :: dedx_tot  !  electron + ion
         REAL,                        INTENT(OUT) :: dedx_i    !  ion contribution
         REAL,                        INTENT(OUT) :: dedx_e    !  electron contribution
@@ -84,7 +85,6 @@
         REAL,                        INTENT(OUT) :: dedxq_i   !  quantum
         REAL,                        INTENT(OUT) :: dedxq_e   !  quantum
 
-        REAL,    PARAMETER           :: units=1.E-7 ! 10^-7 => MeV/micron; 10^-4 keV/micron
         REAL,    DIMENSION(1:nni+1)  :: kkb2, aab, ab2, c1b, c2b, c3b,c4b, eetb
         REAL,    DIMENSION(1:nni+1)  :: mpb, mbpb, mtotb, mtotpb, mratpb, bpb, cpb
         REAL     :: vp, vp2, zp2, kk, k2, kd, kd2, c1, c2, c3, c4, eta, a, b, c, a2
@@ -155,7 +155,7 @@
         eetb  =2*BEKEV*ABS(zp*zb)*A0CM/HBARC/(vp/CC) ! quantum parameter
 
         c1b=2*zp2*BEKEV*kkb2*A0CM     ! [keV/cm]
-        c1b=c1b*1.E-7                 ! [MeV/micron]  
+        c1b=c1b*scale                 ! [MeV/micron] when scale=1.e-7
         c2b=SQRT(aab/PI)              ! [dimensionless] 
                                       ! c2b=SQRT(betab*mb/TWOPI)*vp/CC 
         c3b=1/(2*aab)                 ! c3b=1/betab*mb*vp^2

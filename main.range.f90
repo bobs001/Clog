@@ -25,7 +25,7 @@
         INTEGER :: j, nts, nit
 
         REAL    :: te, ti, ne, ep, mp, zp
-        REAL    :: de, epp
+        REAL    :: de, epp, scale
         INTEGER :: nni, nn
 !
 ! Range parameters
@@ -116,10 +116,11 @@
         WRITE(1,'(A)') '#'
         de=ep/nn
         epp=0
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
         DO j=0,nn
            epp=j*de
-           IF (epp .EQ. 0) epp=1.E-5
-           CALL dedx_bps(nni, epp, zp, mp, betab, zb, mb, nb,   &
+           IF (epp .EQ. 0) epp=de/2.
+           CALL dedx_bps(nni, scale, epp, zp, mp, betab, zb, mb, nb,   &
              dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
              dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
            WRITE (6,'(I6,E17.8,6E22.13)') j, epp, dedx_tot, dedx_i, dedx_e
@@ -140,7 +141,8 @@
 !
         j=0
         ep=0.5*mp*(vt(j)/CC)**2
-        CALL dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb,   &
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m        
+        CALL dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,   &
             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
             dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
 
@@ -188,10 +190,11 @@
       REAL    :: xk1, xk2, xk3, xk4
       REAL    :: vk1, vk2, vk3, vk4
       REAL    :: dedxc_tot, dedxc_i, dedxc_e, dedxq_tot, dedxq_i, dedxq_e
-      REAL    :: ep
+      REAL    :: ep, scale
       INTEGER :: it
       REAL, PARAMETER :: d6=0.1666666666666666666
 
+      scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m      
       dedx_tot=0
       dedx_i  =0
       dedx_e  =0
@@ -233,7 +236,7 @@
          v = v + d6*(vk1 + 2*vk2 + 2*vk3 + vk4)
       END DO
       ep = 0.5*mp*(v/CC)**2 ! [keV] projectile energy
-      CALL dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb,   &
+      CALL dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,   &
         dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
         dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
       END SUBROUTINE rk4
@@ -252,11 +255,12 @@
       REAL    :: ep
       REAL    :: dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, dedxc_e 
       REAL    :: dedxq_tot, dedxq_i, dedxq_e
-      REAL    :: KEV_TO_ERG=1.6022E-9
+      REAL    :: KEV_TO_ERG=1.6022E-9, scale
       REAL    :: f1, m1
 
+      scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m      
       ep = 0.5*mp*(v/CC)**2  ! [keV] projectile energy
-      CALL dedx_bps(nni, ep, zp, mp, betab, zb, mb, nb,   &
+      CALL dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb,   &
             dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
             dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron]
 
