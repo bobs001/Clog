@@ -63,7 +63,7 @@ xmax = 3.5e3
 ymax = 5.0e7
 plt.xlim(0, xmax)
 #plt.ylim(0, ymax)
-plt.xlabel(r'$E \,\, {\rm [KeV]}$')
+plt.xlabel(r'$E \,\, {\rm [keV]}$')
 plt.ylabel(r'$C^{\ell\ell} \,\, {\rm [keV^2 \cdot s/cm^2]}$')
 plt.title(r'$C^{\ell\ell}_b$: BPS')
 plt.legend(loc=5)
@@ -98,7 +98,7 @@ xmax = 3.5e3
 ymax = 5.0e7
 plt.xlim(0, xmax)
 plt.ylim(0, ymax)
-plt.xlabel(r'$E \,\, {\rm [KeV]}$')
+plt.xlabel(r'$E \,\, {\rm [keV]}$')
 plt.ylabel(r'${\bf v}_p \cdot d{\bf P}_b/dx \,\, {\rm [keV/cm]}$')
 plt.title(r'${\bf v} \cdot d{\bf P}_b/dx$: BPS')
 plt.legend(loc=5)
