@@ -8,62 +8,108 @@
       USE bpsvars
       USE physvars
       USE mathvars
-        IMPLICIT NONE
-        REAL ::  c_tot, c_i, c_e, cc_tot, cc_i, cc_e
-        REAL ::  cq_tot, cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e
-        INTEGER :: j, nit
+      IMPLICIT NONE
 
-        REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale
-        INTEGER :: nni
-!
+      INTEGER :: j, nit      
+!     REAL    ::  p_tot, p_i, p_e, pc_tot, pc_i, pc_e
+!     REAL    ::  pq_tot, pq_i, pq_e, pc_s_i, pc_s_e, pc_r_i, pc_r_e
+
+      INTEGER :: nni        
+      REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale
+      REAL    :: dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e
+      REAL    :: dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e, dedxc_a_r_i
+      REAL    :: dedxc_a_r_e, c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot           
+      REAL    :: cc_s_i, cc_s_e, cc_r_i, cc_r_e
+      REAL    :: dpdx_e, dpdx_i, dpdx_tot, dpdxc_e, dpdxc_i, dpdxc_tot, dpdxq_e, dpdxq_i
+      REAL    :: dpdxq_tot, vp, fact
+
+!        
 ! number of iterations
-        nit=100
+      nit=100
 !
 ! A: alpha particle projectile
 !
-        ep=3540.    ! Projectile energy  [keV]
-        mp=4*MPKEV  ! Projectile mass    [keV]
-        zp=2.       ! Projectile charge  [e]
+      ep=3540.    ! Projectile energy  [keV]
+      mp=4*MPKEV  ! Projectile mass    [keV]
+      zp=2.       ! Projectile charge  [e]
 !
 !
 ! DT plasma with alpha particle projectile
 !
-        CALL define_plasma_dt(te,ti,ne,nni)
+      CALL define_plasma_dt(te,ti,ne,nni)
 !
 ! plot the regular and singular contributions
 !
-        OPEN  (1, FILE='ccoeff_1.out')  ! C-coeffs
+      OPEN(1, FILE='dpdx_1.out')  ! v \cdot dP/dx
+      OPEN(2, FILE='dpdx_2.out')  !
+      OPEN(3, FILE='dpdx_3.out')  !       
 
-        CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
+      CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
 ! evolution
 !
-        WRITE(6,'(A)') '#'
-        WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(6,'(A)') '#'
-        WRITE(1,'(A)') '#'
-        WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
-        WRITE(1,'(A)') '#'
-        de=ep/nit
-        epp=0
-        scale = 1.e-7 ! MeV/my-mu
-        DO j=0,nit
-           epp=j*de
-           IF (epp .EQ. 0) epp=de/2.0
+      ! WRITE(6,'(A)') '#'
+      ! WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+      ! WRITE(6,'(A)') '#'
+      ! WRITE(1,'(A)') '#'
+      ! WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+      ! WRITE(1,'(A)') '#'
+      de=ep/nit
+      epp=0
+      scale = 1 ! dE/dx Kev/cm
+      DO j=0,nit
+         epp=j*de
+         IF (epp .EQ. 0) epp=de/2.0
 
-           CALL bps_ccoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
-                c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e, &
-                cc_s_i, cc_s_e, cc_r_i, cc_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
-        ENDDO
+         ! plot dE/dx and C^ll
+         CALL acoeff_dedx_bps(nni, scale, epp, zp, mp, betab, zb, mb, nb,        &
+              dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
+              dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
+              dedxc_a_r_i, dedxc_a_r_e)
+         WRITE(1,'(I6,E17.8,9E22.13)') j, epp, dedx_a_e, dedx_a_i, dedx_a_tot, &
+              dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
+         
+         CALL bps_ccoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
+              c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e,       &
+              cc_s_i, cc_s_e, cc_r_i, cc_r_e)
+         WRITE(2,'(I6,E17.8,9E22.13)') j, epp, c_e, c_i, c_tot, cc_e, cc_i, cc_tot, &
+              cq_e, cq_i, cq_tot
+
+         ! construct v*dP/dx
+         vp = CC*SQRT(2*epp/mp)
+         fact = CC*CC/(mp*vp)
+         dpdx_e = dedx_a_e + fact*c_e
+         dpdx_i = dedx_a_i + fact*c_i
+         dpdx_tot = dedx_a_tot + fact*c_tot
+         dpdxc_e = dedxc_a_e + fact*cc_e
+         dpdxc_i = dedxc_a_i + fact*cc_i
+         dpdxc_tot = dedxc_a_tot + fact*cc_tot
+         dpdxq_e = dedxq_a_e + fact*cq_e
+         dpdxq_i = dedxq_a_i + fact*cq_i
+         dpdxq_tot  = dedxq_a_tot + fact*cq_tot
+
+         ! plot v*dP/dx         
+         WRITE(6,'(I6,E17.8,9E22.13)') j, epp, mp*(vp/CC)**2*betab(1), dedx_a_e/(fact*c_e), dedx_a_i/(fact*c_i), &
+              dedx_a_tot/(fact*c_tot)
+         WRITE(3,'(I6,E17.8,9E22.13)') j, epp, dpdx_e, dpdx_i, dpdx_tot, dpdxc_e, dpdxc_i, &
+              dpdxc_tot, dpdxq_e, dpdxq_i, dpdxq_tot
+         
+           
+         ! CALL bps_pcoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
+         !      p_tot, p_i, p_e, pc_tot, pc_i, pc_e, pq_tot, pq_i, pq_e, &
+         !      pc_s_i, pc_s_e, pc_r_i, pc_r_e)
+         ! WRITE (6,'(I6,E17.8,9E22.13)') j, epp, p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
+         ! WRITE (1,'(I6,E17.8,9E22.13)') j, epp, p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
+      ENDDO
         
-        CLOSE (1)
-        END PROGRAM dedx
+      CLOSE(1)
+      CLOSE(2)
+      CLOSE(3)
+    END PROGRAM dedx
 
     SUBROUTINE define_plasma_dt(te, ti, ne, nni)
-    USE allocatablevars
-    USE physvars
+      USE allocatablevars
+      USE physvars
       IMPLICIT NONE
       REAL                                :: te     ! [keV]
       REAL                                :: ti     ! [keV]
