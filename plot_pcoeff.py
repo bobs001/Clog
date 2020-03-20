@@ -24,14 +24,14 @@ plt.plot(E,Plli, label='P_i')
 plt.plot(E,Pll, label='P_tot')
 
 #
-xmax = 3.5
-ymax = 5.0
-#plt.xlim(0, xmax)
-#plt.ylim(-8, 5)
+xmax = 3.5e3
+ymax = 5.0e7
+plt.xlim(0, xmax)
+plt.ylim(0, ymax)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
 plt.ylabel(r'$v^k \, dP^k/dx \,\, {\rm [MeV/c-\mu m]}$')
 plt.title(r'$v^k dP^k/dx$: BPS')
-plt.legend(loc=0)
+plt.legend(loc=5)
 plt.grid(True)
 plt.savefig('plot_pcoeff_1.png')
 plt.show()

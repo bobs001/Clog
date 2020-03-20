@@ -97,7 +97,7 @@ plt.plot(E2,vpdPdx2, label=r'${\bf v} \cdot d{\bf P}_{tot}/dx$')
 xmax = 3.5e3
 ymax = 5.0e7
 plt.xlim(0, xmax)
-#plt.ylim(0, ymax)
+plt.ylim(0, ymax)
 plt.xlabel(r'$E \,\, {\rm [KeV]}$')
 plt.ylabel(r'${\bf v}_p \cdot d{\bf P}_b/dx \,\, {\rm [keV/cm]}$')
 plt.title(r'${\bf v} \cdot d{\bf P}_b/dx$: BPS')
