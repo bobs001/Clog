@@ -26,7 +26,7 @@ plt.plot(E,Pll, label='P_tot')
 #
 xmax = 3.5
 ymax = 5.0
-plt.xlim(0, xmax)
+#plt.xlim(0, xmax)
 #plt.ylim(-8, 5)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
 plt.ylabel(r'$v^k \, dP^k/dx \,\, {\rm [MeV/c-\mu m]}$')
