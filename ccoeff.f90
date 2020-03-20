@@ -7,7 +7,7 @@
 ! other[1]. This routine returns several useful components of the 
 ! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
-! UNITS: C_{pb} has units of **[MeV/micron] (subject to change in updates)
+! UNITS: C_{pb} has units of [KeV^2/c/cm] (subject to change in updates)
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
@@ -195,26 +195,24 @@
            b  =-Log( betab(ib)*e2*ABS(zp*zb(ib))*k*mbpb(ib) )-2*GAMMA
            eta=ABS(zp*zb(ib))*2.1870E8/vp ! defined with projectile velocity vp
            c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
-           c1=c1*scale                    ! [MeV/micron]
+           c1=c1*scale                    ! [MeV/micron] when scale-1.e-7
            c2=SQRT(a/PI)                  ! [dimensionless] c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC
-           ! ** units still incorrect **
-           C3=CC/(betab(ib)*vp)  ! 1/betab(ib)*vp  note: dE_\per/dx = C/m*c^2
-           c3=c3/1000.           ! convert from KeV to MeV
+           c1=c1/CC                       ! [keV^2/c/cm] ** is this right? **
    
 ! C_{ab}-classical-singular 
 !
         CALL c_sing_mass(a,b,cc_s) 
-        c_ab_sing=c1*c2*c3*cc_s
+        c_ab_sing=c1*c2*cc_s
 !
 ! C_{ab}-classical-regular 
 !
         CALL c_reg_mass(nni,ia,ib,vp,k2,kb2,betab,mb,cc_r)
-        c_ab_reg=c1*c3*cc_r
+        c_ab_reg=c1*cc_r
 !
 ! C_{ab}-quantum
 !
         CALL c_quantum_mass(ia,ib,a,eta,cq) ! eta = dimensionless quantum param.
-        c_ab_qm=c1*c2*c3*cq
+        c_ab_qm=c1*c2*cq
 !
 ! C_{ab}-total
 !
