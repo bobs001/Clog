@@ -60,8 +60,9 @@
       DO j=0,nit
          epp=j*de
          IF (epp .EQ. 0) epp=de/2.0
-         
-         CALL acoeff_dedx_bps(nni,scale,epp,zp,mp,betab,zb,mb,nb,  &
+
+         ! plot dE/dx and C^ll
+         CALL acoeff_dedx_bps(nni, scale, epp, zp, mp, betab, zb, mb, nb,        &
               dedx_a_tot, dedx_a_i, dedx_a_e, dedxc_a_tot, dedxc_a_i, dedxc_a_e, & 
               dedxq_a_tot, dedxq_a_i, dedxq_a_e, dedxc_a_s_i, dedxc_a_s_e,       &
               dedxc_a_r_i, dedxc_a_r_e)
@@ -69,13 +70,13 @@
               dedxc_a_e, dedxc_a_i, dedxc_a_tot, dedxq_a_e, dedxq_a_i, dedxq_a_tot
          
          CALL bps_ccoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
-              c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e, &
+              c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e,       &
               cc_s_i, cc_s_e, cc_r_i, cc_r_e)
          WRITE(2,'(I6,E17.8,9E22.13)') j, epp, c_e, c_i, c_tot, cc_e, cc_i, cc_tot, &
               cq_e, cq_i, cq_tot
 
-         ! construct vp \cdot dP/dx
-         vp = CC*SQRT(2*ep/mp)
+         ! construct v*dP/dx
+         vp = CC*SQRT(2*epp/mp)
          fact = CC*CC/(mp*vp)
          dpdx_e = dedx_a_e + fact*c_e
          dpdx_i = dedx_a_i + fact*c_i
@@ -86,8 +87,10 @@
          dpdxq_e = dedxq_a_e + fact*cq_e
          dpdxq_i = dedxq_a_i + fact*cq_i
          dpdxq_tot  = dedxq_a_tot + fact*cq_tot
-         
-         WRITE(6,'(I6,E17.8,9E22.13)') j, epp, dedx_a_tot, fact*c_tot
+
+         ! plot v*dP/dx         
+         WRITE(6,'(I6,E17.8,9E22.13)') j, epp, mp*(vp/CC)**2*betab(1), dedx_a_e/(fact*c_e), dedx_a_i/(fact*c_i), &
+              dedx_a_tot/(fact*c_tot)
          WRITE(3,'(I6,E17.8,9E22.13)') j, epp, dpdx_e, dpdx_i, dpdx_tot, dpdxc_e, dpdxc_i, &
               dpdxc_tot, dpdxq_e, dpdxq_i, dpdxq_tot
          
