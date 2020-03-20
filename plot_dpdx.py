@@ -55,16 +55,16 @@ Cllqi = data2[:, 9]
 Cllq = data2[:, 10]
 
 # plot stopping power total
-plt.plot(E,Clle, label='dedx_e')
-plt.plot(E,Clli, label='dedx_i')
-plt.plot(E,Cll, label='dedx_tot')
+plt.plot(E,Clle, label=r'$C^{\ell\ell}_e$')
+plt.plot(E,Clli, label=r'$C^{\ell\ell}_I$')
+plt.plot(E,Cll, label=r'$C^{\ell\ell}_{tot}$')
 #
 xmax = 3.5e3
 ymax = 5.0e7
 plt.xlim(0, xmax)
 #plt.ylim(0, ymax)
 plt.xlabel(r'$E \,\, {\rm [KeV]}$')
-plt.ylabel(r'$C^{\ell\ell} \,\, {\rm [keV/c/cm]}$')
+plt.ylabel(r'$C^{\ell\ell} \,\, {\rm [keV^2 \cdot s/cm^2]}$')
 plt.title(r'$C^{\ell\ell}_b$: BPS')
 plt.legend(loc=5)
 plt.grid(True)
@@ -99,7 +99,7 @@ ymax = 5.0e7
 plt.xlim(0, xmax)
 #plt.ylim(0, ymax)
 plt.xlabel(r'$E \,\, {\rm [KeV]}$')
-plt.ylabel(r'${\bf v}p \cdot d{\bf P}_b/dx \,\, {\rm [keV^2/s/cm^2]}$')
+plt.ylabel(r'${\bf v}_p \cdot d{\bf P}_b/dx \,\, {\rm [keV/cm]}$')
 plt.title(r'${\bf v} \cdot d{\bf P}_b/dx$: BPS')
 plt.legend(loc=5)
 plt.grid(True)
