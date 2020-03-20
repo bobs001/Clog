@@ -25,7 +25,7 @@ plt.plot(E,B, label='B_tot')
 
 xmax = 3.5
 ymax = 5.0
-plt.xlim(0, xmax)
+#plt.xlim(0, xmax)
 #plt.ylim(-8, 5)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
 plt.ylabel(r'$B \,\, {\rm [MeV/\mu m]}$*')
@@ -45,7 +45,7 @@ plt.plot(E,B_c, label='B_tot_c')
 #
 xmax = 3.5
 ymax = 5.0
-plt.xlim(0, xmax)
+#plt.xlim(0, xmax)
 #plt.ylim(-8, 5)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
 plt.ylabel(r'$B^{C} \,\, {\rm [MeV/\mu m]}$*')
@@ -64,7 +64,7 @@ plt.plot(E,Bi_q, label='B_i_q')
 #
 xmax = 3.5
 ymax = 5.0
-plt.xlim(0, xmax)
+#plt.xlim(0, xmax)
 #plt.ylim(-8, 5)
 plt.xlabel(r'$E \,\, {\rm [MeV]}$')
 plt.ylabel(r'$B^{Q} \,\, {\rm [MeV^2/\mu m]}$**')

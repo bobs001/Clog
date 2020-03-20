@@ -328,14 +328,10 @@
                  adum, ac_s, ac_r, aq)
             CALL bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
                  cdum, cc_s, cc_r, cq)
-            !*!
-            PRINT *, "***xxx***"
-            PRINT *, ib, ep, scale, cc_s
-            !*!
 
             vp = CC*SQRT(2*ep/mp)            
-            bc_s = cc_s - CC*ac_s/betab(ib)/vp/100.  !C - A/beta vp
-            bc_r = cc_r - CC*ac_r/betab(ib)/vp/100.
+            bc_s = cc_s - CC*ac_s/betab(ib)/vp  !C - A/beta vp
+            bc_r = cc_r - CC*ac_r/betab(ib)/vp
             bq = cq - CC*aq/betab(ib)/vp/1000.
             
             CALL x_collect(ib, NNB, bc_s, bc_r, bq,       &
