@@ -7,7 +7,7 @@
 ! other[1]. This routine returns several useful components of the 
 ! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
-! UNITS: C_{pb} has units of [KeV^2/c/cm] (subject to change in updates)
+! UNITS: C_{pb} has units of [KeV^2-s/cm^2] (subject to change in updates)
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
@@ -197,7 +197,7 @@
            c1=2*zp2*BEKEV*kb2(ib)*A0CM    ! [keV/cm] c1 = e_p^2 kappa_b^2/(4 Pi)
            c1=c1*scale                    ! [MeV/micron] when scale-1.e-7
            c2=SQRT(a/PI)                  ! [dimensionless] c2=SQRT(betab(ib)*mb(ib)/TWOPI)*vp/CC
-           c1=c1/CC                       ! [keV^2/c/cm] ** is this right? **
+           c1=c1/CC                       ! ** is this right? **
    
 ! C_{ab}-classical-singular 
 !
