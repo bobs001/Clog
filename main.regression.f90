@@ -15,9 +15,9 @@
       INTEGER :: nni 
       LOGICAL :: write_dat
 
-      OPEN(UNIT=1,FILE='regression_gold.out')
+      OPEN(UNIT=1,FILE='regression.out')
 !      write_dat=.TRUE.  ! create regression.out
-      write_dat=.FALSE. ! testing mode: read from regression.out
+       write_dat=.FALSE. ! testing mode: read from regression.out
 
       CALL define_plasma(ep,mp,zp,nni,scale)
       CALL data_write_test(write_dat,nni,ep,zp,mp,betab,zb,mb,nb,scale)
@@ -40,7 +40,7 @@
       REAL,                        INTENT(IN)  :: ep    !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp    !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp    !  projectile charge
-      REAL,                        INTENT(IN)  :: scale !      
+      REAL,                        INTENT(INOUT):: scale !      
 !
 ! local variables
 !
@@ -49,17 +49,18 @@
          WRITE(6,*) ''
          CALL write_plasma(nni,ep,zp,mp,betab,zb,mb,nb,scale)
          CALL write_param(nni,betab,nb)
+         CALL write_bps_rate(nni,betab,zb,mb,nb)         
          CALL write_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)
-         !CALL write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)
-         !CALL write_bps_rate(nni,betab,zb,mb,nb)
-     ELSE
+         scale=1
+         CALL write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+      ELSE
          CALL test_plasma(nni,ep,zp,mp,betab,zb,mb,nb,scale)    ! Did the plasma change?
          CALL test_param(nni,betab,nb)                          ! Did g, eta, etc. change?
+         CALL test_bps_rate(nni,betab,zb,mb,nb)                 ! Did rates change?         
          CALL test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)  ! Did stopping power change?
-         !CALL test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)! Did A-coeff change?
-         !CALL test_bps_rate(nni,betab,zb,mb,nb)                ! Did rates change?
-!        CALL test_eifrac_int_1t(nni,ep,zp,mp,betab,zb,mb,nb,e0,ec)! Are energy fractions the same?
-     ENDIF
+         scale=1
+         CALL test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)! Did A-coeff change?
+      ENDIF
 
     END SUBROUTINE data_write_test
 
@@ -521,7 +522,7 @@
 !
 !============================================
 !
-    SUBROUTINE write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)
+    SUBROUTINE write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
                                                          ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni    !  number of ions
       REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array    [1/keV]
@@ -536,20 +537,20 @@
       REAL :: a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e
       REAL :: ac_s_e, ac_r_e, ac_s_i, ac_r_i
 
-      CALL bps_acoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb,    &
+      CALL bps_acoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
          a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e,&
          ac_s_e, ac_r_e, ac_s_i, ac_r_i) 
-      WRITE(6,'(54A)') 'subroutine check: bps_acoeff_ei_mass [A]=[MeV/micron]'
-      WRITE(6,'(3D25.14)') a_tot, a_i, a_e
-      WRITE(6,'(3D25.14)') ac_tot, ac_i, ac_e
-      WRITE(6,'(3D25.14)') aq_tot, aq_i, ac_e
-      WRITE(1,'(54A)') 'subroutine check: bps_acoeff_ei_mass [A]=[MeV/micron]'
-      WRITE(1,'(3D25.14)') a_tot, a_i, a_e
-      WRITE(1,'(3D25.14)') ac_tot, ac_i, ac_e
-      WRITE(1,'(3D25.14)') aq_tot, aq_i, aq_e
+      WRITE(6,'(54A)') 'subroutine check: bps_acoeff_ei_mass [A]=[keV^2-s/cm^2]'
+      WRITE(6,'(3E25.14)') a_tot, a_i, a_e
+      WRITE(6,'(3E25.14)') ac_tot, ac_i, ac_e
+      WRITE(6,'(3E25.14)') aq_tot, aq_i, ac_e
+      WRITE(1,'(54A)') 'subroutine check: bps_acoeff_ei_mass [A]=[keV^2-s/cm^2]'
+      WRITE(1,'(3E25.14)') a_tot, a_i, a_e
+      WRITE(1,'(3E25.14)') ac_tot, ac_i, ac_e
+      WRITE(1,'(3E25.14)') aq_tot, aq_i, aq_e
     END SUBROUTINE write_acoeff_bps_mass
 
-    SUBROUTINE test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)
+    SUBROUTINE test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
                                                          ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni    !  number of ions
       REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array    [1/keV]
@@ -561,6 +562,7 @@
       REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp     !  projectile charge
+      REAL,                        INTENT(IN)  :: scale  !      
 
                                                          !
       CHARACTER*50     :: fname                          !A-coeffs [MeV/micron]
@@ -580,14 +582,14 @@
 
       WRITE(6,*) 'calling: test_coeff_bps_mass ...'
 
-      CALL bps_acoeff_ei_mass(nni, ep, zp, mp, betab, zb, mb, nb,    &
-         a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e,&
+      CALL bps_acoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
+         a_tot, a_i, a_e, ac_tot, ac_i, ac_e, aq_tot, aq_i, aq_e,        &  !**xx
          ac_s_e, ac_r_e, ac_s_i, ac_r_i)
 
       READ(1,'(23A)') fname
-      READ(1,'(3D25.14)') a_tot_dat, a_i_dat, a_e_dat
-      READ(1,'(3D25.14)') ac_tot_dat, ac_i_dat, ac_e_dat
-      READ(1,'(3D25.14)') aq_tot_dat, aq_i_dat, aq_e_dat
+      READ(1,'(3E25.14)') a_tot_dat, a_i_dat, a_e_dat
+      READ(1,'(3E25.14)') ac_tot_dat, ac_i_dat, ac_e_dat
+      READ(1,'(3E25.14)') aq_tot_dat, aq_i_dat, aq_e_dat
 
       err=100*ABS(a_tot_dat-a_tot)/(ABS(a_tot_dat)+ABS(a_tot))
       IF (err > TOLERANCE) THEN
@@ -689,33 +691,23 @@
       WRITE(6,'(56A)') 'subroutine check: bps_rate_cab_mass, etc.  [C]=[1/cm^3 s]'
       WRITE(1,'(56A)') 'subroutine check: bps_rate_cab_mass, etc.  [C]=[1/cm^3 s]'
 
-      WRITE(6,'(2D25.14)') ln_bps_born, cei_born
-      WRITE(1,'(2D25.14)') ln_bps_born, cei_born
+      WRITE(6,'(2E25.14)') ln_bps_born, cei_born
+      WRITE(1,'(2E25.14)') ln_bps_born, cei_born
 
       CALL bps_rate_cei_mass(nni, betab, zb, mb, nb, ln_bps_mass,            & 
       delta_mass, cei_tot, cei_mass, cei_e, ceic_tot, ceic_i, ceic_e, ceiq_tot, &
       cei_qm_mass, ceiq_e, cei_sing_mass, ceic_s_e, cei_reg_mass , ceic_r_e, ceib)
 
-      WRITE(6,'(2D25.14)') ln_bps_mass, delta_mass
-      WRITE(6,'(3D25.14)') cei_tot, cei_mass, cei_e
-      WRITE(6,'(3D25.14)') ceiq_tot, cei_qm_mass, ceiq_e
-      WRITE(1,'(2D25.14)') ln_bps_mass, delta_mass
-      WRITE(1,'(3D25.14)') cei_tot, cei_mass, cei_e
+      WRITE(6,'(2E25.14)') ln_bps_mass, delta_mass
+      WRITE(6,'(3E25.14)') cei_tot, cei_mass, cei_e
+      WRITE(6,'(3E25.14)') ceiq_tot, cei_qm_mass, ceiq_e
+      WRITE(1,'(2E25.14)') ln_bps_mass, delta_mass
+      WRITE(1,'(3E25.14)') cei_tot, cei_mass, cei_e
       WRITE(1,'(3D25.14)') ceiq_tot, cei_qm_mass, ceiq_e
       DO ib=1,nni+1
          WRITE(6,'(3D25.14)') ceib(ib)
          WRITE(1,'(3D25.14)') ceib(ib)
       ENDDO
-
-!cei_sing_mass, ceic_s_e, cei_reg_mass , ceic_r_e, ceib
-
-
-
-!      CALL bps_rate_cab_matrix(nni, betab, zb, mb, nb,    &
-!        cab, cab_sing, cab_reg, cab_qm, c_tot, c_i, c_e, cc_tot, &
-!        cc_i, cc_e, cq_tot, cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e)
-
-
 
     END SUBROUTINE write_bps_rate
 
@@ -776,16 +768,15 @@
       PRINT *, err
       pass=.FALSE.
       ENDIF
-!
-!
+
       CALL bps_rate_cei_mass(nni, betab, zb, mb, nb, ln_bps_mass,            & 
       delta_mass, cei_tot, cei_mass, cei_e, ceic_tot, ceic_i, ceic_e, ceiq_tot, &
       cei_qm_mass, ceiq_e, cei_sing_mass, ceic_s_e, cei_reg_mass , ceic_r_e, ceib)
-      READ(1,'(2D25.14)') ln_bps_mass_dat, delta_mass_dat
-      READ(1,'(3D25.14)') cei_tot_dat, cei_mass_dat, cei_e_dat
-      READ(1,'(3D25.14)') ceiq_tot_dat, cei_qm_mass_dat, ceiq_e_dat
+      READ(1,'(2E25.14)') ln_bps_mass_dat, delta_mass_dat
+      READ(1,'(3E25.14)') cei_tot_dat, cei_mass_dat, cei_e_dat
+      READ(1,'(3E25.14)') ceiq_tot_dat, cei_qm_mass_dat, ceiq_e_dat
       DO ib=1,nni+1
-         READ(1,'(3D25.14)') ceib_dat(ib)
+         READ(1,'(3E25.14)') ceib_dat(ib)
       ENDDO
 
       err=100*ABS(ln_bps_mass_dat-ln_bps_mass)/(ABS(ln_bps_mass_dat)+ABS(ln_bps_mass))
