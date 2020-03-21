@@ -54,6 +54,7 @@
          scale=1
          CALL write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
          CALL write_ccoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+         CALL write_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)         
       ELSE
          CALL test_plasma(nni,ep,zp,mp,betab,zb,mb,nb,scale)    ! Did the plasma change?
          CALL test_param(nni,betab,nb)                          ! Did g, eta, etc. change?
@@ -61,7 +62,8 @@
          CALL test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)  ! Did stopping power change?
          scale=1
          CALL test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)! Did A-coeff change?
-         CALL test_ccoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)! Did A-coeff change?
+         CALL test_ccoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)! Did C-coeff change?
+         CALL test_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)! Did B-coeff change?         
       ENDIF
 
     END SUBROUTINE data_write_test
@@ -668,7 +670,6 @@
       IF (pass) WRITE(6,*) ' passed.'
     END SUBROUTINE test_acoeff_bps_mass
 
-    !*!
     SUBROUTINE write_ccoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
                                                          ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni    !  number of ions
@@ -812,11 +813,154 @@
       ENDIF
       IF (pass) WRITE(6,*) ' passed.'
     END SUBROUTINE test_ccoeff_bps_mass
-!
     
-    !*!
+!
 
-    !
+SUBROUTINE write_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+                                                         ! Plasma:
+      INTEGER,                     INTENT(IN)  :: nni    !  number of ions
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array    [1/keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     !  mass array    [keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb     !  density array [1/cc]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb     !  charge array
+                                                         !
+                                                         ! Projectile  
+      REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+      REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
+      REAL,                        INTENT(IN)  :: zp     !  projectile charge
+      REAL :: b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e
+      REAL :: bc_s_e, bc_r_e, bc_s_i, bc_r_i
+
+      CALL bps_bcoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
+         b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e,        &
+         bc_s_e, bc_r_e, bc_s_i, bc_r_i) 
+      WRITE(6,'(54A)') 'subroutine check: bps_bcoeff_ei_mass [B]=[keV^2-s/cm^2]'
+      WRITE(6,'(3E25.14)') b_tot, b_i, b_e
+      WRITE(6,'(3E25.14)') bc_tot, bc_i, bc_e
+      WRITE(6,'(3E25.14)') bq_tot, bq_i, bc_e
+      WRITE(1,'(54A)') 'subroutine check: bps_bcoeff_ei_mass [B]=[keV^2-s/cm^2]'
+      WRITE(1,'(3E25.14)') b_tot, b_i, b_e
+      WRITE(1,'(3E25.14)') bc_tot, bc_i, bc_e
+      WRITE(1,'(3E25.14)') bq_tot, bq_i, bq_e
+    END SUBROUTINE write_bcoeff_bps_mass
+
+    SUBROUTINE test_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+                                                         ! Plasma:
+      INTEGER,                     INTENT(IN)  :: nni    !  number of ions
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab  !  temp array    [1/keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb     !  mass array    [keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb     !  density array [1/cc]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb     !  charge array
+                                                         !
+                                                         ! Projectile  
+      REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
+      REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
+      REAL,                        INTENT(IN)  :: zp     !  projectile charge
+      REAL,                        INTENT(IN)  :: scale  !      
+
+                                                         !
+      CHARACTER*50     :: fname                          !A-coeffs [MeV/micron]
+      LOGICAL          :: pass=.TRUE. ! true or false
+      REAL,  PARAMETER :: TOLERANCE=1.E-3
+      REAL :: err
+      REAL :: b_tot, b_tot_dat          ! electron + ion
+      REAL :: b_i, b_i_dat              ! ion contribution
+      REAL :: b_e, b_e_dat              ! electorn contribution
+      REAL :: bc_tot, bc_tot_dat        ! classical
+      REAL :: bc_i, bc_i_dat, bc_e_dat  ! classical
+      REAL :: bq_tot, bq_tot_dat        ! quantum
+      REAL :: bq_i, bq_i_dat, bq_e_dat  ! quantum
+      REAL :: bc_s_e, bc_s_i            ! singular [classical=sing+reg]
+      REAL :: bc_r_e, bc_r_i            ! regular  [classical=sing+reg]
+
+
+      WRITE(6,*) 'calling: test_bcoeff_bps_mass ...'
+
+      CALL bps_bcoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
+         b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e,        &
+         bc_s_e, bc_r_e, bc_s_i, bc_r_i)
+
+      READ(1,'(23A)') fname
+      READ(1,'(3E25.14)') b_tot_dat, b_i_dat, b_e_dat
+      READ(1,'(3E25.14)') bc_tot_dat, bc_i_dat, bc_e_dat
+      READ(1,'(3E25.14)') bq_tot_dat, bq_i_dat, bq_e_dat
+
+      err=100*ABS(b_tot_dat-b_tot)/(ABS(b_tot_dat)+ABS(b_tot))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: b_tot'
+        PRINT *, b_tot
+        PRINT *, b_tot_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(b_i_dat-b_i)/(ABS(b_i_dat)+ABS(b_i))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: b_i'
+        PRINT *, b_i
+        PRINT *, b_i_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(b_e_dat-b_e)/(ABS(b_e_dat)+ABS(b_e))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: b_e'
+        PRINT *, b_e
+        PRINT *, b_e_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bc_tot_dat-bc_tot)/(ABS(bc_tot_dat)+ABS(bc_tot))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bc_tot'
+        PRINT *, bc_tot
+        PRINT *, bc_tot_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bc_i_dat-bc_i)/(ABS(bc_i_dat)+ABS(bc_i))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bc_i'
+        PRINT *, bc_i
+        PRINT *, bc_i_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bc_e_dat-bc_e)/(ABS(bc_e_dat)+ABS(bc_e))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bc_e'
+        PRINT *, bc_e
+        PRINT *, bc_e_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bq_tot_dat-bq_tot)/(ABS(bq_tot_dat)+ABS(bq_tot))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bq_tot'
+        PRINT *, bq_tot
+        PRINT *, bq_tot_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bq_i_dat-bq_i)/(ABS(bq_i_dat)+ABS(bq_i))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bq_i'
+        PRINT *, bq_i
+        PRINT *, bq_i_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      err=100*ABS(bq_e_dat-bq_e)/(ABS(bq_e_dat)+ABS(bq_e))
+      IF (err > TOLERANCE) THEN
+        PRINT *, 'ERROR: bq_e'
+        PRINT *, bq_e
+        PRINT *, bq_e_dat
+        PRINT *, err
+        pass=.FALSE.
+      ENDIF
+      IF (pass) WRITE(6,*) ' passed.'
+    END SUBROUTINE test_bcoeff_bps_mass
+    
+!
 !============================================  
 !
     SUBROUTINE write_bps_rate(nni,betab,zb,mb,nb)
