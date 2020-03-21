@@ -39,14 +39,15 @@
 ! evolution
 !
         ! WRITE(6,'(A)') '#'
-        ! WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        ! WRITE(6,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [keV]','dedx_e', 'dedx_I', 'dedx_tot'
         ! WRITE(6,'(A)') '#'
         ! WRITE(1,'(A)') '#'
-        ! WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [MeV]','dedx_e', 'dedx_I', 'dedx_tot'
+        ! WRITE(1,'(A, 10X,A7, 10X,A6, 15X,A6, 15X,A8)') '#','E [keV]','dedx_e', 'dedx_I', 'dedx_tot'
         ! WRITE(1,'(A)') '#'
         de=ep/nit
         epp=0
-        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m        
+        scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
+        scale = 1
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
@@ -54,8 +55,8 @@
            CALL bps_pcoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 p_tot, p_i, p_e, pc_tot, pc_i, pc_e, pq_tot, pq_i, pq_e, &
                 pc_s_i, pc_s_e, pc_r_i, pc_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
+           WRITE (6,'(I6,E17.8,9E22.13)') j, epp, p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp, p_e, p_i, p_tot, pc_e, pc_i, pc_tot, pq_e, pq_i, pq_tot
         ENDDO
         
         CLOSE (1)

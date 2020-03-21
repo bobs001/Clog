@@ -4,17 +4,19 @@
 !
 ! nts = number of time steps
 !
-      USE allocatablevars
-      USE bpsvars
-      USE physvars
-      USE mathvars
+        USE allocatablevars
+        USE bpsvars
+        USE physvars
+        USE mathvars
         IMPLICIT NONE
-        REAL ::  b_tot, b_i, b_e, bc_tot, bc_i, bc_e
-        REAL ::  bq_tot, bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e
-        INTEGER :: j, nit
+        INTEGER :: j, nit      
+        REAL    ::  b_tot, b_i, b_e, bc_tot, bc_i, bc_e
+        REAL    ::  bq_tot, bq_i, bq_e, bc_s_i, bc_s_e, bc_r_i, bc_r_e
+        REAL    ::  dedx_e, dedx_i, dedx_tot, dedxc_e, dedxc_i, dedxc_tot
+        REAL    ::  dedxq_e, dedxq_i, dedxq_tot, dedxc_s_i, dedxc_s_e, dedxc_r_i, dedxc_r_e
 
-        REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale
-        INTEGER :: nni
+        INTEGER :: nni        
+        REAL    :: te, ti, ne, ep, mp, zp, epp, de, scale, vp, fact
 !
 ! number of iterations
         nit=100
@@ -33,6 +35,7 @@
 ! plot the regular and singular contributions
 !
         OPEN  (1, FILE='bcoeff_1.out')  ! B-coeffs
+        OPEN  (2, FILE='bcoeff_2.out')  ! dE_perp/dx
 
         CALL write_output(ep,mp,zp,te,ti,ne,nni,betab,zb,mb,nb)
 !
@@ -47,6 +50,7 @@
         de=ep/nit
         epp=0
         scale = 1.e-7 ! convert units of dE/dx from Kev/cm to MeV/mu-m
+        scale = 1
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
@@ -54,8 +58,30 @@
            CALL bps_bcoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e, &
                 bc_s_i, bc_s_e, bc_r_i, bc_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
+           WRITE (6,'(I6,E17.8,9E22.13)') j, epp, b_e, b_i, b_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp, b_e, b_i, b_tot, bc_e, bc_i, bc_tot, bq_e, bq_i, bq_tot
+
+           !todo: write subroutine bps_deperpdx_ei_mass
+           !CALL bps_deperpdx_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
+           !     dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, dedxc_e, dedxq_tot, dedxq_i, dedxq_e, &
+           !     dedxc_s_i, dedxc_s_e, dedxc_r_i, dedxc_r_e)
+           vp = CC*SQRT(2*epp/mp)
+           fact = CC/(mp*vp) ! ** is this factor right?
+           dedx_tot = fact*b_tot
+           dedx_i = fact*b_i*b_i
+           dedx_e = fact*b_e
+           dedxc_tot = fact*bc_tot
+           dedxc_i = fact*bc_i
+           dedxc_e = fact*bc_e
+           dedxq_tot = fact*bq_tot
+           dedxq_i = fact*bq_i
+           dedxq_e = fact*bq_e
+           dedxc_s_i = fact*bc_s_i
+           dedxc_s_e = fact*bc_s_e
+           dedxc_r_i = fact*bc_r_i
+           dedxc_r_e = fact*bc_r_e
+           WRITE (2,'(I6,E17.8,9E22.13)') j, epp, dedx_e, dedx_i, dedx_tot, dedxc_e, dedxc_i, dedxc_tot, &
+                dedxq_e, dedxq_i, dedxq_tot
         ENDDO
         
         CLOSE (1)

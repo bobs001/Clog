@@ -47,6 +47,7 @@
         de=ep/nit
         epp=0
         scale = 1.e-7 ! MeV/my-mu
+        scale = 1     ! keV/cm
         DO j=0,nit
            epp=j*de
            IF (epp .EQ. 0) epp=de/2.0
@@ -54,8 +55,8 @@
            CALL bps_ccoeff_ei_mass(nni, scale, epp, zp, mp, betab, zb, mb, nb, &
                 c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e, &
                 cc_s_i, cc_s_e, cc_r_i, cc_r_e)
-           WRITE (6,'(I6,E17.8,9E22.13)') j, epp/1000., c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
-           WRITE (1,'(I6,E17.8,9E22.13)') j, epp/1000., c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
+           WRITE (6,'(I6,E17.8,9E22.13)') j, epp, c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
+           WRITE (1,'(I6,E17.8,9E22.13)') j, epp, c_e, c_i, c_tot, cc_e, cc_i, cc_tot, cq_e, cq_i, cq_tot
         ENDDO
         
         CLOSE (1)

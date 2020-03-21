@@ -176,10 +176,10 @@
              c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
         CALL bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
              a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
-        b_ab = c_ab - CC*a_ab/betab(ib)/vp/1000.
-        b_ab_sing = c_ab_sing - CC*c_ab_sing/betab(ib)/vp/1000.
-        b_ab_reg = c_ab_reg - CC*c_ab_reg/betab(ib)/vp/1000.
-        b_ab_qm = c_ab_qm - CC*c_ab_qm/betab(ib)/vp/1000.
+        b_ab = c_ab - CC*a_ab/betab(ib)/vp
+        b_ab_sing = c_ab_sing - CC*c_ab_sing/betab(ib)/vp
+        b_ab_reg = c_ab_reg - CC*c_ab_reg/betab(ib)/vp
+        b_ab_qm = c_ab_qm - CC*c_ab_qm/betab(ib)/vp
         !*! need to form B from C and A.
         
         
@@ -332,7 +332,7 @@
               
             CALL dedx_bps(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
                  dedx_tot, dedx_i, dedx_e, dedxc_tot, dedxc_i, & 
-                 dedxc_e, dedxq_tot, dedxq_i, dedxq_e) ! [MeV/micron] with epp/1000. in MeV
+                 dedxc_e, dedxq_tot, dedxq_i, dedxq_e)
               
             CALL bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
                  cdum, cc_s, cc_r, cq)
@@ -340,17 +340,17 @@
             c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot,  &
             cq_i, cq_e, cc_s_i, cc_s_e, cc_r_i, cc_r_e)
 
-            ! p_tot \equiv v^k dP^k/dx = dE/dx - C^ll/m v
+            ! p_tot \equiv v^k dP^k/dx = dE/dx + C^ll/m v
             vp = CC*SQRT(2*ep/mp)            
-            p_tot = dedx_tot - c_tot*CC/(mp*vp)
-            pc_tot = dedxc_tot - cc_tot*CC/(mp*vp)
-            pq_tot = dedxq_tot - cq_tot*CC/(mp*vp)
-            p_e = dedx_e - c_e*CC/(mp*vp)
-            p_i = dedx_i - c_i*CC/(mp*vp)
-            pc_e = dedxc_e - cc_e*CC/(mp*vp)
-            pc_i = dedxc_i - cc_i*CC/(mp*vp)
-            pq_e = dedxq_e - cq_e*CC/(mp*vp)
-            pq_i = dedxq_i - cq_i*CC/(mp*vp)
+            p_tot = dedx_tot + c_tot*CC*CC/(mp*vp)
+            pc_tot = dedxc_tot + cc_tot*CC*CC/(mp*vp)
+            pq_tot = dedxq_tot + cq_tot*CC*CC/(mp*vp)
+            p_e = dedx_e + c_e*CC*CC/(mp*vp)
+            p_i = dedx_i + c_i*CC*CC/(mp*vp)
+            pc_e = dedxc_e + cc_e*CC*CC/(mp*vp)
+            pc_i = dedxc_i + cc_i*CC*CC/(mp*vp)
+            pq_e = dedxq_e + cq_e*CC*CC/(mp*vp)
+            pq_i = dedxq_i + cq_i*CC*CC/(mp*vp)
             
          ENDIF
       ENDDO
