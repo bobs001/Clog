@@ -11,7 +11,7 @@
       USE physvars
       USE allocatablevars 
       IMPLICIT NONE
-      REAL    :: mp, ep, zp
+      REAL    :: mp, ep, zp, scale
       INTEGER :: nni 
       LOGICAL :: write_dat
 
@@ -19,15 +19,53 @@
 !      write_dat=.TRUE.  ! create regression.out
       write_dat=.FALSE. ! testing mode: read from regression.out
 
-      CALL define_plasma(ep,mp,zp,nni)
-      CALL data_write_test(write_dat,nni,ep,zp,mp,betab,zb,mb,nb)
+      CALL define_plasma(ep,mp,zp,nni,scale)
+      CALL data_write_test(write_dat,nni,ep,zp,mp,betab,zb,mb,nb,scale)
 
       CLOSE(1)
     END PROGRAM main
-!
+
 !============================================
+
+    SUBROUTINE data_write_test(write_dat, nni, ep, zp, mp, betab, zb, mb, nb, scale)
+      IMPLICIT NONE
+      LOGICAL,                     INTENT(IN)  :: write_dat
+      INTEGER,                     INTENT(IN)  :: nni   !  number of ions
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab !  temp         [1/keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb    !  mass array    [keV]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb    !  density array [1/cc]
+      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb    !  charge array
+                                                        !
+                                                        ! Projectile  
+      REAL,                        INTENT(IN)  :: ep    !  projectile energy [keV]
+      REAL,                        INTENT(IN)  :: mp    !  projectile mass   [keV]
+      REAL,                        INTENT(IN)  :: zp    !  projectile charge
+      REAL,                        INTENT(IN)  :: scale !      
 !
-    SUBROUTINE define_plasma(ep, mp, zp, nni) !, te, ti, ne, nni)
+! local variables
+!
+      IF (write_dat) THEN
+         WRITE(6,*) 'generating regression.out file ...'
+         WRITE(6,*) ''
+         CALL write_plasma(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+         CALL write_param(nni,betab,nb)
+         CALL write_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)
+         !CALL write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)
+         !CALL write_bps_rate(nni,betab,zb,mb,nb)
+     ELSE
+         CALL test_plasma(nni,ep,zp,mp,betab,zb,mb,nb,scale)    ! Did the plasma change?
+         CALL test_param(nni,betab,nb)                          ! Did g, eta, etc. change?
+         CALL test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)  ! Did stopping power change?
+         !CALL test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)! Did A-coeff change?
+         !CALL test_bps_rate(nni,betab,zb,mb,nb)                ! Did rates change?
+!        CALL test_eifrac_int_1t(nni,ep,zp,mp,betab,zb,mb,nb,e0,ec)! Are energy fractions the same?
+     ENDIF
+
+    END SUBROUTINE data_write_test
+
+!============================================
+
+    SUBROUTINE define_plasma(ep, mp, zp, nni, scale)
     USE allocatablevars 
     USE physvars
       IMPLICIT NONE
@@ -35,6 +73,7 @@
       REAL,    INTENT(OUT) :: mp   ! projectile mass [keV]
       REAL,    INTENT(OUT) :: zp   ! projectile charge Z
       INTEGER, INTENT(OUT) :: nni  ! number of ion species
+      REAL,    INTENT(OUT) :: scale! 1.e-7 gives dE/dx in MeV/mu-m
       REAL           :: te   ! electron temperature [keV]
       REAL           :: ti   ! ion temperature [keV]
       REAL           :: ne   ! [cm^-3]
@@ -45,6 +84,7 @@
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: zb     ! [e]
 !     REAL,    DIMENSION(:), ALLOCATABLE  :: gb, etab, mpb, mbpb
 
+      scale = 1.e-7 ! dE/dx in MeV
       nni=2  ! number of ion species
 
       ALLOCATE(betab(1:nni+1),zb(1:nni+1),mb(nni+1),nb(1:nni+1))   ! allocatablevars
@@ -79,48 +119,10 @@
       betab(2:nni+1)=1./ti              !
 
     END SUBROUTINE define_plasma
-
-!
-!============================================
-!
-    SUBROUTINE data_write_test(write_dat, nni, ep, zp, mp, betab, zb, mb, nb)
-      IMPLICIT NONE
-      LOGICAL,                     INTENT(IN)  :: write_dat
-      INTEGER,                     INTENT(IN)  :: nni   !  number of ions
-      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: betab !  temp         [1/keV]
-      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: mb    !  mass array    [keV]
-      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: nb    !  density array [1/cc]
-      REAL,    DIMENSION(1:nni+1), INTENT(IN)  :: zb    !  charge array
-                                                        !
-                                                        ! Projectile  
-      REAL,                        INTENT(IN)  :: ep    !  projectile energy [keV]
-      REAL,                        INTENT(IN)  :: mp    !  projectile mass   [keV]
-      REAL,                        INTENT(IN)  :: zp    !  projectile charge
-!
-! local variables
-!
-      IF (write_dat) THEN
-         WRITE(6,*) 'generating regression.out file ...'
-         WRITE(6,*) ''
-         CALL write_plasma(nni,ep,zp,mp,betab,zb,mb,nb)
-         !CALL write_param(nni,betab,nb)
-         !CALL write_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb)
-         !CALL write_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)
-         !CALL write_bps_rate(nni,betab,zb,mb,nb)
-     ELSE
-         CALL test_plasma(nni,ep,zp,mp,betab,zb,mb,nb)         ! Did the plasma change?
-         !CALL test_param(nni,betab,nb)                         ! Did g, eta, etc. change?
-         !CALL test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb)       ! Did stopping power change?
-         !CALL test_acoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb)! Did A-coeff change?
-         !CALL test_bps_rate(nni,betab,zb,mb,nb)                ! Did rates change?
-!        CALL test_eifrac_int_1t(nni,ep,zp,mp,betab,zb,mb,nb,e0,ec)! Are energy fractions the same?
-     ENDIF
-
-    END SUBROUTINE data_write_test
 !
 ! plasma definition
 !
-    SUBROUTINE write_plasma(nni, ep, zp, mp, betab, zb, mb, nb) 
+    SUBROUTINE write_plasma(nni, ep, zp, mp, betab, zb, mb, nb, scale) 
       IMPLICIT NONE
                                                        ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni  !  number of ions
@@ -133,6 +135,7 @@
       REAL,                        INTENT(IN)  :: ep   !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp   !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp   !  projectile charge
+      REAL,                        INTENT(IN)  :: scale! 1.e-7 gives dE/dx in MeV/mu-m      
       REAL :: te, ti
 
       te=1./betab(1)
@@ -145,6 +148,7 @@
       WRITE(6,'(10E25.14)') zb
       WRITE(6,'(2E25.14)')  zp, mp
       WRITE(6,'(1E25.14)')  ep
+      WRITE(6,'(1E25.14)')  scale      
       WRITE(6,*)''
 
       WRITE(1,'(16A)') 'plasma: DT alpha'
@@ -155,9 +159,10 @@
       WRITE(1,'(10E25.14)') zb
       WRITE(1,'(2E25.14)')  zp, mp
       WRITE(1,'(1E25.14)')  ep
+      WRITE(1,'(1E25.14)')  scale      
     END SUBROUTINE write_plasma
 
-    SUBROUTINE test_plasma(nni, ep, zp, mp, betab, zb, mb, nb) 
+    SUBROUTINE test_plasma(nni, ep, zp, mp, betab, zb, mb, nb, scale) 
       IMPLICIT NONE
                                                        ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni  !  number of ions
@@ -170,6 +175,7 @@
       REAL,                        INTENT(IN)  :: ep   !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp   !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp   !  projectile charge
+      REAL,                        INTENT(IN)  :: scale!      
 
       REAL,    DIMENSION(:), ALLOCATABLE :: nb_dat, mb_dat, zb_dat
       CHARACTER*50     :: fname
@@ -177,7 +183,7 @@
       REAL,  PARAMETER :: TOLERANCE=1.E-3
       real    :: err
       REAL    :: te, ti
-      REAL    :: te_dat, ti_dat, mp_dat, ep_dat, zp_dat
+      REAL    :: te_dat, ti_dat, mp_dat, ep_dat, zp_dat, scale_dat
       INTEGER :: nni_dat 
 
       WRITE(6,*) 'calling test_plasma ...'
@@ -200,72 +206,81 @@
       READ(1,'(10E25.14)') zb_dat
       READ(1,'(2E25.14)')  zp_dat, mp_dat
       READ(1,'(1E25.14)')  ep_dat
+      READ(1,'(1E25.14)')  scale_dat      
 
       err=100*ABS(te_dat-te)/(ABS(te_dat)+ABS(te))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: Te'
-        PRINT *, te
-        PRINT *, te_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR: Te'
+         PRINT *, te
+         PRINT *, te_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       err=100*ABS(ti_dat-ti)/(ABS(ti_dat)+ABS(ti))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: Ti'
-        PRINT *, ti
-        PRINT *, ti_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR: Ti'
+         PRINT *, ti
+         PRINT *, ti_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       err=100*SUM(ABS(nb_dat-nb))/(SUM(ABS(nb_dat))+SUM(ABS(nb)))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: nb'
-        PRINT *, nb
-        PRINT *, nb_dat
-        PRINT *, err
-        pass=.FALSE.
-        err=100*SUM(ABS(mb_dat-mb))/(SUM(ABS(mb_dat))+SUM(ABS(mb)))
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR: nb'
+         PRINT *, nb
+         PRINT *, nb_dat
+         PRINT *, err
+         pass=.FALSE.
+         err=100*SUM(ABS(mb_dat-mb))/(SUM(ABS(mb_dat))+SUM(ABS(mb)))
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: mb'
-        PRINT *, mb
-        PRINT *, mb_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR: mb'
+         PRINT *, mb
+         PRINT *, mb_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       err=100*SUM(ABS(zb_dat-zb))/(SUM(ABS(zb_dat))+SUM(ABS(zb)))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR:zb'
-        PRINT *, zb
-        PRINT *, zb_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR:zb'
+         PRINT *, zb
+         PRINT *, zb_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       err=100*ABS(zp_dat-zp)/(ABS(zp_dat)+ABS(zp))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: zp'
-        PRINT *, zp
-        PRINT *, zp_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR: zp'
+         PRINT *, zp
+         PRINT *, zp_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       err=100*ABS(mp_dat-mp)/(ABS(mp_dat)+ABS(mp))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR:mp'
-        PRINT *, mp
-        PRINT *, mp_dat
-        PRINT *, err
-        pass=.FALSE.
-     ENDIF
+         PRINT *, 'ERROR:mp'
+         PRINT *, mp
+         PRINT *, mp_dat
+         PRINT *, err
+         pass=.FALSE.
+      ENDIF
       err=100*ABS(ep_dat-ep)/(ABS(ep_dat)+ABS(ep))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR:ep'
-        PRINT *, ep
-        PRINT *, ep_dat
-        PRINT *, err
-        pass=.FALSE.
+         PRINT *, 'ERROR:ep'
+         PRINT *, ep
+         PRINT *, ep_dat
+         PRINT *, err
+         pass=.FALSE.
+      ENDIF
+      err=100*ABS(scale_dat-scale)/(ABS(scale_dat)+ABS(scale))
+      IF (err > TOLERANCE) THEN
+         PRINT *, 'ERROR:ep'
+         PRINT *, scale
+         PRINT *, scale_dat
+         PRINT *, err
+         pass=.FALSE.
       ENDIF
       IF (pass) WRITE(6,*) ' passed.'
       DEALLOCATE(mb_dat,nb_dat,zb_dat)
@@ -284,13 +299,13 @@
       ALLOCATE(gb(1:nni+1))      
       CALL param(nni, betab, nb, gb, ge, gi, etae, ze)
       WRITE(6,'(23A)') 'subroutine check: param'
-      WRITE(6,'(10D25.14)') gb
-      WRITE(6,'(2D25.14)')  ge, gi
-      WRITE(6,'(2D25.14)')  etae, ze
+      WRITE(6,'(10E25.14)') gb
+      WRITE(6,'(2E25.14)')  ge, gi
+      WRITE(6,'(2E25.14)')  etae, ze
       WRITE(1,'(23A)') 'subroutine check: param'
-      WRITE(1,'(10D25.14)') gb
-      WRITE(1,'(2D25.14)')  ge, gi
-      WRITE(1,'(2D25.14)')  etae, ze
+      WRITE(1,'(10E25.14)') gb
+      WRITE(1,'(2E25.14)')  ge, gi
+      WRITE(1,'(2E25.14)')  etae, ze
       DEALLOCATE(gb)
     END SUBROUTINE write_param
 
@@ -313,9 +328,9 @@
       CALL param(nni, betab, nb, gb, ge, gi, etae, ze)
 
       READ(1,'(23A)') fname
-      READ(1,'(10D25.14)') gb_dat
-      READ(1,'(2D25.14)')  ge_dat, gi_dat
-      READ(1,'(2D25.14)')  etae_dat, ze_dat
+      READ(1,'(10E25.14)') gb_dat
+      READ(1,'(2E25.14)')  ge_dat, gi_dat
+      READ(1,'(2E25.14)')  etae_dat, ze_dat
 
       err=100*SUM(ABS(gb_dat-gb))/(SUM(ABS(gb_dat))+SUM(ABS(gb)))
       IF (err > TOLERANCE) THEN
@@ -364,7 +379,7 @@
 !============================================
 !
 
-    SUBROUTINE write_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb)
+    SUBROUTINE write_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)
       IMPLICIT NONE
                                                        ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni  !  number of ions
@@ -377,22 +392,23 @@
       REAL,                        INTENT(IN)  :: ep   !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp   !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp   !  projectile charge
+      REAL,                        INTENT(IN)  :: scale!  1.e-7 gives dE/dx in MeV/mu-m
       REAL :: dedx_tot,  dedx_i,  dedx_e, dedxc_tot, dedxc_i, dedxc_e
       REAL :: dedxq_tot, dedxq_i, dedxq_e
 
-      CALL dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,dedx_tot,dedx_i,dedx_e,&
+      CALL dedx_bps(nni,scale,ep,zp,mp,betab,zb,mb,nb,dedx_tot,dedx_i,dedx_e,&
          dedxc_tot,dedxc_i,dedxc_e,dedxq_tot,dedxq_i,dedxq_e)
       WRITE(6,'(40A)') 'subroutine check: dedx_bps [MeV/micron]'
-      WRITE(6,'(3D25.14)') dedx_tot,  dedx_i,  dedx_e
-      WRITE(6,'(3D25.14)') dedxc_tot, dedxc_i, dedxc_e
-      WRITE(6,'(3D25.14)') dedxq_tot, dedxq_i, dedxq_e
+      WRITE(6,'(3E25.14)') dedx_tot,  dedx_i,  dedx_e
+      WRITE(6,'(3E25.14)') dedxc_tot, dedxc_i, dedxc_e
+      WRITE(6,'(3E25.14)') dedxq_tot, dedxq_i, dedxq_e
       WRITE(1,'(40A)') 'subroutine check: dedx_bps [MeV/micron]'
-      WRITE(1,'(3D25.14)') dedx_tot,  dedx_i,  dedx_e
-      WRITE(1,'(3D25.14)') dedxc_tot, dedxc_i, dedxc_e
-      WRITE(1,'(3D25.14)') dedxq_tot, dedxq_i, dedxq_e
+      WRITE(1,'(3E25.14)') dedx_tot,  dedx_i,  dedx_e
+      WRITE(1,'(3E25.14)') dedxc_tot, dedxc_i, dedxc_e
+      WRITE(1,'(3E25.14)') dedxq_tot, dedxq_i, dedxq_e
     END SUBROUTINE write_dedx_bps
 
-    SUBROUTINE test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb)
+    SUBROUTINE test_dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,scale)
       IMPLICIT NONE
                                                        ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni  !  number of ions
@@ -405,6 +421,7 @@
       REAL,                        INTENT(IN)  :: ep   !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp   !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp   !  projectile charge
+      REAL,                        INTENT(IN)  :: scale!      
 
       CHARACTER*50     :: fname                                                               !
       LOGICAL          :: pass=.TRUE. ! true or false
@@ -418,14 +435,14 @@
 
       WRITE(6,*) 'calling: test_dedx_bps ...'
 
-      CALL dedx_bps(nni,ep,zp,mp,betab,zb,mb,nb,dedx_tot,        &
+      CALL dedx_bps(nni,scale,ep,zp,mp,betab,zb,mb,nb,dedx_tot,  &
               dedx_i,dedx_e,dedxc_tot,dedxc_i,dedxc_e,dedxq_tot, &
               dedxq_i,dedxq_e) !stopping power [keV/micron]
 
       READ(1,'(23A)')     fname
-      READ(1,'(3D25.14)') dedx_tot_dat,  dedx_i_dat,  dedx_e_dat
-      READ(1,'(3D25.14)') dedxc_tot_dat, dedxc_i_dat, dedxc_e_dat
-      READ(1,'(3D25.14)') dedxq_tot_dat, dedxq_i_dat, dedxq_e_dat
+      READ(1,'(3E25.14)') dedx_tot_dat,  dedx_i_dat,  dedx_e_dat
+      READ(1,'(3E25.14)') dedxc_tot_dat, dedxc_i_dat, dedxc_e_dat
+      READ(1,'(3E25.14)') dedxq_tot_dat, dedxq_i_dat, dedxq_e_dat
 
       err=100*ABS(dedx_tot_dat-dedx_tot)/(ABS(dedx_tot_dat)+ABS(dedx_tot))
       IF (err > TOLERANCE) THEN
