@@ -816,7 +816,6 @@
     
 !
 
-    !*!
 SUBROUTINE write_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
                                                          ! Plasma:
       INTEGER,                     INTENT(IN)  :: nni    !  number of ions
@@ -829,20 +828,20 @@ SUBROUTINE write_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
       REAL,                        INTENT(IN)  :: ep     !  projectile energy [keV]
       REAL,                        INTENT(IN)  :: mp     !  projectile mass   [keV]
       REAL,                        INTENT(IN)  :: zp     !  projectile charge
-      REAL :: c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e
-      REAL :: cc_s_e, cc_r_e, cc_s_i, cc_r_i
+      REAL :: b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e
+      REAL :: bc_s_e, bc_r_e, bc_s_i, bc_r_i
 
       CALL bps_bcoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
-         c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e,        &
-         cc_s_e, cc_r_e, cc_s_i, cc_r_i) 
+         b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e,        &
+         bc_s_e, bc_r_e, bc_s_i, bc_r_i) 
       WRITE(6,'(54A)') 'subroutine check: bps_bcoeff_ei_mass [B]=[keV^2-s/cm^2]'
-      WRITE(6,'(3E25.14)') c_tot, c_i, c_e
-      WRITE(6,'(3E25.14)') cc_tot, cc_i, cc_e
-      WRITE(6,'(3E25.14)') cq_tot, cq_i, cc_e
+      WRITE(6,'(3E25.14)') b_tot, b_i, b_e
+      WRITE(6,'(3E25.14)') bc_tot, bc_i, bc_e
+      WRITE(6,'(3E25.14)') bq_tot, bq_i, bc_e
       WRITE(1,'(54A)') 'subroutine check: bps_bcoeff_ei_mass [B]=[keV^2-s/cm^2]'
-      WRITE(1,'(3E25.14)') c_tot, c_i, c_e
-      WRITE(1,'(3E25.14)') cc_tot, cc_i, cc_e
-      WRITE(1,'(3E25.14)') cq_tot, cq_i, cq_e
+      WRITE(1,'(3E25.14)') b_tot, b_i, b_e
+      WRITE(1,'(3E25.14)') bc_tot, bc_i, bc_e
+      WRITE(1,'(3E25.14)') bq_tot, bq_i, bq_e
     END SUBROUTINE write_bcoeff_bps_mass
 
     SUBROUTINE test_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
@@ -864,107 +863,104 @@ SUBROUTINE write_bcoeff_bps_mass(nni,ep,zp,mp,betab,zb,mb,nb,scale)
       LOGICAL          :: pass=.TRUE. ! true or false
       REAL,  PARAMETER :: TOLERANCE=1.E-3
       REAL :: err
-      REAL :: c_tot, c_tot_dat          ! electron + ion
-      REAL :: c_i, c_i_dat              ! ion contribution
-      REAL :: c_e, c_e_dat              ! electorn contribution
-      REAL :: cc_tot, cc_tot_dat        ! classical
-      REAL :: cc_i, cc_i_dat, cc_e_dat  ! classical
-      REAL :: cq_tot, cq_tot_dat        ! quantum
-      REAL :: cq_i, cq_i_dat, cq_e_dat  ! quantum
-      REAL :: cc_s_e, cc_s_i            ! singular [classical=sing+reg]
-      REAL :: cc_r_e, cc_r_i            ! regular  [classical=sing+reg]
+      REAL :: b_tot, b_tot_dat          ! electron + ion
+      REAL :: b_i, b_i_dat              ! ion contribution
+      REAL :: b_e, b_e_dat              ! electorn contribution
+      REAL :: bc_tot, bc_tot_dat        ! classical
+      REAL :: bc_i, bc_i_dat, bc_e_dat  ! classical
+      REAL :: bq_tot, bq_tot_dat        ! quantum
+      REAL :: bq_i, bq_i_dat, bq_e_dat  ! quantum
+      REAL :: bc_s_e, bc_s_i            ! singular [classical=sing+reg]
+      REAL :: bc_r_e, bc_r_i            ! regular  [classical=sing+reg]
 
 
       WRITE(6,*) 'calling: test_bcoeff_bps_mass ...'
 
       CALL bps_bcoeff_ei_mass(nni, scale, ep, zp, mp, betab, zb, mb, nb, &
-         c_tot, c_i, c_e, cc_tot, cc_i, cc_e, cq_tot, cq_i, cq_e,        &
-         cc_s_e, cc_r_e, cc_s_i, cc_r_i)
+         b_tot, b_i, b_e, bc_tot, bc_i, bc_e, bq_tot, bq_i, bq_e,        &
+         bc_s_e, bc_r_e, bc_s_i, bc_r_i)
 
       READ(1,'(23A)') fname
-      READ(1,'(3E25.14)') c_tot_dat, c_i_dat, c_e_dat
-      READ(1,'(3E25.14)') cc_tot_dat, cc_i_dat, cc_e_dat
-      READ(1,'(3E25.14)') cq_tot_dat, cq_i_dat, cq_e_dat
+      READ(1,'(3E25.14)') b_tot_dat, b_i_dat, b_e_dat
+      READ(1,'(3E25.14)') bc_tot_dat, bc_i_dat, bc_e_dat
+      READ(1,'(3E25.14)') bq_tot_dat, bq_i_dat, bq_e_dat
 
-      err=100*ABS(c_tot_dat-c_tot)/(ABS(c_tot_dat)+ABS(c_tot))
+      err=100*ABS(b_tot_dat-b_tot)/(ABS(b_tot_dat)+ABS(b_tot))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: c_tot'
-        PRINT *, c_tot
-        PRINT *, c_tot_dat
+        PRINT *, 'ERROR: b_tot'
+        PRINT *, b_tot
+        PRINT *, b_tot_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(c_i_dat-c_i)/(ABS(c_i_dat)+ABS(c_i))
+      err=100*ABS(b_i_dat-b_i)/(ABS(b_i_dat)+ABS(b_i))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: c_i'
-        PRINT *, c_i
-        PRINT *, c_i_dat
+        PRINT *, 'ERROR: b_i'
+        PRINT *, b_i
+        PRINT *, b_i_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(c_e_dat-c_e)/(ABS(c_e_dat)+ABS(c_e))
+      err=100*ABS(b_e_dat-b_e)/(ABS(b_e_dat)+ABS(b_e))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: c_e'
-        PRINT *, c_e
-        PRINT *, c_e_dat
+        PRINT *, 'ERROR: b_e'
+        PRINT *, b_e
+        PRINT *, b_e_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cc_tot_dat-cc_tot)/(ABS(cc_tot_dat)+ABS(cc_tot))
+      err=100*ABS(bc_tot_dat-bc_tot)/(ABS(bc_tot_dat)+ABS(bc_tot))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: cc_tot'
-        PRINT *, cc_tot
-        PRINT *, cc_tot_dat
+        PRINT *, 'ERROR: bc_tot'
+        PRINT *, bc_tot
+        PRINT *, bc_tot_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cc_i_dat-cc_i)/(ABS(cc_i_dat)+ABS(cc_i))
+      err=100*ABS(bc_i_dat-bc_i)/(ABS(bc_i_dat)+ABS(bc_i))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: ac_i'
-        PRINT *, cc_i
-        PRINT *, cc_i_dat
+        PRINT *, 'ERROR: bc_i'
+        PRINT *, bc_i
+        PRINT *, bc_i_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cc_e_dat-cc_e)/(ABS(cc_e_dat)+ABS(cc_e))
+      err=100*ABS(bc_e_dat-bc_e)/(ABS(bc_e_dat)+ABS(bc_e))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: cc_e'
-        PRINT *, cc_e
-        PRINT *, cc_e_dat
+        PRINT *, 'ERROR: bc_e'
+        PRINT *, bc_e
+        PRINT *, bc_e_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cq_tot_dat-cq_tot)/(ABS(cq_tot_dat)+ABS(cq_tot))
+      err=100*ABS(bq_tot_dat-bq_tot)/(ABS(bq_tot_dat)+ABS(bq_tot))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: cq_tot'
-        PRINT *, cq_tot
-        PRINT *, cq_tot_dat
+        PRINT *, 'ERROR: bq_tot'
+        PRINT *, bq_tot
+        PRINT *, bq_tot_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cq_i_dat-cq_i)/(ABS(cq_i_dat)+ABS(cq_i))
+      err=100*ABS(bq_i_dat-bq_i)/(ABS(bq_i_dat)+ABS(bq_i))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: cq_i'
-        PRINT *, cq_i
-        PRINT *, cq_i_dat
+        PRINT *, 'ERROR: bq_i'
+        PRINT *, bq_i
+        PRINT *, bq_i_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
-      err=100*ABS(cq_e_dat-cq_e)/(ABS(cq_e_dat)+ABS(cq_e))
+      err=100*ABS(bq_e_dat-bq_e)/(ABS(bq_e_dat)+ABS(bq_e))
       IF (err > TOLERANCE) THEN
-        PRINT *, 'ERROR: cq_e'
-        PRINT *, cq_e
-        PRINT *, cq_e_dat
+        PRINT *, 'ERROR: bq_e'
+        PRINT *, bq_e
+        PRINT *, bq_e_dat
         PRINT *, err
         pass=.FALSE.
       ENDIF
       IF (pass) WRITE(6,*) ' passed.'
     END SUBROUTINE test_bcoeff_bps_mass
-        
-    !*!
-
     
-    !
+!
 !============================================  
 !
     SUBROUTINE write_bps_rate(nni,betab,zb,mb,nb)
