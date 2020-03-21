@@ -107,3 +107,37 @@ plt.savefig('plot_dpdx_3.png')
 plt.show()
 
 
+#############################################
+# Read in data from an ASCII data table
+# 
+#
+data4 = np.genfromtxt('dpdx_4.out')
+E2 = data4[:, 1]          
+vpdPdxe2 = data4[:, 2]
+vpdPdxi2 = data4[:, 3]
+vpdPdx2 = data4[:, 4]
+vpdPdxce2 = data4[:, 5]
+vpdPdxci2 = data4[:, 6]
+vpdPdxc2 = data4[:, 7]
+vpdPdxqe2 = data4[:, 8]
+vpdPdxqi2 = data4[:, 9]
+vpdPdxq2 = data4[:, 10]
+
+# plot stopping power total
+plt.plot(E2,vpdPdxe2, label=r'${\bf v} \cdot d{\bf P}_e/dx$')
+plt.plot(E2,vpdPdxi2, label=r'${\bf v} \cdot d{\bf P}_I/dx$')
+plt.plot(E2,vpdPdx2, label=r'${\bf v} \cdot d{\bf P}_{tot}/dx$')
+#
+xmax = 3.5e3
+ymax = 5.0e7
+plt.xlim(0, xmax)
+plt.ylim(0, ymax)
+plt.xlabel(r'$E \,\, {\rm [keV]}$')
+plt.ylabel(r'${\bf v}_p \cdot d{\bf P}_b/dx \,\, {\rm [keV/cm]}$')
+plt.title(r'${\bf v} \cdot d{\bf P}_b/dx$: BPS')
+plt.legend(loc=5)
+plt.grid(True)
+plt.savefig('plot_dpdx_4.png')
+plt.show()
+
+

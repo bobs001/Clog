@@ -7,7 +7,7 @@
 ! other[1]. This routine returns several useful components of the 
 ! corresponding C-coefficients introduced in Note [2] below (BPS).
 ! 
-! UNITS: B_{pb} has units of **[MeV/micron] (subject to change in updates)
+! UNITS: B_{pb} has units of [keV^2-s/cm^2]
 ! 
 ! THE PHYSICS:
 ! The various subsystems b will exchange coulomb energy and they will
@@ -165,24 +165,23 @@
         REAL,                               INTENT(OUT) :: b_ab_reg
         REAL,                               INTENT(OUT) :: b_ab_qm
 
-        REAL :: c_ab, a_ab, vp
+        REAL :: c_ab, a_ab, vp, fact
         REAL :: c_ab_sing, a_ab_sing
         REAL :: c_ab_reg, a_ab_reg
         REAL :: c_ab_qm, a_ab_qm
-
-        vp = CC*SQRT(2*ep/mp)                    
         
         CALL bps_ccoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
              c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
         CALL bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
              a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
-        b_ab = c_ab - CC*a_ab/betab(ib)/vp/1000.
-        b_ab_sing = c_ab_sing - CC*c_ab_sing/betab(ib)/vp/1000.
-        b_ab_reg = c_ab_reg - CC*c_ab_reg/betab(ib)/vp/1000.
-        b_ab_qm = c_ab_qm - CC*c_ab_qm/betab(ib)/vp/1000.
-        !*! need to form B from C and A.
-        
-        
+
+        ! B = C^ll - A/beta*vp
+        vp = CC*SQRT(2*ep/mp)
+        fact = 1/(betab(ib)*vp)
+        b_ab = c_ab - fact*a_ab
+        b_ab_sing = c_ab_sing - fact*c_ab_sing
+        b_ab_reg = c_ab_reg - fact*c_ab_reg
+        b_ab_qm = c_ab_qm - fact*c_ab_qm
         
       END SUBROUTINE bps_bcoeff_ab_mass
 !

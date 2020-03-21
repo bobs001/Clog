@@ -176,10 +176,10 @@
              c_ab, c_ab_sing, c_ab_reg, c_ab_qm)
         CALL bps_acoeff_ab_mass(nni, scale, ep, mp, zp, ia, ib, betab, zb, mb, nb, &
              a_ab, a_ab_sing, a_ab_reg, a_ab_qm)
-        b_ab = c_ab - CC*a_ab/betab(ib)/vp/1000.
-        b_ab_sing = c_ab_sing - CC*c_ab_sing/betab(ib)/vp/1000.
-        b_ab_reg = c_ab_reg - CC*c_ab_reg/betab(ib)/vp/1000.
-        b_ab_qm = c_ab_qm - CC*c_ab_qm/betab(ib)/vp/1000.
+        b_ab = c_ab - CC*a_ab/betab(ib)/vp
+        b_ab_sing = c_ab_sing - CC*c_ab_sing/betab(ib)/vp
+        b_ab_reg = c_ab_reg - CC*c_ab_reg/betab(ib)/vp
+        b_ab_qm = c_ab_qm - CC*c_ab_qm/betab(ib)/vp
         !*! need to form B from C and A.
         
         
