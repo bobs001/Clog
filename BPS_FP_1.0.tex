@@ -1,0 +1,947 @@
+\documentclass[preprint,12pt,eqsecnum,nofootinbib,amsmath,amssymb]{revtex4}
+
+% Date file was last changed:
+\newcommand{\datechange}{3/24/2020}
+\newcommand{\datestart}{3/23/2020}
+
+% version
+\newcommand\draftverson{v1.0}
+\newcommand{\fname}{addendumBPS\_1.0.tex}
+\newcommand{\laurnumber}{\draftverson  ~\today ~\currenttime}
+\newcommand{\mydate}{\datechange}
+
+% history
+% v1.0
+% taken from
+% stopping_power/working/04-addendumBPS/addendumBPS_1.4.tex
+
+% Person who last changed file:>
+\newcommand{\whochange}{Robert Singleton}
+%
+% Project Name, path, informal author names, title
+\newcommand{\projname}{Stopping Power}
+\newcommand{\dirname}{Clog}
+\newcommand{\myauthors}{Robert L. Singleton Jr}
+\newcommand{\myrunningtitle}{\fname}
+\newcommand{\mytitle}{The BPS Fokker Planck Equation}
+%
+% printing margins
+%
+
+\textwidth=6.5in
+\textheight=9.0in
+
+% packages
+%
+\usepackage{graphicx}  % Include figure files
+\usepackage{dcolumn}  % Align table columns on decimal point
+\usepackage{bm}             % Bold math: $\bm{\alpha}$
+\usepackage{latexsym}  % Several additional symbols
+\usepackage{fancyhdr}  % Fancy header package
+\usepackage{wrapfig}
+\usepackage{comment}
+\usepackage{dsfont}
+\usepackage{mathtools}
+\usepackage{datetime}
+\usepackage{mathrsfs}
+\usepackage{amsbsy}
+%\usepackage{showkeys}% Displays equation and fig names
+%\usepackage{hyperref}% Hyperlinked references
+
+% local commands
+\newcommand{\overoverline}[1]{ {\overline{\overline{#1}}} }
+\newcommand{\EMPTYSET}{\varnothing}
+\newcommand{\PROOF}{{\tiny PROOF}}
+\newcommand{\ALTPROOF}{{\tiny ALTERNATE PROOF}}
+\newcommand{\PAR}{$\blacktriangleright$}
+\newcommand{\ENDPF}{$\blacksquare$}
+\newcommand{\ENDPROOF}{$\blacksquare$}
+%\newcommand{\ENDPF}{\square}
+%\newcommand{\ENDPROOF}{$\square$}
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\NOT}{\neg}
+\newcommand{\EQ}{\equiv}
+\newcommand{\IFF}{\leftrightarrow}
+\newcommand{\IMP}{\rightarrow}
+\newcommand{\T}{{\rm T}}
+\newcommand{\F}{{\rm F}}
+\newcommand{\LOGEQ}{\sim}
+\newcommand{\smDash}{{\rule[1mm]{0.1cm}{0.1mm}}}
+\newcommand{\dbar}{{d\hskip-0.12cm \rule[2.2mm]{0.15cm}{0.1mm}}}
+\newcommand{\smA}{{\scriptscriptstyle \rm A}}
+\newcommand{\smB}{{\rm\scriptscriptstyle B}}
+\newcommand{\smN}{{\rm\scriptscriptstyle N}}
+\newcommand{\smX}{{\rm\scriptscriptstyle X}}
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\smP}{{\rm\scriptscriptstyle P}}
+\newcommand{\smL}{{\rm\scriptscriptstyle L}}
+\newcommand{\smT}{{\rm\scriptscriptstyle T}}
+\newcommand{\smC}{{\rm\scriptscriptstyle C}}
+\newcommand{\smI}{{\rm\scriptscriptstyle I}}
+\newcommand{\smR}{{\rm\scriptscriptstyle R}}
+\newcommand{\smS}{{\rm\scriptscriptstyle S}}
+\newcommand{\smD}{{\rm\scriptscriptstyle D}}
+\newcommand{\smW}{{\rm\scriptscriptstyle W}}
+\newcommand{\smCT}{{\rm\scriptscriptstyle CT}}
+\newcommand{\smE}{{\rm\scriptscriptstyle E}}
+\newcommand{\smae}{{\rm\scriptscriptstyle ae}}
+\newcommand{\extend}[2]{ {#1}^\smallfrown{\! #2} }
+\newcommand{\smTC}{{\rm\scriptstyle TC}}
+\newcommand{\calT}{ {\cal T}}
+\newcommand{\calA}{{\cal A}}
+\newcommand{\mathfrakA}{\mathfrak{A}}
+\newcommand{\mathfrakB}{\mathfrak{B}}
+\newcommand{\mathfrakS}{\mathfrak{S}}
+\newcommand{\smGr}{{\rm\scriptscriptstyle gr}}
+\newcommand{\smLT}{{\rm\scriptscriptstyle <}}
+\newcommand{\smGT}{{\rm\scriptscriptstyle >}}
+\newcommand{\smY}{{\rm\scriptscriptstyle Y}}
+
+% % baselineskip modes
+\newcommand{\bodyskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\bibskip}{\baselineskip16pt plus 1pt minus 1pt}
+\newcommand{\tableofcontentsskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\footnoteskip}{\baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\abstractskip}{\baselineskip 13pt plus 1pt minus 1pt}
+\newcommand{\titleskip}{\baselineskip 18pt plus 1pt minus 1pt}
+\newcommand{\affiliationskip}{\baselineskip 15pt plus 1pt minus 1pt}
+\newcommand{\captionskip}{\footnotesize \baselineskip 12pt plus 1pt minus 1pt}
+\newcommand{\enumerateskip}{\baselineskip 14pt plus 1pt minus 1pt}
+\newcommand{\theoremskip}{\baselineskip 13pt plus 1pt minus 1pt}
+
+% theorem
+%
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{definition}{Definition}
+
+\pagestyle{fancy}
+\lhead{\laurnumber}
+%\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+%%
+%% begin: draw box
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  This macro draws a box around around text, taken 
+%%  from ``TeX by Example'', by Arvind Borde p76.
+%%
+%%   To use: 
+%%
+%%   \vskip0.3cm
+%%   \frame{.1}{2}{16.2cm}{\noindent
+%%   \begin{eqnarray}
+%%     a = b
+%%   \end{eqnarray}
+%%   }
+%%   \vskip0.2cm
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\def\frame#1#2#3#4{\vbox{\hrule height #1pt    % TOP RULE
+  \hbox{\vrule width #1pt\kern #2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt                                               % TOP SPACE
+  \vbox{\hsize #3\noindent #4}                            % BOXED MATERIAL
+  \kern #2pt}                                                        % BOTTOM SPACE
+  \kern #2pt\vrule width #1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth #1pt}                            % BOTTOM RULE
+}
+%%
+\def\myframe#1{\vbox{\hrule height 0.1pt    % TOP RULE
+  \hbox{\vrule width 0.1pt\kern 2pt                     % RULE/SPACE ON LEFT
+  \vbox{\kern 2pt                                               % TOP SPACE
+  \vbox{\hsize 16.5cm\noindent #1}                            % BOXED MATERIAL
+  \kern 2pt}                                                        % BOTTOM SPACE
+  \kern 2pt\vrule width 0.1pt}                              % RULE/SPACE ON RIGHT
+  \hrule height0pt depth 0.1pt}                            % BOTTOM RULE
+}
+%%
+%% draws two boxes around text (use sparingly)
+%%
+\def\fitframe #1#2#3{\vbox{\hrule height#1pt  % TOP RULE
+  \hbox{\vrule width#1pt\kern #2pt             % RULE/SPACE ON LEFT
+  \vbox{\kern #2pt\hbox{#3}\kern #2pt}         % TOP,MATERIAL,BOT
+  \kern #2pt\vrule width#1pt}                  % RULE/SPACE ON RIGHT
+  \hrule height0pt depth#1pt}                  % BOTTOM RULE
+}
+%%
+%% draws a box with shadow around text
+%%
+\def\shframe #1#2#3#4{\vbox{\hrule height 0pt % NO TOP SHADOW
+ \hbox{\vrule width #1pt\kern 0pt             % LEFT SHADOW
+ \vbox{\kern-#1pt\frame{.3}{#2}{#3}{#4}       % START SHADOW
+ \kern-.3pt}                                  % MOVE UP RULE
+ \kern-#2pt\vrule width 0pt}                  % STOP SHADOW
+ \hrule height #1pt}                          % BOTTOM SHADOW
+}
+%%
+%%
+%% end: draw box
+%%
+%%  To install as a package on a local host.
+%%   a. Append the header ``\usepackage{myboxes}'' to the above macro. Name 
+%%   the macreo file myboxes.sty.  Move myboxes.sty into $HOME/texmf/tex/mypackages/. 
+%%   You might need to type texhash.
+%%   b. T use the package write \usepackage{myboxes} in the preamble.
+
+%
+\begin{document}
+
+%%% notes info page
+%%\hfill{\laurnumber}
+%%\vskip0.3cm
+%\centerline{{ \Large\bf \projname: \fname}}
+%\vskip0.25cm 
+%\centerline{\bf \mytitle}
+%\vskip0.25cm
+%\centerline{\myauthors}
+%\vskip0.75cm 
+%\baselineskip 14pt plus 1pt minus 1pt
+%\begin{flushright}
+%Research Notes   \\[3pt]
+%{\it Project}:          \\
+%\projname                      \\
+%  {\it Path of TeX Source}:          \\
+%\dirname/\fname                      \\[3pt]
+%{\it Last Modified By}:            \\
+%\whochange                         \\
+%\datechange                        \\[3pt]
+%{\it Date Started:}                \\
+%\datestart                         \\[3pt]
+%{\it Date:}                \\
+%\draftverson~ \today ~\currenttime \\
+%\end{flushright}
+
+\baselineskip 20pt plus 1pt minus 1pt
+
+%% mini abstract
+%\abstractskip
+%\noindent
+%These are notes on Logic from Ref.~\cite{ref_chang}.  
+%\bodyskip
+
+%% title page
+\vskip2.0cm
+%\pagebreak
+\preprint{\laurnumber}
+
+
+% publication title page
+\title{\titleskip
+  \mytitle
+}
+
+\author{Robert L Singleton Jr}
+
+\affiliation{
+University of Leeds\\
+School of Mathematics\\
+LS2 9JT
+}
+
+\date{\datechange}
+
+\begin{abstract}
+\abstractskip
+\vskip0.3cm 
+\noindent
+
+These are notes on the BPS Fokker-Planck equation.
+
+
+\end{abstract}
+
+%%
+\maketitle
+%%
+
+% to change page settings
+%\thispagestyle{empty}
+%\pagestyle{empty}
+%\setcounter{page}{0}
+
+%\pagebreak
+%\tableofcontentsskip
+%\tableofcontents
+%%\thispagestyle{empty}
+
+%\pagebreak
+\newpage
+\bodyskip
+%\setcounter{page}{1}
+
+\pagebreak
+\clearpage
+%
+
+\section{Introduction}
+\label{sec:intro}
+
+
+I would like to start these notes by addressing some potential misconceptions
+of the Brown-Preston-Singleton (BPS) paper\,\cite{BPS2005}, and to clarify 
+some issues with the presentation of the original manuscript. Given 
+the way in which the paper is structured, one might be led to think 
+that the BPS stopping power omits small angle scattering, and is 
+only valid in the Fokker-Planck limit. I should emphasize, however, 
+that the BPS method employs the full Boltzmann equation, and 
+indeed includes the scattering effects from all angles. The
+Boltzmann short-distance physics, joined together with  the 
+long-distance physics of  the Lenard-Balescu equation, provides 
+an exact result to leading and next-to-leading order in the plasma 
+coupling $g$. The misconception that BPS only takes into account
+small angle collisions could well arise from our 
+premature emphasis  on the Fokker-Planck equation in Section~IV 
+of the BPS paper. In fact, the name of Section~IV  is {\em General 
+Formalism}, and this is a misleading title. The section 
+should more properly be called {\em The BPS Fokker-Planck Equation}, 
+and it should have appeared later in the text. The location and title 
+of this section gives the misleading impression that the BPS stopping 
+power and temperature equilibration are performed only within the 
+Fokker-Planck approximation. This misconception is reinforced by 
+the way in which we present our results, namely, in terms of 
+coefficients called ${\cal A}$ and ${\cal B}$ (or actually ${\cal A}$ 
+and the trace ${\sum}_\ell \, C^{\ell \ell}$),  which were  introduced 
+within the context of a Fokker-Planck description. 
+
+To be clear,  BPS uses the method of dimensional
+continuation to calculate the rate of Coulomb energy exchange 
+$dE/dt$ and the rate of momentum exchange \hbox{${\bf v}
+\cdot d{\bf P}/dt$} for a beam of particles with incident velocity
+${\bf v}$ in a weakly coupled and fully ionized plasma. These 
+two independent (scalar) quantities are calculated within the BPS 
+framework, using the short-distance physics of the Boltzmann 
+equation and the long distance-physics of the Lenard-Balescu 
+equation, and the results are exact to leading order ($g^2\ln g$) 
+and to next-to-leading order ($g^2$) in the plasma coupling.
+After these calculates were completed, we used them to 
+{\em define} the coefficient functions ${\cal A}(v)$ and 
+${\cal B}(v)$ of a 
+Fokker-Planck (FP) equation, which can then be used to study  
+phenomena such as straggling and the angular separation of 
+the incident beam. The BPS Fokker-Planck equation is an improved
+equation in that it gives $dE/dt$ and ${\bf v} \cdot d{\bf P}/dt$ 
+{\em exactly} to order $g^2 \ln g + g^2$, including {\em large 
+angle} effects from the Boltzmann equation. However, all other 
+quantities calculated from this FP equation are (of course) only 
+accurate to leading order and do not include large-angle effects. 
+The order of our presentation does not make this strategy 
+entirely clear. 
+
+To summarize, we do four things in the BPS paper of Ref.~\cite{BPS2005}:
+(i) we calculate $dE/dt$ and ${\bf v} \cdot d{\bf P}/dt$ for a projectile 
+in a plasma, exactly to leading and next-to-leading order in~$g$, (ii) we 
+calculate the electron-ion temperature equilibration rate $dE/dt$ exactly  
+to leading and next-to-leading order in~$g$, (iii) we use these calculations 
+to define a Fokker-Planck equation, and (iv) we calculate the quantity 
+$dE_\perp/dt$  to leading and next-to-leading order in $g$. Note that 
+(i) and (ii) use the full Boltzmann equation, and consequently include 
+large and small angle collisions. The resulting Fokker-Planck equation in 
+(iii) is meant to be used in the small-angle limit in $\nu=3$ dimensions, 
+and, in general, is accurate to leading order. However, since the coefficients 
+${\cal A}$ and ${\cal B}$ have been defined in terms of $dE/dt$ and 
+${\bf v} \cdot d{\bf P}/dt$, 
+the BPS FP equation gives these quantities to leading and next-to-leading
+order, including the effects from all angles. One can think of this as a 
+``corrected'' Fokker-Plank equation in which the large-angle contributions
+to the stopping power (and the momentum deposition) have been included.
+
+
+%\clearpage
+\section{A Fokker-Planck Formulation}
+\label{sec_fp_form}
+ 
+\subsection{Basic Formalism and Definitions}
+ 
+Let us now consider a background plasma consisting of multiple 
+species $b$ with temperature $T_b \equiv 1/\beta_b$, charge 
+$e_b$, and mass $m_b$. Having calculated the basic quantities 
+$dE/dt$ and \hbox{${\bf v} \cdot d{\bf P}/dt$} using the method 
+of dimensional continuation, we now return to $\nu=3$. Consider 
+an universalized swarm (or a beam) of test particles within the 
+plasma. Suppose the test particles are identical and have mass 
+$m$ and distribution function $f$. Then the Fokker-Planck (FP) 
+equation for the beam particles takes the form 
+%%
+\begin{align}
+  \left[
+  \frac{\partial }{\partial t} + {\bf v} \cdot {\bm\nabla} 
+  \right] f({\bf r}, {\bf p}, t)
+  &=
+  {\sum}_b\, {\sum}_{k\ell} \, 
+  \frac{\partial}{\partial p^k} \, C_b^{k \ell}({\bf r}, {\bf p}, t)
+  \bigg[ \beta_b v^\ell + \frac{\partial}{\partial p^\ell}
+  \bigg] f({\bf r}, {\bf p}, t)
+  \label{eq_bps_fp}
+  \ ,
+\end{align}
+%% 
+where ${\bf v} = {\bf p}/m$ and ${\bm\nabla} = \partial/\partial {\bf r}$. 
+Given a physical quantity $q({\bf p})$ associated with an individual particle, 
+we define the corresponding spatial density and the flux vector by
+%%
+\begin{align}
+  {\mathscr Q}({\bf r}, t)
+  &=
+  \int \frac{d^3 p}{(2\pi\hbar)^3}\, q({\bf p}) \, f({\bf r}, {\bf p}, t)
+  \label{eq_q}
+  \\[8pt]
+  {\mathscr F}^k({\bf r}, t)
+  &=
+   \int \frac{d^3 p}{(2\pi\hbar)^3}\, q({\bf p}) \, v^k\, f({\bf r}, {\bf p}, t)
+   \label{eq_fk}
+  \ .
+\end{align}
+%% 
+After integrating the momentum variable by parts, the FP equation 
+(\ref{eq_bps_fp}) implies
+%%
+\begin{align}
+  \frac{\partial}{\partial t}\,{\mathscr Q}({\bf r}, t)
+  +
+  {\bm\nabla} \cdot \pmb{\mathscr{F}}({\bf r}, t)
+  &=
+  -{\sum}_b \int \frac{d^3 p}{(2\pi\hbar)^3} \,
+  \frac{d Q_b}{dt}({\bf r}, {\bf p}, t) \, f({\bf r}, {\bf p}, t)
+  \label{eq_q_continuity}
+ \end{align}
+%% 
+where
+%%
+\begin{align}
+  \frac{d Q_b}{dt}({\bf r}, {\bf p},  t) 
+  &\equiv
+  {\sum}_{k \ell}
+  \left[ \beta_b v^\ell - \frac{\partial}{\partial p^\ell}\right]
+  C_b^{k \ell }({\bf r}, {\bf p}, t) \,\frac{\partial }{\partial p^k}\,q({\bf p})
+  \ .
+  \label{eq_q_dQdt}
+\end{align}
+%% 
+Note that $dQ_b/dt$ is the average rate of loss of the quantity
+$q({\bf p})$ from the interaction of the beam with plasma component 
+$b$. 
+
+
+%\pagebreak
+\subsection{Application to Energy and Momentum Loss}
+
+The energy density and energy flux take the form
+%%
+\begin{align}
+  {\mathscr U}
+  &=
+  \int \frac{d^3 p}{(2\pi\hbar)^3}\, \frac{p^2}{2m} \, f({\bf r}, {\bf p}, t)
+  \label{eq_E}
+  \\[8pt]
+  {\mathscr S}^k
+  &=
+   \int \frac{d^3 p}{(2\pi\hbar)^3}\, \frac{p^2}{2m}\, \frac{p^k}{m}\, 
+   f({\bf r}, {\bf p}, t)
+   \label{eq_Eflux}
+  \ ,
+\end{align}
+%% 
+where $E({\bf p}) \equiv   p^2/2m $ is the kinetic energy of 
+a single projectile within the beam. The energy continuity 
+equation is
+%%
+\begin{align}
+  \frac{\partial {\mathscr U}}{\partial t}
+  +
+  {\bm\nabla} \cdot \pmb{\mathscr{S}}
+  &=
+  -{\sum}_b \int \frac{d^3 p}{(2\pi\hbar)^3} \,
+  \frac{d E_b}{dt} \, f({\bf r}, {\bf p}, t)
+  \ .
+  \label{eq_q_continuity}
+\end{align}
+%% 
+The momentum density and momentum flux are
+%%
+\begin{align}
+  {\mathscr P}^k
+  &=
+  \int \frac{d^3 p}{(2\pi\hbar)^3}\, p^k\, f({\bf r}, {\bf p}, t)
+  \label{eq_P}
+  \\[8pt]
+  {\mathscr T}^{k\ell}
+  &=
+   \int \frac{d^3 p}{(2\pi\hbar)^3}\, \frac{p^k p^\ell}{m}\, 
+   f({\bf r}, {\bf p}, t)
+   \label{eq_Pflux}
+  \ ,
+\end{align}
+%% 
+and the continuity equation is
+%%
+\begin{align}
+  \frac{\partial {\mathscr P^k}}{\partial t}
+  +
+  {\nabla}^\ell  {\mathscr{T}^{k\ell}}
+  &=
+  -{\sum}_b \int \frac{d^3 p}{(2\pi\hbar)^3} \,
+  \frac{d P_b}{dt} \, f({\bf r}, {\bf p}, t)
+  \ .
+  \label{eq_P_continuity}
+\end{align}
+%%
+The rate of change of energy and momentum takes the form
+  %%
+\begin{align}
+  \frac{d E_b}{dt}
+  &=
+  {\sum}_{k\ell}
+  \left[ \beta_b v^\ell - \frac{\partial}{\partial p^\ell}\right]
+  C_b^{k \ell }\,v^k
+  \ ,
+  \label{eq_E_dEdt}
+  \\[11pt]
+  \frac{d P^k_b}{dt}
+  &=
+  {\sum}_{\ell}
+  \left[ \beta_b v^\ell - \frac{\partial}{\partial p^\ell}\right]
+  C_b^{k \ell }
+  \ .
+  \label{eq_P_dEdt}
+\end{align}
+%% 
+We have used $\partial E/\partial p^k = p^k/m = v^k$ to express  
+(\ref{eq_E_dEdt}), and  $\partial p^k/\partial p^r =\delta^{k r}$ in 
+deriving (\ref{eq_P_dEdt}). We can also write (\ref{eq_P_dEdt}) in 
+the form
+%%
+\begin{align}
+  v^k \, \frac{dP_b^k}{dt} 
+  &= 
+  \frac{dE_b}{dt} 
+  +
+  \frac{1}{m} \, {\sum}_\ell \, C_b^{\ell \ell} \,,
+\end{align}
+%%
+which is BPS Eq.~(4.22). 
+By calculating
+$dE_b/dt$ and $dP^k/dt$ (or actually $v^k \, dP^k/dt$)
+using the BPS method, we can define an FP tensor 
+$C_b^{k \ell}$. As calculated by the FP equation, the 
+energy and momentum 
+exchange in the plasma are given by (\ref{eq_E_dEdt}) and 
+(\ref{eq_P_dEdt}). However, since these quantities were calculated
+using the BPS method, we see that the BPS Fokker-Planck 
+equation gives exact (including large angles) results for the 
+rates of energy and momentum exchange. For all other quantities,
+the BPS Fokker-Planck equation is only accurate to leading 
+order in the small angle limit. 
+
+
+%\pagebreak
+\subsection{Decomposition of the FP Tensor}
+
+We can decompose the FP tensor $C_b^{k\ell}({\bf p})$ into 
+longitudinal and transverse components along ${\bf p}$ (or
+equivalently along ${\bf v}={\bf p}/m$), 
+%%
+\begin{align}
+  C_b^{k \ell}({\bf p})
+  &= 
+  {\mathcal A}_b(v) \, \frac{\hat v^k \, \hat v^\ell}{\beta_b v}
+   + 
+ { \mathcal B}_b(v)  \,\frac{1}{2} \big(\delta^{k \ell } - \hat v^k\,  \hat v^\ell \big)
+  \ ,
+  \label{eq_Cbkl}
+\end{align}
+%%
+where $\hat{\bf v} = {\bf v}/v$ is the unit vector in the ${\bf v}$ direction. 
+This  is BPS Eq.~(4.18). The time dependence has been left implicit, as has 
+the spatial dependence (we are in fact only interested in a spatially uniform 
+and isotropic plasma). It follows from  (\ref{eq_E_dEdt}) that
+%%
+\begin{align}
+  \frac{dE_b}{dt}
+  &= 
+  \left[ v - {\sum}_\ell
+  \frac{1}{\beta_b m}\, \frac{\partial}{\partial v^\ell}\, \hat v_\ell
+  \right]
+  {\mathcal A}_b(v)
+  \\[8pt]
+  &=
+  \left[ v -  \frac{2}{\beta_b m v} -\frac{1}{\beta_b m} 
+  \frac{\partial \,\,}{\partial v} 
+  \right] {\mathcal A}_b(v) 
+  \,,
+\end{align}
+%%
+which is BPS Eq.~(4.21). Note that the (three dimensional) trace of
+(\ref{eq_Cbkl}) is
+%%
+\begin{align}
+  {\sum}_\ell \, C_b^{\ell \ell}
+  &= 
+  \frac{ {\mathcal A}_b}{\beta_b v}
+   + 
+ { \mathcal B}_b  
+  \ .
+  \label{eq_C_trace_AB}
+\end{align}
+%%
+
+\subsection{A Columnated Beam}
+
+Now consider a columated beam with indicdent velocity ${\bf v}_p$
+and particle mass $m_p$. We can define the stopping power and
+momentum loss per unit distance as
+%%
+\begin{align}
+  \frac{d E_b}{dx}(v_p)
+  &=
+  \frac{1}{v_p}\, \frac{dE_b}{dt}(v_p)
+  \\[11pt]
+  \frac{d {\bf P}_b}{dx}(v_p)
+  &=
+  \frac{1}{v_p}\, \frac{d{\bf P}_b}{dt}(v_p)
+  \ ,
+\end{align}
+%% 
+so that
+%%
+\begin{align}
+  \frac{d E_b}{dx}(v_p)
+  &=
+  \left[ 1 -  \frac{2}{\beta_b m_p v_p^2} -\frac{1}{\beta_b m_p v_p} 
+  \frac{\partial \,\,}{\partial v_p}  \right] {\mathcal A}_b(v_p) 
+  \label{eq_E_dEdt_p}
+  \\[11pt]
+  {\bf v_p} \cdot \frac{d {\bf P}_b^k}{dx}(v_p)
+  &= 
+  \frac{dE_b}{dx}(v_p)
+  + 
+  \frac{1}{m_p v_p} \,{\sum}_\ell \,  C_b^{\ell \ell}(v_p) 
+  \\[5pt]
+  &=
+    \left[ 1 -  \frac{1}{\beta_b m_p v_p^2} -\frac{1}{\beta_b m_p v_p} 
+  \frac{\partial \,\,}{\partial v_p}  \right] {\mathcal A}_b(v_p) 
+  +  
+  \frac{1}{m_p v_p} \,
+  {\cal B}_b(v_p)
+  \ .
+ \label{eq_P_dEdt_p}
+\end{align}
+%% 
+Define the {\em transverse energy} by
+%%
+\begin{align}
+   E_\perp({\bf p})
+   =
+   \frac{1}{2}\, m_p 
+   \Big[
+   {\bf v}^2 - ({\bf v} \cdot \hat {\bf v}_p)^2
+   \Big]
+%   =
+%   \frac{1}{2}\, m_p {\sum}_{k \ell} v_p^k v_p^\ell \,
+%   \Big[ \delta^{k \ell} - \hat v_p^k \, \hat v_p^\ell
+%   \Big]
+   \ ,
+\end{align}
+%% 
+where ${\bf p} = m_p {\bf v}$, and $\hat {\bf v}_p = {\bf v}_p/v_p$ 
+is the unit vector in the direction of the projectile velocity~${\bf v}_p$. 
+We can also write the transverse energy as
+%%
+\begin{align}
+   E_\perp({\bf p})
+   =
+   \frac{1}{2 m_p} \, {\sum}_{k \ell} \,  p^k p^\ell \,
+   \Big[ \delta^{k \ell} - \hat v_p^k \, \hat v_p^\ell
+   \Big]
+   \ .
+\end{align}
+%% 
+The transerve energy density and energy flux take the form
+%%
+\begin{align}
+  {\mathscr U}_\perp
+  &=
+  \int \frac{d^3 p}{(2\pi\hbar)^3}\,E_\perp({\bf p}) \, f({\bf r}, {\bf p}, t)
+  \label{eq_E_perp}
+  \\[8pt]
+  {\mathscr S}^k_\perp
+  &=
+   \int \frac{d^3 p}{(2\pi\hbar)^3}\, E_\perp({\bf p})\, \frac{p^k}{m}\, 
+   f({\bf r}, {\bf p}, t)
+   \label{eq_Eflux_perp}
+  \ ,
+\end{align}
+%% 
+and the continuity equation is
+%%
+\begin{align}
+  \frac{\partial {\mathscr U}_\perp}{\partial t}
+  +
+  {\bm\nabla} \cdot \pmb{\mathscr{S}}_{\!\perp}
+  &=
+  -{\sum}_b \int \frac{d^3 p}{(2\pi\hbar)^3} \,
+  \frac{d E_{b \, \perp}}{dt} \, f({\bf r}, {\bf p}, t)
+  \ .
+  \label{eq_q_continuity_perp}
+\end{align}
+%% 
+
+%%%%%%
+\newpage
+
+%%%%%%
+%
+\begin{acknowledgments}
+  I am particularly indebted to Jean-Etienne Sauvestre for reading 
+  the BPS manuscript so thoroughly, and for helping clarify a number 
+  of potential problems with the structure of the text. 
+\end{acknowledgments}
+
+
+%%%%%%%%
+\appendix
+
+%\pagebreak
+\section{Straggling and Angular Spreading}
+
+\subsection{Exact Definitions and Relations}
+
+There are three independent quantities
+that one can calculate: $dE/dt$, ${\bf v}_p \cdot d{\bf P}/dt$, and
+$dE_\perp/dt$. Since $dE/dt  = dE_\perp/dt + dE_\parallel/dt$,
+we can trade off $dE_\parallel/dt$ for $dE_\perp/dt$. Every time 
+$t$ that $\mathbf v_p$ is specified must be considered as an initial 
+time, and could write ${\bf v}_p(t)$ to emphasize that the velocity
+is given at the initial time $t$. Furthermore, we must specify all 
+ensemble averages $\langle X \rangle$ at the initial time. Let us 
+form the following. Since the beam is sharply peaked about ${\bf v}_p$, 
+we find
+%%
+\begin{align}
+  \langle v^k(t_0) \rangle 
+  &= 
+  v_p^k 
+  \hskip3.5cm
+  T^{kl} = \langle v^k(t_0) v^l(t_0)  \rangle = v_p^k v_p^l 
+  \\[10pt]
+   P^k &= m \langle v^k(t_0) \rangle  = m v_p^k 
+   \hskip1.0cm
+   E = \frac{1}{2} m \mathbf v_p^2 = \frac{1}{2} m T^{kk} \,.
+\end{align}
+%% 
+%%%
+%\begin{align}
+%  P^k &= m \langle v^k(t) \rangle  = m v_p^k\,, 
+%  \qquad
+%  E = \frac{1}{2} m \mathbf v_p^2 = \frac{1}{2} m T^{kk} \,.
+%\end{align}
+%%%
+These are fixed, given by the initial conditions; however, the time derivative
+of a quantity is  is determined by the dynamics,\footnote{
+\footnoteskip
+Look at footnote 18 in BPS. I am not sure Eq.~(4.33) is correct to order $g^2$ 
+under the log. We should also look at Refs. [15] and [16] in BPS.
+} % footnote
+%%
+\begin{align}
+  \frac{d}{dt}\big\langle v^k(t) \big\rangle &= 
+    \Big\langle \frac{d v^k(t)}{dt} \Big\rangle 
+\hskip2.0cm
+\frac{d}{dt} T^{kl}(t) =
+ \Big\langle \Big[\frac{d v^k(t)}{dt} v^l(t) +
+    v^k(t)  \frac{d v^l(t)}{dt} \Big] \Big\rangle 
+\\[11pt]
+v_p^k\, \frac{dP^k(t)}{dt} 
+&= v_p^k \, m \, \Big\langle \frac{d v^k(t)}{dt} \Big\rangle 
+\hskip1.2cm
+\frac{dE}{dt} = \frac{1}{2}\,m \, \frac{dT^{kk}(t)}{dt}
+\ .
+\end{align}
+%%
+Using the tensor $T^{kl}(t)$, we can define the quantities 
+$dE_\parallel/dt$ and $dE_\perp/dt$ by taking moments
+with respect to the direction of  motion,
+%%
+\begin{align}
+  \hat{\mathbf v}_p 
+  &= \frac{{\mathbf v}_p}{|{\mathbf v}_p|}
+   = \frac{{\mathbf v}_p}{v_p}
+\ ,
+\end{align}
+%%
+namely
+%%
+\begin{align}
+  \frac{d E_\parallel}{dt} 
+  &= 
+  \hat v^k_p \,\hat v^l_p \, \frac{1}{2}\, m \,\frac{d}{dt} T^{kl}(t) 
+  =
+  \hat v^k_p \, \hat v^l_p\, m \,
+  \Big\langle \frac{d v^k(t)}{dt} \, v^l(t)\Big\rangle 
+\\[11pt]
+  \frac{d E_\perp}{dt} 
+  &=
+  \Big[ \delta^{kl}-\hat v^k_p \, \hat v^l_p \Big] 
+  \frac{1}{2}\, m \, \frac{d}{dt} T^{kl}(t) 
+  =
+  \Big[ \delta^{kl}-\hat v^k_p \, \hat v^l_p \Big] m\, 
+  \Big\langle \frac{d v^k(t)}{dt} v^l(t)\Big\rangle 
+  \ .
+\end{align}
+%%
+Note that
+%%
+\begin{align}
+  \frac{d E}{dt} 
+  &=\frac{d E_\parallel}{dt} + \frac{d E_\perp}{dt}
+   \,,
+\end{align}
+illustrating that $dE_\parallel/dt$ and $dE_\perp/dt$ are
+not independent in our formulation. 
+We close this section by examining the velocity fluctuations,
+%%
+\begin{align}
+  \frac{d \,\,}{dt} \widetilde{T}^{kl}(t) 
+  &\equiv
+  \frac{d \,\,}{dt} \Big\langle \Big[v^k(t) - \langle v^k(t) \rangle \Big] 
+  \Big[v^l(t) - \langle v^l(t) \rangle \Big] \Big\rangle 
+  \nonumber\\
+  &=
+  \frac{d \,\,}{dt} T^{kl}(t) 
+    - \Big\langle \frac{d v^k(t)}{dt} \Big\rangle v^l_p 
+    -   v^k_p \Big\langle \frac{d v^l(t)}{dt} \Big\rangle 
+\ ,
+\end{align}
+%% 
+and thus
+%%
+\begin{align}
+\frac{d \widetilde{E}_\parallel}{dt} &= \frac{d E_\parallel}{dt} 
+    - v^k_p\, \frac{d P^k}{dt} 
+    \ .
+\end{align}
+%%
+And independent calculation gives
+%%
+\begin{align} 
+\frac{d \widetilde{E}_\perp}{dt} &= \frac{d E_\perp}{dt} \,.
+\label{perp}
+\end{align}
+%%
+At high velocities, we expect that 
+$d \widetilde{E}_\parallel / dt \approx 0$. Then
+$d E_\perp / dt \approx dE/dt - \mathbf v_p \cdot d\mathbf P /dt$.
+
+
+\subsection{Isotropic Plasma}
+
+In an isotropic plasma, $d{\bf P}/dt$ points in the direction ${\bf v}_p$,
+which means that
+%%
+\begin{align}
+\frac{d P^k}{dt}  &= \hat v^k_p\, \dot P(t) 
+\ ,
+\end{align}
+%% 
+where $P(t)$ is a scalar. BPS calculates the quantity $\dot P = dP/dt$ to
+leading to next-to-leading order in $g$. BPS also calculates $dE/dt$ to
+the same order. This determines the ${\cal A}$ and ${\cal B}$ coefficients
+defined above. Also note the exact relation
+%% 
+\begin{align}
+  \frac{d}{dt} \, \frac{1}{2}\, m T^{kl}(t) 
+  &= 
+  \hat v_p^k \,\hat v_p^k \, \frac{dE_\parallel}{dt} 
+  + 
+  \frac{1}{2} \Big[ \delta^{kl} - \hat v_p^k \, \hat v_p^l \Big] \frac{dE_\perp}{dt} 
+  \ ,
+\end{align}
+%%
+which gives a physical interpretation to $dE_\parallel/dt$ and 
+$dE_\perp/dt$. 
+
+\subsection{Transverse Energy Loss}
+
+
+There is an ambiguity in the definition of the BPS Fokker-Planck
+equation. We have chosen the coefficients ${\cal A}$ and ${\cal B}$
+in such a way as to give exact large-angle corrections to $dE/dt$
+and ${\bf v}_p \cdot d{\bf P}/dt$. As such, when we evaluate
+$dE_\perp/dt$ by this FP equation, the result is only accurate
+to order $g^2 \ln g$.
+Equation (4.30) of BPS gives the Fokker-Planck evaluation
+%%
+\begin{align}
+\frac{d E_\perp}{dt} &= \frac{1}{m} \mathcal B \,.
+\label{goodperp}
+\end{align}
+%%
+In Section X of BPS, we calculate the $g^2$ correction, thereby
+providing all three independent quantities exactly to leading and
+next-to-leading order.
+
+**
+On the other hand, the discussion after \eqref{perp} suggests that
+ %%
+\begin{align}
+\frac{d E_\perp}{dt} &\approx \frac{d E}{dt} - 
+    \mathbf v_p \cdot \frac{d \mathbf P}{dt} \,.
+\label{badperp}
+\end{align}
+%%
+But Eqs.(4.23) and (4.24) of BPS yield 
+ %%
+\begin{align}
+\frac{d E}{dt} - \mathbf v_p \cdot \frac{d \mathbf P}{dt} 
+&= \frac{1}{m} C^{ll}
+\nonumber\\[8pt]
+ &= \frac{1}{\beta m v_p} \mathcal A + \frac{1}{m} \mathcal B
+\label{fast}
+\end{align}
+%%
+which is far away from BPS Eq.~(4.30) which we quoted in our
+Eq.~\eqref{goodperp} except for such high projectile velocities
+that $(m_p/m_e) (T / E_p) \ll 1$, in which case Eqs.(10.42) and
+(10.45) of BPS show that the $\mathcal A$ term in Eq.~\eqref{fast}
+can be neglected. 
+
+At any rate, as described in BPS, the correction (11.21) added to the
+approximation (4.30) quoted above gives $d E_\perp /dt $ to order
+$\ln g^2 + g^2$.   
+
+
+%
+%%%
+%\section{\label{sec:one} Section One of the Appendix}
+%
+
+%\clearpage
+\begin{thebibliography}{99}
+\bibskip
+
+
+\bibitem{BPS2005}
+           Lowell S Brown, Dean L Preston, and Robert L Singleton, Jr,
+           {\it Charged Particle Motion in a Highly Ionized Plasma},
+           Phys. Rep. {\bf 410} (2005) 237-333.
+
+
+
+
+\end{thebibliography}
+
+\end{document}
+        
